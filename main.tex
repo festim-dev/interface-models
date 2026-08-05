@@ -686,7 +686,7 @@ three forward constants equal instead, which is the natural reading of
 Eqs.~(\ref{eq:iso_HH})--(\ref{eq:iso_TT}) if Eq.~(\ref{eq:stat_factor}) is
 overlooked, yields $K_\mathrm{exch} = 1$ and an equal split, which would
 suppress the scrambling discussed below. Both cases are reproduced to solver
-tolerance by the zero-flux test of Sec.~\ref{sec:conservation}. Any departure
+tolerance by the zero-flux test of App.~\ref{app:conservation}. Any departure
 from $K_\mathrm{exch} = 4$ is a genuine isotope effect and belongs in the rate
 constants themselves; the zero-point-energy corrections are collected in
 App.~\ref{app:balance}.
@@ -1233,55 +1233,6 @@ interpolates continuously between the two exponents that LTE offers as
 alternatives, passing through $n = 3/2$ when the two channels carry equal atomic
 fluxes, and it is the analytical backbone of the regime-map figure and of the
 exponent measurement proposed in Sec.~\ref{sec:hyperion_branching}.
-
-% ---------------------------------------------------------------
-\subsection{Conservation and consistency checks}
-\label{sec:conservation}
-% ---------------------------------------------------------------
-
-The zero-flux test asks the kinetic interface to relax to the equilibrium state
-when nothing drives it, which is the sharpest available check that the
-detailed-balance constants are implemented consistently. We run it on the
-isotopologue set of Sec.~\ref{sec:isotopes}, since that is the case where the
-statistical bookkeeping is easiest to get wrong. Two mobile species H and T are
-held at equal fixed concentrations on the metal side, the liquid has no outlet,
-and the three recombination channels
-Eqs.~(\ref{eq:iso_HH})--(\ref{eq:iso_TT}) are allowed to equilibrate. At steady
-state every channel rate vanishes and we measure $K_\mathrm{exch}$ of
-Eq.~(\ref{eq:kexch}).
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.85\textwidth]{isotopologue_equilibrium.pdf}
-    \caption{Zero-flux test of the isotopologue channels: the three carriers
-    relaxing to equilibrium from equal H and T populations on the metal side.
-    $\mathrm{H_2}$ and $\mathrm{T_2}$ coincide by symmetry. Left, equal forward
-    constants give $1:1:1$ and $K_\mathrm{exch} = 1$; the dotted curve is the
-    same case with the mixed channel declared twice, which reaches the same
-    equilibrium sooner and illustrates why the duplication cannot encode the
-    degeneracy. Right, the statistical factor of Eq.~(\ref{eq:stat_factor})
-    gives $1:2:1$ and $K_\mathrm{exch} = 4$.}
-    \label{fig:isotopologue}
-\end{figure}
-
-With all three forward constants equal the result is
-$\mathrm{H_2 : HT : T_2} = 1 : 1 : 1$ and $K_\mathrm{exch} = 1.000000$; with
-$k^{+}_\mathrm{HT} = 2k^{+}_\mathrm{HH}$ as prescribed by
-Eq.~(\ref{eq:stat_factor}) the result is $1 : 2 : 1$ and
-$K_\mathrm{exch} = 4.000000$, the classical value. Declaring the mixed channel
-twice, once as $\mathrm{H+T}$ and once as $\mathrm{T+H}$, returns
-$K_\mathrm{exch} = 1.000000$, confirming the point made in Sec.~\ref{sec:weak}
-that the duplication trick rescales the channel without introducing the
-degeneracy: as the dotted curve of Fig.~\ref{fig:isotopologue} shows, it reaches
-the same equilibrium sooner. All three cases reproduce their analytical values
-to six significant figures.
-
-\TODO{global atom balance: check that the total number of H atoms in the metal,
-in the salt and released is conserved to machine precision over a transient.
-Not yet run.}
-
-\TODO{MMS on the coupled two-domain problem with a manufactured interfacial
-source, verifying the spatial and temporal orders. Not yet run.}
 
 % ===============================================================
 \section{Application: the \HYPERION{} experiment}
@@ -1956,6 +1907,55 @@ cells of each submesh, since the two restrictions of an interface integral live
 on different meshes; this is the role of the entity maps passed at compilation
 time, and of the ordering convention that puts \texttt{subdomains[0]} on the
 first restriction.
+
+% ---------------------------------------------------------------
+\section{Conservation and consistency checks}
+\label{app:conservation}
+% ---------------------------------------------------------------
+
+The zero-flux test asks the kinetic interface to relax to the equilibrium state
+when nothing drives it, which is the sharpest available check that the
+detailed-balance constants are implemented consistently. We run it on the
+isotopologue set of Sec.~\ref{sec:isotopes}, since that is the case where the
+statistical bookkeeping is easiest to get wrong. Two mobile species H and T are
+held at equal fixed concentrations on the metal side, the liquid has no outlet,
+and the three recombination channels
+Eqs.~(\ref{eq:iso_HH})--(\ref{eq:iso_TT}) are allowed to equilibrate. At steady
+state every channel rate vanishes and we measure $K_\mathrm{exch}$ of
+Eq.~(\ref{eq:kexch}).
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{isotopologue_equilibrium.pdf}
+    \caption{Zero-flux test of the isotopologue channels: the three carriers
+    relaxing to equilibrium from equal H and T populations on the metal side.
+    $\mathrm{H_2}$ and $\mathrm{T_2}$ coincide by symmetry. Left, equal forward
+    constants give $1:1:1$ and $K_\mathrm{exch} = 1$; the dotted curve is the
+    same case with the mixed channel declared twice, which reaches the same
+    equilibrium sooner and illustrates why the duplication cannot encode the
+    degeneracy. Right, the statistical factor of Eq.~(\ref{eq:stat_factor})
+    gives $1:2:1$ and $K_\mathrm{exch} = 4$.}
+    \label{fig:isotopologue}
+\end{figure}
+
+With all three forward constants equal the result is
+$\mathrm{H_2 : HT : T_2} = 1 : 1 : 1$ and $K_\mathrm{exch} = 1.000000$; with
+$k^{+}_\mathrm{HT} = 2k^{+}_\mathrm{HH}$ as prescribed by
+Eq.~(\ref{eq:stat_factor}) the result is $1 : 2 : 1$ and
+$K_\mathrm{exch} = 4.000000$, the classical value. Declaring the mixed channel
+twice, once as $\mathrm{H+T}$ and once as $\mathrm{T+H}$, returns
+$K_\mathrm{exch} = 1.000000$, confirming the point made in Sec.~\ref{sec:weak}
+that the duplication trick rescales the channel without introducing the
+degeneracy: as the dotted curve of Fig.~\ref{fig:isotopologue} shows, it reaches
+the same equilibrium sooner. All three cases reproduce their analytical values
+to six significant figures.
+
+\TODO{global atom balance: check that the total number of H atoms in the metal,
+in the salt and released is conserved to machine precision over a transient.
+Not yet run.}
+
+\TODO{MMS on the coupled two-domain problem with a manufactured interfacial
+source, verifying the spatial and temporal orders. Not yet run.}
 
 % ===============================================================
 \bibliographystyle{elsarticle-num}
