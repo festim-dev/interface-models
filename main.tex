@@ -870,8 +870,7 @@ Each subdomain is discretised on its own submesh of a common parent mesh and
 carries its own function space for every species it hosts, so that the
 concentration fields are free to jump across $\Gamma$. This is the multi-species
 discontinuous architecture of \FESTIM{}~v2 \cite{dark_festim_2026}, built on
-submeshes and entity maps in DOLFINx \TODO{cite DOLFINx / FEniCSx; no entry in
-\texttt{references.bib} yet}. Multiplying the transport equation of species $i$
+submeshes and entity maps in DOLFINx \cite{baratta_dolfinx_2023}. Multiplying the transport equation of species $i$
 on $\Omega_A$ by a test function $v \in H^1(\Omega_A)$ and integrating the
 diffusive term by parts gives the residual
 
