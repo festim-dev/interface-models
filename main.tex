@@ -1129,9 +1129,73 @@ Eq.~(\ref{eq:defect_1_explicit}) for these parameters. The rate of
 Eq.~(\ref{eq:model1_convergence}) is therefore confirmed, and with it the claim
 that LTE is recovered continuously rather than imposed.
 
-\TODO{Model 2 on a metal/liquid problem: the same sweep, converging to the
-Sieverts/Henry solution of Eq.~(\ref{eq:lte_sh}). This is the more important of
-the two for this paper and has not yet been run.}
+The second test replaces the channel with the recombination channel of
+Eq.~(\ref{eq:model2_rate}) on a metal/liquid pair, which is the case this paper
+is about. Geometry, diffusivities and outer concentrations are those of the
+Model 1 test, so that only the interface changes: the slab $[0, 0.5]$ is the
+metal and carries the atomic species $\mathrm{H}$, the slab $[0.5, 1]$ is the
+liquid and carries the molecular carrier $\mathrm{H_2}$, and the two are now
+distinct species rather than one species restricted to two subdomains. The
+channel is declared with two reactants and one product, so that the
+stoichiometric factor two of Eq.~(\ref{eq:bc_metal}) follows from the
+declaration rather than being imposed by hand, and detailed balance is applied
+through Eq.~(\ref{eq:detailed_balance_2}) with $K_H/K_S^{2} = 0.5$.
+
+Since the channel is second order, $\Da$ is not an input to the problem. We
+follow Sec.~\ref{sec:damkohler} and sweep the control parameter
+$2k_\mathrm{r}^{+}c_0L_\mathrm{m}/D_\mathrm{m}$ over the same eight decades,
+reporting the value $2k_\mathrm{r}^{+}\cm{\mathrm{H}}|_\Gamma
+L_\mathrm{m}/D_\mathrm{m}$ attained at the interface as a diagnostic. The
+reference solution is the closed form Eq.~(\ref{eq:model2_analytical}), which is
+the root of a quadratic rather than a sum of resistances in series.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.75\textwidth]{verification_model2_lte_limit.pdf}
+    \caption{Model 2 on the metal/liquid two-slab problem, against the control
+    Damk\"ohler number, laid out as Fig.~\ref{fig:lte_limit} for comparison.
+    Top: the Sieverts/Henry readout
+    $\cs{\mathrm{H_2}}|_\Gamma/(\cm{\mathrm{H}}|_\Gamma)^{2}$ approaching the
+    equilibrium value $K_H/K_S^{2}$ of Eq.~(\ref{eq:lte_sh}).
+    Bottom: circles, the relative departure from
+    Sieverts/Henry, decaying as $1/\Da$ (dashed); squares, the relative
+    difference between the computed interfacial concentrations and the closed
+    form of Eq.~(\ref{eq:model2_analytical}), at round-off throughout.}
+    \label{fig:lte_limit_model2}
+\end{figure}
+
+The results are collected in Fig.~\ref{fig:lte_limit_model2}. The computed
+interfacial concentrations agree with Eq.~(\ref{eq:model2_analytical}) to a
+relative error of at most $2.2\times10^{-11}$, and to below $10^{-14}$ at all
+but two points of the sweep, so the nonlinear interface term is solved to the
+accuracy of the Newton solve and not merely to that of the discretisation. The
+interfacial concentrations approach the Sieverts/Henry values
+$\cm{\mathrm{H}}|_\Gamma = 3/2$ and $\cs{\mathrm{H_2}}|_\Gamma = 9/8$ to within
+a relative $1.9\times10^{-7}$ at $\Da = 10^{6}$, and the departure from
+Eq.~(\ref{eq:lte_sh}) falls from $4.4\times10^{-3}$ at $\Da = 10^{2}$ to
+$4.4\times10^{-7}$ at $\Da = 10^{6}$. The order measured between successive
+points is $0.994$ at $\Da = 10^{2}$ and $0.9999$ or better above
+$\Da = 10^{4}$, and the departure approaches the asymptote $0.444/\Da$ that
+Eq.~(\ref{eq:defect_2})
+predicts for these parameters. Convergence to LTE is therefore first order in
+$1/\Da$ for the second-order channel as well, on the quantity the channel
+equilibrates rather than on the concentration ratio.
+
+Two features of the sweep are specific to the higher-order channel. The
+Damk\"ohler number attained at the interface, which the sweep reports as a
+diagnostic, settles at $3/4$ of the control value, the ratio
+$\cm{\mathrm{H}}|_\Gamma/c_0$ of the equilibrated interfacial loading to the
+loading the control parameter is built from; at small $\Da$ the interface is
+barely depleted and the two coincide. By
+Eq.~(\ref{eq:two_slab_traces_2}) that ratio is
+$1 - 2w_\mathrm{rec}R_\mathrm{m}/c_0$, the fraction of the upstream loading
+left once the metal-side bulk resistance has taken its share of the drop, so
+the offset is fixed by the bulk problem and the local Damk\"ohler number can
+fall arbitrarily far below the control one in a thick metal. The second
+feature is that the additive decomposition of Sec.~\ref{sec:analytical} does
+not survive: $1/k_\mathrm{r}^{+}$ is not a resistance in series with the bulk
+ones, and it is only about the operating point that
+$(2k_\mathrm{r}^{+}\cm{\mathrm{H}}|_\Gamma)^{-1}$ plays that role.
 
 \TODO{benchmark both against the existing \FESTIM{} LTE interface on the same
 mesh, and check that the two agree to solver tolerance at large $\Da$. Only the
@@ -1142,8 +1206,8 @@ comparison against the closed form is done so far.}
 \label{sec:analytical}
 % ---------------------------------------------------------------
 
-Two closed-form results underpin the tests above and the regime map of
-Sec.~\ref{sec:damkohler}; both are derived in App.~\ref{app:analytical}.
+Three closed-form results underpin the tests above and the regime map of
+Sec.~\ref{sec:damkohler}; all are derived in App.~\ref{app:analytical}.
 
 For Model 1 on the two-slab problem, combining flux continuity with
 Eq.~(\ref{eq:model1_flux}) gives the interfacial concentrations and the
@@ -1154,6 +1218,13 @@ interfacial resistance $1/k^{+}$ contributed by the channel, so that LTE is the
 zero-interfacial-resistance limit and $\Da$ is the ratio of the bulk resistance
 to the interfacial one, as drawn in Fig.~\ref{fig:two_slab}b. This is the
 solution used in Sec.~\ref{sec:lte_limit}.
+
+Model 2 on the same geometry is still solvable in closed form, but the answer is
+the root of a quadratic in the channel rate,
+Eq.~(\ref{eq:model2_analytical}), rather than a ratio. The three resistances no
+longer add, which is the analytical statement of the loading dependence
+described in Sec.~\ref{sec:damkohler}. This is the solution the metal/liquid
+sweep of Sec.~\ref{sec:lte_limit} is checked against.
 
 For Model 3 at steady state, solving the two-channel balance gives the apparent
 interfacial exponent of Eq.~(\ref{eq:apparent_exponent}) as a function of the
@@ -1738,6 +1809,48 @@ result, so \emph{LTE is the zero-interfacial-resistance limit} of Model 1, and
 Eqs.~(\ref{eq:defect_1_explicit}) and~(\ref{eq:model1_convergence}) follow by
 substitution. The interfacial concentrations are then given by
 Eq.~(\ref{eq:two_slab_traces}), which closes the problem.
+
+% The Model 2 closed form below is the one implemented in
+% scripts/2-higher-order-reactions/analytical_solution_model2.py
+\paragraph{Model 2, two slabs in series} Take the same geometry with the metal
+on $[0, L_\mathrm{m}]$ and the liquid on
+$[L_\mathrm{m}, L_\mathrm{m} + L_\mathrm{s}]$, $c_0$ imposed on the metal face
+and $c_L$ on the liquid face, and write
+$R_\mathrm{m} = L_\mathrm{m}/D^{\mathrm{m}}$ and
+$R_\mathrm{s} = L_\mathrm{s}/D^{\mathrm{s}}$. Both profiles are again linear at
+steady state, but the two slabs now carry different fluxes: the atomic flux
+$2w_\mathrm{rec}$ crosses the metal and the molecular flux $w_\mathrm{rec}$
+crosses the liquid, so
+
+\begin{equation}
+    \cm{\mathrm{H}}\big|_\Gamma = c_0 - 2w_\mathrm{rec}R_\mathrm{m} ,
+    \qquad
+    \cs{\mathrm{H_2}}\big|_\Gamma = c_L + w_\mathrm{rec}R_\mathrm{s} .
+    \label{eq:two_slab_traces_2}
+\end{equation}
+
+Substituting into Eq.~(\ref{eq:model2_rate}) gives a quadratic in the rate,
+
+\begin{equation}
+    4k_\mathrm{r}^{+}R_\mathrm{m}^{2}\,w_\mathrm{rec}^{2}
+    - \left(1 + 4k_\mathrm{r}^{+}c_0R_\mathrm{m}
+              + k_\mathrm{r}^{-}R_\mathrm{s}\right)w_\mathrm{rec}
+    + \left(k_\mathrm{r}^{+}c_0^{2} - k_\mathrm{r}^{-}c_L\right) = 0 ,
+    \label{eq:model2_analytical}
+\end{equation}
+
+of which the physical solution is the smaller root, the one that remains finite
+as $R_\mathrm{m} \rightarrow 0$. Two differences with Model 1 follow. There is
+no factorisation of Eq.~(\ref{eq:model2_analytical}) into a driving force over
+a sum of resistances, so the series reading of Fig.~\ref{fig:two_slab}b holds
+for Model 2 only after linearisation about an operating point. And the LTE
+limit is not obtained by deleting a term: taking
+$k_\mathrm{r}^{+},k_\mathrm{r}^{-} \rightarrow \infty$ at fixed
+$K = k_\mathrm{r}^{+}/k_\mathrm{r}^{-} = K_H/K_S^{2}$ leaves the quadratic
+$4KR_\mathrm{m}^{2}w_\mathrm{rec}^{2}
+- (4Kc_0R_\mathrm{m} + R_\mathrm{s})w_\mathrm{rec}
++ (Kc_0^{2} - c_L) = 0$, whose root is the Sieverts/Henry steady state that the
+sweep of Sec.~\ref{sec:lte_limit} converges to.
 
 \paragraph{Model 3, apparent exponent} Consider the two competing channels of
 Sec.~\ref{sec:model3} at steady state, in the regime where the reverse terms are
