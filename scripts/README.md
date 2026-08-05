@@ -23,7 +23,7 @@ pull in.
 | Directory | Paper section | What it does |
 |---|---|---|
 | `0-schematics/` | Models §2.2--2.5 | Illustrative figures, no solve involved. `interface_models_schematic.py` draws the LTE closure and Models 1--3 on one two-subdomain geometry. |
-| `1-first-order-interface/` | Models §2.3, verification §4.1–4.2 | `InterfaceFlux`-style first-order exchange on a 1D two-slab problem. `analytical_solution.py` is the closed-form steady state (interfacial resistance in series with `L/D`); `example_usage.py` runs one case and overlays it; `parametric_study.py` sweeps Da over `logspace(-2, 2)` transient + steady; `verification_lte_limit.py` is the §4.1 verification, an eight-decade steady sweep (`logspace(-2, 6)`) checking the solution against `analytical_solution.py` and measuring the order of convergence to LTE in `1/Da`. |
+| `1-first-order-interface/` | Models §2.3, verification §4.1–4.2 | `InterfaceFlux`-style first-order exchange on a 1D two-slab problem. `analytical_solution.py` is the closed-form steady state (interfacial resistance in series with `L/D`); `example_usage.py` runs one case and overlays it; `parametric_study.py` sweeps Da over `logspace(-2, 2)` transient + steady; `two_slab_setup.py` draws the problem and its series-resistance reading, analytically, for the §4.1 setup figure; `verification_lte_limit.py` is the §4.1 verification, an eight-decade steady sweep (`logspace(-2, 6)`) checking the solution against `analytical_solution.py` and measuring the order of convergence to LTE in `1/Da`. |
 | `2-higher-order-reactions/` | Models §2.4, §2.6, §2.7; verification §4.3 | `example_reaction_interface.py`: `2A ⇌ B` across the interface, i.e. recombination into a molecular carrier. `isotopologue_equilibrium.py`: zero-flux test of the H/T channel set, measuring `K_exch = c_HT²/(c_H2 c_T2)`. `regime_map.py`: the `(Da, B)` regime map of §2.7, analytical, no solve involved. |
 | `reference/` |, | Read-only snapshot of `src/festim/subdomain/interface.py` from `interface-flux` at the commit in `FESTIM_COMMIT.txt`. Reference only; edit FESTIM itself, not this copy. |
 
@@ -35,6 +35,7 @@ included by bare filename and stay next to the script that writes them.
 | PDF | Paper | Written by |
 |---|---|---|
 | `interface_models_schematic.pdf` | §2.3, the four closures | `interface_models_schematic.py` |
+| `two_slab_setup.pdf` | §4.1, the problem and its resistances | `two_slab_setup.py` |
 | `regime_map.pdf` | §2.7, the `(Da, B)` map | `regime_map.py` |
 | `parametric_study_damkohler.pdf` | §4.1, the transient | `parametric_study.py` |
 | `verification_lte_limit.pdf` | §4.1, steady + convergence | `verification_lte_limit.py` |

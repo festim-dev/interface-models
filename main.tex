@@ -1059,12 +1059,36 @@ $k^{-}/k^{+} = 0.5$. The steady problem is solved for seventeen values of the
 Damk\"ohler number spanning eight decades, $\Da = k^{+}L_A/D_A$ from $10^{-2}$
 to $10^{6}$, and each solution is compared both with the closed form of
 App.~\ref{app:analytical} and with the LTE condition
-Eq.~(\ref{eq:lte_ss}) that the channel should approach. The transient behaviour
+Eq.~(\ref{eq:lte_ss}) that the channel should approach.
+Figure~\ref{fig:two_slab} shows the problem and the two readings of its steady
+solution that the rest of this section uses. Plotting the two slabs on a common
+scale, $c_A$ on one side and $c_B/K$ on the other, turns Eq.~(\ref{eq:lte_ss})
+into continuity, so what is left at $\Gamma$ is the defect
+$\Delta = \phi/k^{+}$ of Eq.~(\ref{eq:defect_1_explicit}): it closes as
+$\Da$ grows and is nonzero at any finite rate constant, because the interface is
+carrying a flux. The transient behaviour
 over the same sweep is shown in Fig.~\ref{fig:lte_transient}, and makes the
 first of the three consequences listed in Sec.~\ref{sec:lte} concrete: at
 moderate $\Da$ the interfacial ratio is far from its equilibrium value for most
 of the transient, which is the timescale an algebraic closure denies the
 interface.
+
+\begin{figure*}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{two_slab_setup.pdf}
+    \caption{The two-slab verification problem of Sec.~\ref{sec:lte_limit}.
+    (a) Steady profiles at three Damk\"ohler numbers, drawn on a common scale so
+    that LTE is continuity: $c_A$ on side $A$, $c_B/K$ on side $B$. The jump
+    remaining at $\Gamma$ is the defect $\Delta$ of
+    Eq.~(\ref{eq:defect_1_explicit}), marked here for the slowest channel.
+    (b) The closed form Eq.~(\ref{eq:model1_analytical}) read as three
+    resistances in series, the two bulk resistances and the interfacial
+    resistance $1/k^{+}$ contributed by the channel. LTE is the short circuit of
+    the middle element, and $\Da^{\star}$ is the ratio of the bulk resistances
+    to it. Both panels are analytical, from the same closed form that the
+    numerical solutions are checked against.}
+    \label{fig:two_slab}
+\end{figure*}
 
 \begin{figure}[htbp]
     \centering
@@ -1128,7 +1152,8 @@ the difference of the outer concentrations divided by a sum of three resistances
 in series, the two bulk resistances $L_A/D_A$ and $L_B/(K D_B)$ and an
 interfacial resistance $1/k^{+}$ contributed by the channel, so that LTE is the
 zero-interfacial-resistance limit and $\Da$ is the ratio of the bulk resistance
-to the interfacial one. This is the solution used in Sec.~\ref{sec:lte_limit}.
+to the interfacial one, as drawn in Fig.~\ref{fig:two_slab}b. This is the
+solution used in Sec.~\ref{sec:lte_limit}.
 
 For Model 3 at steady state, solving the two-channel balance gives the apparent
 interfacial exponent of Eq.~(\ref{eq:apparent_exponent}) as a function of the
