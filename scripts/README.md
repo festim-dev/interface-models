@@ -22,7 +22,7 @@ pull in.
 
 | Directory | Paper section | What it does |
 |---|---|---|
-| `1-first-order-interface/` | Models §2.3, verification §4.1–4.2 | `InterfaceFlux`-style first-order exchange on a 1D two-slab problem. `analytical_solution.py` is the closed-form steady state (interfacial resistance in series with `L/D`); `example_usage.py` runs one case and overlays it; `parametric_study.py` sweeps Da over `logspace(-2, 2)` transient + steady and writes the two PDFs. |
+| `1-first-order-interface/` | Models §2.3, verification §4.1–4.2 | `InterfaceFlux`-style first-order exchange on a 1D two-slab problem. `analytical_solution.py` is the closed-form steady state (interfacial resistance in series with `L/D`); `example_usage.py` runs one case and overlays it; `parametric_study.py` sweeps Da over `logspace(-2, 2)` transient + steady and writes the two PDFs; `verification_lte_limit.py` is the §4.1 verification, an eight-decade steady sweep (`logspace(-2, 6)`) checking the solution against `analytical_solution.py` and measuring the order of convergence to LTE in `1/Da`, writing `verification_lte_limit.csv` and `.pdf` (the latter is Fig. 1 of the paper). |
 | `2-higher-order-reactions/` | Models §2.4, §2.6; verification §4.3 | `example_reaction_interface.py`: `2A ⇌ B` across the interface, i.e. recombination into a molecular carrier. `isotopologue_equilibrium.py`: zero-flux test of the H/T channel set, measuring `K_exch = c_HT²/(c_H2 c_T2)`. |
 | `reference/` |, | Read-only snapshot of `src/festim/subdomain/interface.py` from `interface-flux` at the commit in `FESTIM_COMMIT.txt`. Reference only; edit FESTIM itself, not this copy. |
 
