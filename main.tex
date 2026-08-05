@@ -13,7 +13,7 @@
 \usepackage{amssymb}
 \usepackage{graphicx}
 % figures live next to the script that produces them, in scripts/
-\graphicspath{{scripts/1-first-order-interface/}{scripts/2-higher-order-reactions/}}
+\graphicspath{{scripts/0-schematics/}{scripts/1-first-order-interface/}{scripts/2-higher-order-reactions/}}
 \usepackage{xcolor}
 \usepackage{todonotes}
 \usepackage{overpic}
@@ -397,7 +397,27 @@ Finally, the framework is agnostic to the nature of the two sides. The
 gas/solid dissociation--recombination boundary condition already available in
 \FESTIM{} is recovered as the special case in which $A$ is a gas phase, and the
 models below differ from one another only in their stoichiometry and in the
-number of channels they carry.
+number of channels they carry. Figure~\ref{fig:closures} collects them on the
+same geometry, together with the LTE closure they generalise.
+
+\begin{figure*}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{interface_models_schematic.pdf}
+    \caption{The four interface closures on the same two-subdomain geometry,
+    differing only in the chemistry allowed on $\Gamma$. (a) LTE: nothing
+    crosses, the two interfacial concentrations being tied by the algebraic
+    constraint of Eq.~(\ref{eq:lte_ss}), which gives the interface no rate
+    constant, no timescale and no resistance. (b) Model 1,
+    Eq.~(\ref{eq:model1_flux}): an atom crosses without changing chemical
+    identity, first order in either direction. (c) Model 2,
+    Eq.~(\ref{eq:model2_rate}): two metal-side atoms recombine into one
+    molecular carrier, so the atomic flux leaving the metal is twice the channel
+    rate, Eq.~(\ref{eq:atom_balance}). (d) Model 3: the same atom has two exits
+    of different order, recombination (quadratic) and fluorination (linear),
+    and the branching ratio $\Bra$ of Eq.~(\ref{eq:branching}) sets how the
+    atomic flux divides between them.}
+    \label{fig:closures}
+\end{figure*}
 
 % ---------------------------------------------------------------
 \subsection{Model 1: first-order exchange}
@@ -406,7 +426,8 @@ number of channels they carry.
 
 The simplest case is a single channel $X_A \rightleftharpoons X_B$ in which an
 atom crosses the interface without changing chemical identity, as at a
-metal/metal interface. Equation~(\ref{eq:mass_action}) then reduces to a
+metal/metal interface (Fig.~\ref{fig:closures}b).
+Equation~(\ref{eq:mass_action}) then reduces to a
 Robin-type flux condition,
 
 \begin{equation}
@@ -439,8 +460,8 @@ $\mathcal{O}(\phi/k^{+}c)$ and is quantified in Sec.~\ref{sec:damkohler}.
 The second case retains a single channel but changes the chemical identity of
 the transported species, $2\,X_A \rightleftharpoons Y_{A_2}$: atomic hydrogen
 dissolved in the metal recombines into a molecule that dissolves physically in
-the liquid. It is the metal/molten-salt analogue of surface recombination, and
-its net rate is
+the liquid (Fig.~\ref{fig:closures}c). It is the metal/molten-salt analogue of
+surface recombination, and its net rate is
 
 \begin{equation}
     w_{\mathrm{rec}} = k_{\mathrm{r}}^{+}\left(\cm{\mathrm{H}}\big|_\Gamma\right)^{2}
@@ -482,7 +503,7 @@ and at a metal/fluoride-melt interface there is no reason to expect one.
 Hydrogen leaving the metal may recombine and dissolve molecularly, or it may be
 oxidised by the melt and dissolve as HF, which is far more soluble, corrosive,
 and redox dependent. We therefore let two channels operate on the same
-interface,
+interface (Fig.~\ref{fig:closures}d),
 \begin{align*}
     \text{R:}&\quad 2\,\mathrm{H(m)} \rightleftharpoons \mathrm{H_2(s)} \\
     \text{F:}&\quad \mathrm{H(m)} + \mathrm{F^-(s)} + h^{+}
