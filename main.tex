@@ -581,7 +581,7 @@ For $\{\mathrm{H,T}\}$ the recombination channels are
     w_{\mathrm{HH}} &= k_{\mathrm{HH}}^{+}\left(\cm{\mathrm{H}}\right)^{2}
                      - k_{\mathrm{HH}}^{-}\,\cs{\mathrm{H_2}}
     \label{eq:iso_HH}\\
-    w_{\mathrm{HT}} &= 2\,k_{\mathrm{HT}}^{+}\,\cm{\mathrm{H}}\,\cm{\mathrm{T}}
+    w_{\mathrm{HT}} &= k_{\mathrm{HT}}^{+}\,\cm{\mathrm{H}}\,\cm{\mathrm{T}}
                      - k_{\mathrm{HT}}^{-}\,\cs{\mathrm{HT}}
     \label{eq:iso_HT}\\
     w_{\mathrm{TT}} &= k_{\mathrm{TT}}^{+}\left(\cm{\mathrm{T}}\right)^{2}
@@ -614,15 +614,58 @@ stoichiometry of Eq.~(\ref{eq:atom_balance}),
 
 each salt-side carrier being fed by the single channel that produces it.
 
-The factor of two in Eq.~(\ref{eq:iso_HT}) is the statistical degeneracy of the
-mixed pair, and we adopt the convention that it is carried explicitly in the
-forward term rather than absorbed into $k_{\mathrm{HT}}^{+}$. With this
-convention, taking all forward constants equal and all reverse constants equal
-in the mass-independent limit, reproduces the classical statistical
-equilibrium constant $K = 4$ for
-$\mathrm{H_2} + \mathrm{T_2} \rightleftharpoons 2\,\mathrm{HT}$, so that any
-departure from $K = 4$ appears where it belongs, in the rate constants
-themselves.
+All five channels are written with the plain mass-action form of
+Eq.~(\ref{eq:mass_action}), with no combinatorial prefactor. This is the
+convention used throughout \FESTIM{} for volumetric reactions, gas/solid
+surface reactions and interfacial channels alike: the rate is the product of
+the reactant concentrations, and stoichiometry enters only through the
+coefficients $\nu_{ir}$ of Eq.~(\ref{eq:bc_metal}), that is, through how many
+times a channel is counted in the flux of a given species.
+
+The statistical degeneracy of the mixed pair is therefore a statement about the
+\emph{value} of $k_{\mathrm{HT}}^{+}$, not an extra factor in the rate law.
+Counting encounters makes this concrete. If $\kappa$ is the rate constant per
+encounter of two interfacial atoms, the number of distinct identical pairs
+available per unit area is $\tfrac{1}{2}(\cm{\mathrm{H}})^2$, whereas an H and
+a T are distinguishable and give $\cm{\mathrm{H}}\cm{\mathrm{T}}$ distinct
+pairs. Writing the homonuclear channels as
+$k_{\mathrm{HH}}^{+}(\cm{\mathrm{H}})^2$ absorbs the one-half into
+$k_{\mathrm{HH}}^{+}$, so the same per-encounter constant corresponds to
+
+\begin{equation}
+    k_{\mathrm{HT}}^{+} = 2\,k_{\mathrm{HH}}^{+} = 2\,k_{\mathrm{TT}}^{+}
+    \qquad \text{(mass-independent limit)} ,
+    \label{eq:stat_factor}
+\end{equation}
+
+with the reverse constants equal. Setting
+Eqs.~(\ref{eq:iso_HH})--(\ref{eq:iso_TT}) to zero under
+Eq.~(\ref{eq:stat_factor}) then gives
+$\cs{\mathrm{H_2}} = (k_{\mathrm{HH}}^{+}/k^{-})(\cm{\mathrm{H}})^2$,
+$\cs{\mathrm{T_2}} = (k_{\mathrm{HH}}^{+}/k^{-})(\cm{\mathrm{T}})^2$ and
+$\cs{\mathrm{HT}} = 2(k_{\mathrm{HH}}^{+}/k^{-})\cm{\mathrm{H}}\cm{\mathrm{T}}$,
+so that
+
+\begin{equation}
+    K_\mathrm{exch}
+    = \frac{\cs{\mathrm{HT}}^{2}}{\cs{\mathrm{H_2}}\,\cs{\mathrm{T_2}}}
+    = 4 .
+    \label{eq:kexch}
+\end{equation}
+
+Four is the classical value for
+$\mathrm{H_2} + \mathrm{T_2} \rightleftharpoons 2\,\mathrm{HT}$, obtained
+from the symmetry numbers $\sigma_{\mathrm{H_2}} = \sigma_{\mathrm{T_2}} = 2$
+and $\sigma_{\mathrm{HT}} = 1$, and it states that random pairing of equal H
+and T populations yields $\mathrm{H_2 : HT : T_2} = 1 : 2 : 1$. Taking all
+three forward constants equal instead, which is the natural reading of
+Eqs.~(\ref{eq:iso_HH})--(\ref{eq:iso_TT}) if Eq.~(\ref{eq:stat_factor}) is
+overlooked, yields $K_\mathrm{exch} = 1$ and an equal split, which would
+suppress the scrambling discussed below. Both cases are reproduced to solver
+tolerance by the zero-flux test of Sec.~\ref{sec:conservation}. Any departure
+from $K_\mathrm{exch} = 4$ is a genuine isotope effect and belongs in the rate
+constants themselves; the zero-point-energy corrections are collected in
+App.~\ref{app:balance}.
 
 The counting is what makes the multi-isotope case structurally different. Two
 mobile species on the metal side feed five carriers on the salt side,
@@ -699,6 +742,25 @@ When $\Da_r \gg 1$ the channel is locally equilibrated and its algebraic LTE
 form is recovered, as shown in Secs.~\ref{sec:model1} and~\ref{sec:model2}. For
 asymmetric systems one Damk\"ohler number should be evaluated per side, using
 $D_A, L_A$ and $D_B, L_B$ respectively, and the smaller of the two governs.
+
+For a channel of order one, as in Model 1, $k^\mathrm{eff}$ is a constant and
+$\Da$ is an input to the problem. For the recombination channel of Model 2 it
+is neither. The two sides linearise differently: the metal side sees an
+exchange velocity $2k_\mathrm{r}^{+}\cm{\mathrm{H}}|_\Gamma$, which falls as
+the interface is depleted, while the salt side sees $k_\mathrm{r}^{-}$, which
+is constant because the reverse step is first order in $\cs{\mathrm{H_2}}$. The
+interfacial resistance $(2k_\mathrm{r}^{+}\cm{\mathrm{H}}|_\Gamma)^{-1}$ thus
+grows as the loading falls, and the same interface may be effectively
+equilibrated at high loading while being kinetically limited early in a
+permeation transient, before the upstream side has charged. Two consequences
+follow for what comes later. The additive interfacial resistance of
+Sec.~\ref{sec:analytical} is exact only for Model 1, and for Model 2 holds
+about an operating point rather than as a constant in series with the bulk.
+And a parametric sweep in $\Da$ requires a reference loading to be fixed: we
+use the upstream Sieverts value $c^{\star} = K_S\sqrt{P_\mathrm{up}}$, giving
+the control parameter $2k_\mathrm{r}^{+}c^{\star}L/D$, and report the local
+value attained at the interface as a diagnostic.
+
 The caveat carried over from Ref.~\cite{silva-solis_hydrogen_2026} applies
 throughout: $\Da \gg 1$ is \emph{necessary but not sufficient}, since under a
 net flux the steady state departs from equilibrium by a term proportional to
