@@ -1,0 +1,15 @@
+name: interface-models-env
+
+channels:
+  - conda-forge
+  # - defaults
+
+dependencies:
+  - python=3.11
+  - festim
+  - pandas
+  - matplotlib
+  - pyvista
+  - pip
+  - pip:
+    - morethemes

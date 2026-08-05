@@ -1,0 +1,32 @@
+# Scripts
+
+Simulation scripts backing the paper. Copied from the companion repo
+`festim-dev/interface-models` (local clone at `~/interface-models`), whose
+history no longer exists on the GitHub remote — the remote `main` was replaced
+by the Overleaf import of this paper.
+
+## Environment
+
+```bash
+conda env create -f environment.yml
+conda activate interface-models-env
+pip install --no-deps git+https://github.com/festim-dev/FESTIM@interface-flux
+```
+
+The env `interface-models-env` already exists on this machine with festim
+`2.1.dev47+g7dbee7189` (tip of `interface-flux`) and dolfinx `0.10.0`.
+
+## Contents
+
+| Directory | Paper section | What it does |
+|---|---|---|
+| `1-first-order-interface/` | Models §2.3, verification §4.1–4.2 | `InterfaceFlux`-style first-order exchange on a 1D two-slab problem. `analytical_solution.py` is the closed-form steady state (interfacial resistance in series with `L/D`); `example_usage.py` runs one case and overlays it; `parametric_study.py` sweeps Da over `logspace(-2, 2)` transient + steady and writes the two PDFs. |
+| `2-higher-order-reactions/` | Models §2.4 | `2A ⇌ B` across the interface via `InterfaceReaction`, i.e. recombination into a molecular carrier. |
+| `reference/` | — | Read-only snapshot of `src/festim/subdomain/interface.py` from `interface-flux` at the commit in `FESTIM_COMMIT.txt`. Reference only; edit FESTIM itself, not this copy. |
+
+Directory names were kebab-cased on import (`1-First order kinetic interface`
+→ `1-first-order-interface`, etc.) so paths are usable from scripts and LaTeX.
+
+**Interface trapping is out of scope for this paper.** The `3-interface
+trapping/` directory of the companion repo (Be/BeO, W/Cu, raw DOLFINx) was
+deliberately not imported; it belongs to the codimension-1 companion paper.

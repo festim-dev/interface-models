@@ -241,20 +241,25 @@
 \label{sec:models}
 % ===============================================================
 
+Throughout this section we consider two subdomains $\Omega_A$ and $\Omega_B$
+sharing an interface $\Gamma$. In each subdomain the transport of a dissolved
+species obeys the usual diffusion equation
+$\partial_t c = \nabla\!\cdot\!(D\nabla c) + S$ solved by \FESTIM{}
+\cite{dark_festim_2026}; trapping is omitted for clarity and plays no part in
+the arguments that follow. What distinguishes the models discussed below is
+solely how the two bulk problems are coupled across $\Gamma$.
+
 % ---------------------------------------------------------------
 \subsection{Local thermodynamic equilibrium and its assumptions}
 \label{sec:lte}
 % ---------------------------------------------------------------
 
-\begin{itemize}
-    \item Two subdomains $\Omega_A$, $\Omega_B$ sharing an interface $\Gamma$.
-          Bulk transport $\partial_t c = \nabla\!\cdot\!(D\nabla c) + S$ follows
-          \cite{dark_festim_2026}; traps are omitted here for clarity.
-
-    \item LTE is the equality of the chemical potential of dissolved hydrogen on
-          both sides of $\Gamma$. Written in terms of concentrations it takes a
-          different algebraic form depending on the dissolution law:
-\end{itemize}
+Local thermodynamic equilibrium (LTE) is the statement that the chemical
+potential of dissolved hydrogen is continuous across $\Gamma$. Since the
+relation between chemical potential and concentration depends on the
+dissolution law obeyed on each side, the resulting algebraic condition takes a
+different form depending on which pair of laws applies. For two materials in
+which hydrogen dissolves dissociatively (Sieverts' law on both sides) it reads
 
 \begin{equation}
     \frac{c_A\big|_\Gamma}{K_{S,A}(T)}
@@ -263,292 +268,314 @@
     \label{eq:lte_ss}
 \end{equation}
 
+whereas for a solid in contact with a liquid in which hydrogen dissolves
+molecularly (Henry's law) it becomes
+
 \begin{equation}
     c_B\big|_\Gamma
     = K_{H,B}(T)\left(\frac{c_A\big|_\Gamma}{K_{S,A}(T)}\right)^{2}
-    \qquad \text{(Sieverts / Henry)}
+    \qquad \text{(Sieverts / Henry)} .
     \label{eq:lte_sh}
 \end{equation}
 
-\begin{itemize}
-    \item Both are \emph{algebraic} constraints: they fix a ratio (or a power
-          law) between interfacial concentrations, independently of the flux the
-          interface is carrying. Consequences:
-          \begin{itemize}
-              \item no interfacial timescale: the interface responds
-                    instantaneously;
-              \item no interfacial resistance: $\Gamma$ never limits the flux;
-              \item the exponent (1 or 2) must be chosen a priori, i.e.\ the
-                    carrier species must be known before the simulation is run.
-          \end{itemize}
+Both conditions are \emph{algebraic}: they fix a ratio, or a power law, between
+the two interfacial concentrations independently of the flux the interface is
+carrying. Three consequences follow, and they are properties of the closure
+rather than of the physical system it is applied to. First, the interface has
+no timescale of its own: it responds instantaneously to any change in the
+adjacent bulk fields. Second, it offers no resistance, so $\Gamma$ can never be
+the rate-limiting step of a permeation problem. Third, the exponent
+distinguishing Eq.~(\ref{eq:lte_ss}) from Eq.~(\ref{eq:lte_sh}), and hence
+the identity of the carrier species on the $B$ side, must be chosen before the
+simulation is run.
 
-    \item Formal point, following \cite{silva-solis_hydrogen_2026} Sec.~IV.C:
-          thermodynamic equilibrium requires every microscopic forward rate to
-          be balanced by its reverse (detailed balance), hence \emph{zero} net
-          flux across $\Gamma$. A permeation experiment carries a nonzero net
-          flux by construction. LTE is therefore always an approximation; the
-          question is only how large the error is.
+There is also a formal difficulty, following
+Silva-Sol\'is et al.\ \cite{silva-solis_hydrogen_2026}. Thermodynamic
+equilibrium requires every microscopic forward rate to be balanced by its
+reverse, which implies \emph{zero} net flux across $\Gamma$. A permeation
+experiment, however, carries a nonzero net flux by construction. Imposing LTE
+at a permeating interface is therefore always an approximation; the only
+question is how large the error is, and Sec.~\ref{sec:damkohler} makes that
+question quantitative.
 
-    \item Distinguish clearly, and keep this distinction throughout:
-          \begin{itemize}
-              \item steady state: $\partial_t c = 0$,
-                    $\Gamma_\mathrm{in} = \Gamma_\mathrm{out} \neq 0$;
-              \item equilibrium: $\partial_t c = 0$,
-                    $\Gamma_\mathrm{in} = \Gamma_\mathrm{out} = 0$.
-          \end{itemize}
-          Equilibrium is a steady state; the converse is false.
-\end{itemize}
+Two notions are routinely conflated and are kept distinct throughout.
+A \emph{steady state} satisfies $\partial_t c = 0$ with
+$\Gamma_\mathrm{in} = \Gamma_\mathrm{out} \neq 0$, whereas \emph{equilibrium}
+satisfies $\partial_t c = 0$ with
+$\Gamma_\mathrm{in} = \Gamma_\mathrm{out} = 0$. Equilibrium is a steady state;
+the converse is false, and it is precisely the difference between the two that
+LTE discards.
 
 % ---------------------------------------------------------------
 \subsection{A general kinetic interface framework}
 \label{sec:general}
 % ---------------------------------------------------------------
 
-\begin{itemize}
-    \item Replace the algebraic constraint by a set of reversible reaction
-          channels living on $\Gamma$. Let $X_i$ denote mobile atomic species on
-          side $A$ ($i \in \{\mathrm{H,D,T}\}$) and $Y_\alpha$ the carriers on
-          side $B$ ($\alpha \in \{\mathrm{H_2, HT, T_2, HF, TF},\dots\}$).
-          Channel $r$ reads
-          \begin{equation*}
-              \sum_i \nu_{ir} X_i + \sum_\beta \lambda_{\beta r} Z_\beta
-              \;\rightleftharpoons\; \sum_\alpha \mu_{\alpha r} Y_\alpha
-          \end{equation*}
-          where $Z_\beta$ are non-hydrogenic salt constituents entering the
-          stoichiometry ($\mathrm{F^-}$, oxidant/reductant of the redox buffer).
-\end{itemize}
+We replace the algebraic constraint by a set of reversible reaction channels
+living on $\Gamma$. Let $X_i$ denote the mobile atomic species on side $A$
+($i \in \{\mathrm{H,D,T}\}$) and $Y_\alpha$ the carriers on side $B$
+($\alpha \in \{\mathrm{H_2, HT, T_2, HF, TF},\dots\}$). A channel $r$ is written
+
+\begin{equation}
+    \sum_i \nu_{ir} X_i + \sum_\beta \lambda_{\beta r} Z_\beta
+    \;\rightleftharpoons\; \sum_\alpha \mu_{\alpha r} Y_\alpha ,
+    \label{eq:channel}
+\end{equation}
+
+where the $Z_\beta$ are non-hydrogenic constituents entering the stoichiometry
+(the fluoride ion and the oxidising or reducing half of the salt redox buffer,
+in the application of Sec.~\ref{sec:model3}). They are represented by
+activities $a_\beta$ rather than by transported fields. Each channel proceeds
+at a net rate given by mass action,
 
 \begin{equation}
     w_r = k_r^{+}(T)\prod_i \left(\cm{i}\big|_\Gamma\right)^{\nu_{ir}}
                      \prod_\beta a_\beta^{\lambda_{\beta r}}
-        - k_r^{-}(T)\prod_\alpha \left(\cs{\alpha}\big|_\Gamma\right)^{\mu_{\alpha r}}
+        - k_r^{-}(T)\prod_\alpha \left(\cs{\alpha}\big|_\Gamma\right)^{\mu_{\alpha r}} ,
     \label{eq:mass_action}
 \end{equation}
 
-\begin{itemize}
-    \item Interface conditions: the net atomic flux of isotope $i$ out of $A$,
-          and the production of carrier $\alpha$ into $B$, are sums over
-          channels.
-\end{itemize}
+expressed per unit interfacial area, so that $w_r$ has units of
+$\mathrm{mol\,m^{-2}\,s^{-1}}$ and the units of $k_r^{\pm}$ depend on the order
+of the channel: an exchange velocity in $\mathrm{m\,s^{-1}}$ for a first-order
+channel, $\mathrm{m^4\,mol^{-1}\,s^{-1}}$ for a second-order one. The interface
+conditions are then the statement that the net atomic flux of isotope $i$
+leaving $A$, and the production of carrier $\alpha$ into $B$, are sums over all
+channels:
 
 \begin{align}
     -D^{\mathrm{m}}_i \nabla \cm{i}\cdot \mathbf{n}\big|_\Gamma
         &= \sum_r \nu_{ir}\, w_r
     \label{eq:bc_metal}\\
      D^{\mathrm{s}}_\alpha \nabla \cs{\alpha}\cdot \mathbf{n}\big|_\Gamma
-        &= \sum_r \mu_{\alpha r}\, w_r
+        &= \sum_r \mu_{\alpha r}\, w_r .
     \label{eq:bc_salt}
 \end{align}
 
-\begin{itemize}
-    \item Atom conservation across $\Gamma$ is enforced by the stoichiometry.
-          \TODO{state the balance condition explicitly (sum over channels of
-          $\nu$ versus sum of $\mu$ weighted by atoms per carrier).}
+Conservation of atoms across $\Gamma$ is not an additional requirement but a
+condition on the stoichiometric coefficients. Writing $n_{i\alpha}$ for the
+number of atoms of isotope $i$ carried by species $\alpha$, every channel must
+satisfy
 
-    \item \textbf{Detailed balance.} Each channel independently satisfies
-          $k_r^{+}/k_r^{-} = K_r(T)$, with $K_r$ the equilibrium constant of
-          that channel obtained from the solubilities and the relevant formation
-          free energies. Thermodynamics fixes the \emph{ratio}; atomistics or
-          experiment fixes the \emph{magnitude}. This is what makes the
-          framework a strict generalisation of LTE rather than a competing
-          model.
+\begin{equation}
+    \nu_{ir} = \sum_\alpha \mu_{\alpha r}\, n_{i\alpha}
+    \qquad \text{for each isotope } i ,
+    \label{eq:atom_balance}
+\end{equation}
 
-    \item The framework is agnostic to what is on each side: the gas/solid
-          recombination--dissociation boundary condition already in \FESTIM{} is
-          the special case $A = \mathrm{gas}$.
-\end{itemize}
+so that the atomic flux removed from $A$ by Eq.~(\ref{eq:bc_metal}) is exactly
+the atomic flux delivered to $B$ by Eq.~(\ref{eq:bc_salt}). For the
+recombination channel of Sec.~\ref{sec:model2}, for instance,
+$\nu_\mathrm{H} = 2$ and $\mu_{\mathrm{H_2}} = 1$ with
+$n_{\mathrm{H,H_2}} = 2$.
+
+The forward and reverse rate constants of each channel are not independent.
+Detailed balance requires
+
+\begin{equation}
+    \frac{k_r^{+}(T)}{k_r^{-}(T)} = K_r(T) ,
+    \label{eq:detailed_balance_general}
+\end{equation}
+
+with $K_r$ the equilibrium constant of that channel, obtained from the
+solubilities of the participating species and the relevant formation free
+energies. Thermodynamics therefore fixes the \emph{ratio} of the rate
+constants, while their \emph{magnitude}, that is, how fast the interface
+equilibrates, must come from atomistics or from experiment. This is what
+makes the framework a strict generalisation of LTE rather than a competing
+model: the same thermodynamic data that parameterise Eqs.~(\ref{eq:lte_ss})
+and~(\ref{eq:lte_sh}) parameterise Eq.~(\ref{eq:mass_action}), and the
+additional information supplied is exactly the information LTE assumes away.
+We stress that Eq.~(\ref{eq:detailed_balance_general}) is a modelling
+constraint on the user rather than something the discretisation can enforce;
+Sec.~\ref{sec:params} returns to how the ratios are obtained in practice.
+
+Finally, the framework is agnostic to the nature of the two sides. The
+gas/solid dissociation--recombination boundary condition already available in
+\FESTIM{} is recovered as the special case in which $A$ is a gas phase, and the
+models below differ from one another only in their stoichiometry and in the
+number of channels they carry.
 
 % ---------------------------------------------------------------
-\subsection{Model 1 --- first-order exchange}
+\subsection{Model 1: first-order exchange}
 \label{sec:model1}
 % ---------------------------------------------------------------
 
-\begin{itemize}
-    \item Single channel, $X_A \rightleftharpoons X_B$: atomic transfer across a
-          metal/metal interface. Robin-type flux condition:
-\end{itemize}
+The simplest case is a single channel $X_A \rightleftharpoons X_B$ in which an
+atom crosses the interface without changing chemical identity, as at a
+metal/metal interface. Equation~(\ref{eq:mass_action}) then reduces to a
+Robin-type flux condition,
 
 \begin{equation}
-    \phi = k^{+} c_A\big|_\Gamma - k^{-} c_B\big|_\Gamma
+    \phi = k^{+} c_A\big|_\Gamma - k^{-} c_B\big|_\Gamma ,
     \label{eq:model1_flux}
 \end{equation}
 
-\begin{itemize}
-    \item Mass conservation:
-          $-D_A \,\partial_n c_A = D_B\, \partial_n c_B = \phi$.
-    \item Detailed balance ($\phi = 0 \Rightarrow$ Eq.~\ref{eq:lte_ss}):
-\end{itemize}
+with both rate constants an exchange velocity in $\mathrm{m\,s^{-1}}$, closed
+by mass conservation, $-D_A \,\partial_n c_A = D_B\, \partial_n c_B = \phi$.
+Setting $\phi = 0$ and requiring the resulting concentration ratio to coincide
+with Eq.~(\ref{eq:lte_ss}) fixes
 
 \begin{equation}
-    \frac{k^{+}}{k^{-}} = \frac{K_{S,B}(T)}{K_{S,A}(T)}
+    \frac{k^{+}}{k^{-}} = \frac{K_{S,B}(T)}{K_{S,A}(T)} ,
     \label{eq:detailed_balance_1}
 \end{equation}
 
-\begin{itemize}
-    \item LTE limit: $k^{+}, k^{-} \rightarrow \infty$ at fixed ratio recovers
-          Eq.~(\ref{eq:lte_ss}) exactly. Derivation in
-          App.~\ref{app:limits}; the finite-$k$ correction is
-          $\mathcal{O}(\phi/k^{+}c)$ and is quantified in
-          Sec.~\ref{sec:damkohler}.
-    \item Units: $k^{+}, k^{-}$ in $\mathrm{m\,s^{-1}}$.
-\end{itemize}
+which is Eq.~(\ref{eq:detailed_balance_general}) for this channel. Taking
+$k^{+}, k^{-} \rightarrow \infty$ at fixed ratio recovers
+Eq.~(\ref{eq:lte_ss}) exactly, since a finite flux then requires the bracket in
+Eq.~(\ref{eq:model1_flux}) to vanish. The derivation is given in
+App.~\ref{app:limits}; the correction at finite rate constants is
+$\mathcal{O}(\phi/k^{+}c)$ and is quantified in Sec.~\ref{sec:damkohler}.
 
 % ---------------------------------------------------------------
-\subsection{Model 2 --- recombination into a molecular carrier}
+\subsection{Model 2: recombination into a molecular carrier}
 \label{sec:model2}
 % ---------------------------------------------------------------
 
-\begin{itemize}
-    \item Single channel,
-          $2\,X_A \rightleftharpoons Y_{A_2}$: atomic hydrogen on the metal
-          side, molecular hydrogen dissolved on the liquid side. This is the
-          metal/molten-salt analogue of surface recombination.
-\end{itemize}
+The second case retains a single channel but changes the chemical identity of
+the transported species, $2\,X_A \rightleftharpoons Y_{A_2}$: atomic hydrogen
+dissolved in the metal recombines into a molecule that dissolves physically in
+the liquid. It is the metal/molten-salt analogue of surface recombination, and
+its net rate is
 
 \begin{equation}
     w_{\mathrm{rec}} = k_{\mathrm{r}}^{+}\left(\cm{\mathrm{H}}\big|_\Gamma\right)^{2}
-                     - k_{\mathrm{r}}^{-}\,\cs{\mathrm{H_2}}\big|_\Gamma
+                     - k_{\mathrm{r}}^{-}\,\cs{\mathrm{H_2}}\big|_\Gamma ,
     \label{eq:model2_rate}
 \end{equation}
 
-\begin{itemize}
-    \item Interface conditions:
-          $-D^{\mathrm{m}}\partial_n \cm{\mathrm{H}} = 2 w_{\mathrm{rec}}$ and
-          $D^{\mathrm{s}}\partial_n \cs{\mathrm{H_2}} = w_{\mathrm{rec}}$.
-    \item Detailed balance. Setting $w_{\mathrm{rec}} = 0$ and using Sieverts in
-          the metal ($c^{\mathrm{m}} = K_S\sqrt{P}$) with Henry in the salt
-          ($c^{\mathrm{s}} = K_H P$):
-\end{itemize}
+with interface conditions
+$-D^{\mathrm{m}}\partial_n \cm{\mathrm{H}} = 2 w_{\mathrm{rec}}$ and
+$D^{\mathrm{s}}\partial_n \cs{\mathrm{H_2}} = w_{\mathrm{rec}}$, the factor two
+being the stoichiometry of Eq.~(\ref{eq:atom_balance}). Imposing
+$w_{\mathrm{rec}} = 0$ together with Sieverts' law in the metal
+($c^{\mathrm{m}} = K_S\sqrt{P}$) and Henry's law in the liquid
+($c^{\mathrm{s}} = K_H P$) gives
 
 \begin{equation}
     \frac{k_{\mathrm{r}}^{+}}{k_{\mathrm{r}}^{-}}
-    = \frac{K_{H}(T)}{K_{S}(T)^{2}}
+    = \frac{K_{H}(T)}{K_{S}(T)^{2}} .
     \label{eq:detailed_balance_2}
 \end{equation}
 
-\begin{itemize}
-    \item \KEY{Substituting Eq.~(\ref{eq:detailed_balance_2}) into
-          $w_{\mathrm{rec}} = 0$ returns exactly the Sieverts/Henry LTE
-          condition, Eq.~(\ref{eq:lte_sh}).} So the mixed-law interface
-          currently available in \FESTIM{} v2 \cite{dark_festim_2026} is the
-          fast-kinetics limit of Eq.~(\ref{eq:model2_rate}). Worth stating
-          plainly: the two interface laws of Sec.~\ref{sec:lte} are not two
-          separate physical models, they are the fast limits of two different
-          channels.
-\end{itemize}
+Substituting Eq.~(\ref{eq:detailed_balance_2}) back into
+$w_{\mathrm{rec}} = 0$ returns precisely the Sieverts/Henry condition,
+Eq.~(\ref{eq:lte_sh}). The mixed-law interface currently available in
+\FESTIM{}~v2 \cite{dark_festim_2026} is therefore the fast-kinetics limit of
+Eq.~(\ref{eq:model2_rate}). Stated plainly: the two interface laws of
+Sec.~\ref{sec:lte} are not two separate physical models to be selected between,
+but the fast limits of two different channels of the same framework. Which one
+applies is a question about chemistry, not about which option to set in an
+input file.
 
 % ---------------------------------------------------------------
-\subsection{Model 3 --- competing channels}
+\subsection{Model 3: competing channels}
 \label{sec:model3}
 % ---------------------------------------------------------------
 
-\begin{itemize}
-    \item Now let \emph{two} channels operate on the same interface. In a
-          fluoride melt, hydrogen leaving the metal may either recombine
-          (channel R, Eq.~\ref{eq:model2_rate}) or be oxidised by the melt
-          (channel F):
-          \begin{itemize}
-              \item R:\quad $2\,\mathrm{H(m)} \rightleftharpoons \mathrm{H_2(s)}$
-              \item F:\quad $\mathrm{H(m)} + \mathrm{F^-(s)} + h^{+}
-                    \rightleftharpoons \mathrm{HF(s)}$
-          \end{itemize}
-          where $h^{+}$ denotes the oxidising half of the salt redox couple. In
-          practice the fluorine potential is set by a buffer (Be metal, or an
-          imposed $\mathrm{HF/H_2}$ ratio in the cover gas) and channel F is
-          written with an effective activity $a_\mathrm{F}$ lumping the fluoride
-          activity and the redox potential:
-\end{itemize}
+Nothing in Sec.~\ref{sec:general} restricts the interface to a single channel,
+and at a metal/fluoride-melt interface there is no reason to expect one.
+Hydrogen leaving the metal may recombine and dissolve molecularly, or it may be
+oxidised by the melt and dissolve as HF, which is far more soluble, corrosive,
+and redox dependent. We therefore let two channels operate on the same
+interface,
+\begin{align*}
+    \text{R:}&\quad 2\,\mathrm{H(m)} \rightleftharpoons \mathrm{H_2(s)} \\
+    \text{F:}&\quad \mathrm{H(m)} + \mathrm{F^-(s)} + h^{+}
+                    \rightleftharpoons \mathrm{HF(s)} ,
+\end{align*}
+where $h^{+}$ denotes the oxidising half of the salt redox couple. In practice
+the fluorine potential is set by a buffer, either beryllium metal or an
+imposed $\mathrm{HF/H_2}$ ratio in the cover gas, so we write channel F with an
+effective activity $a_\mathrm{F}$ lumping the fluoride activity and the redox
+potential,
 
 \begin{equation}
     w_{\mathrm{F}} = k_{\mathrm{f}}^{+}\, a_{\mathrm{F}}\,
                      \cm{\mathrm{H}}\big|_\Gamma
-                   - k_{\mathrm{f}}^{-}\,\cs{\mathrm{HF}}\big|_\Gamma
+                   - k_{\mathrm{f}}^{-}\,\cs{\mathrm{HF}}\big|_\Gamma ,
     \label{eq:model3_rate}
 \end{equation}
 
-\begin{itemize}
-    \item The atomic flux out of the metal is now shared:
-\end{itemize}
+while $w_\mathrm{rec}$ retains the form of Eq.~(\ref{eq:model2_rate}). The
+atomic flux leaving the metal is now shared between the two,
 
 \begin{equation}
     -D^{\mathrm{m}}\nabla \cm{\mathrm{H}}\cdot\mathbf{n}\big|_\Gamma
-    = 2\,w_{\mathrm{rec}} + w_{\mathrm{F}}
+    = 2\,w_{\mathrm{rec}} + w_{\mathrm{F}} ,
     \label{eq:model3_total_flux}
 \end{equation}
 
-\begin{itemize}
-    \item \KEY{Channel R is second order in $\cm{\mathrm{H}}$, channel F is
-          first order.} The carriers they feed obey different transport and
-          different release physics at the free surface. Define the branching
-          ratio:
-\end{itemize}
+and each channel feeds its own carrier in the salt through
+Eq.~(\ref{eq:bc_salt}).
+
+The two channels are of different order in the interfacial loading: R is
+quadratic in $\cm{\mathrm{H}}$ and F is linear. Their competition is measured
+by the branching ratio
 
 \begin{equation}
     \Bra
     \equiv \frac{w_{\mathrm{F}}}{2\,w_{\mathrm{rec}}}
     \;\xrightarrow[\text{far from equilibrium}]{}\;
     \frac{k_{\mathrm{f}}^{+} a_{\mathrm{F}}}
-         {2\,k_{\mathrm{r}}^{+}\,\cm{\mathrm{H}}\big|_\Gamma}
+         {2\,k_{\mathrm{r}}^{+}\,\cm{\mathrm{H}}\big|_\Gamma} ,
     \label{eq:branching}
 \end{equation}
 
-\begin{itemize}
-    \item Consequences to emphasise --- this is the core argument of the paper:
-          \begin{itemize}
-              \item $\Bra$ depends \emph{inversely} on the interfacial loading.
-                    At low loading the fluorination channel dominates and the
-                    salt-side inventory scales linearly with $\cm{\mathrm{H}}$;
-                    at high loading recombination takes over and the scaling
-                    becomes quadratic. Define the apparent interfacial exponent
-                    \begin{equation*}
-                        n \equiv \frac{\partial \ln \left(\text{total salt-side H}\right)}
-                                      {\partial \ln \cm{\mathrm{H}}},
-                        \qquad 1 \le n \le 2 .
-                    \end{equation*}
-                    LTE requires $n$ to be a constant chosen in advance ($n=2$
-                    for Sieverts/Henry, $n=1$ for a Henry/Henry-like closure).
-                    Here $n$ is a \emph{solution-dependent} quantity that drifts
-                    during a transient. No fixed algebraic interface law
-                    reproduces this.
-              \item $\Bra$ depends on the salt redox state through
-                    $a_\mathrm{F}$, which is itself dynamic: HF production,
-                    corrosion of the container, and buffer depletion all move
-                    it. Interface behaviour is therefore coupled to salt
-                    chemistry, not a material property of the pair.
-              \item Even when both channels are individually fast
-                    ($\Da \gg 1$ for each), the \emph{partition} between them is
-                    set by the ratio of rate constants, not by thermodynamics.
-                    Fast kinetics does not rescue LTE here; it only makes each
-                    channel individually equilibrated while the split between
-                    them remains kinetic.
-          \end{itemize}
+whose consequences form the core of the argument of this paper.
 
-    \item \textbf{Honest caveat} (write this --- it pre-empts the obvious
-          referee objection and makes the argument stronger, not weaker): one
-          \emph{could} close the interface by imposing full local chemical
-          equilibrium among all interfacial species, a Gibbs minimisation at
-          $\Gamma$ given the fluorine potential. That closure is
-          \begin{enumerate}[label=(\roman*)]
-              \item not what any macroscopic hydrogen transport code implements;
-              \item valid only if all interconversions are fast relative to
-                    transport, which is exactly what is in doubt
-                    \cite{hodille_molecular_2022,calderoni_measurement_2008};
-              \item still silent on how a given net flux splits between
-                    carriers, since equilibrium fixes concentrations and not
-                    fluxes.
-          \end{enumerate}
-\end{itemize}
+First, $\Bra$ depends \emph{inversely} on the interfacial loading. At low
+loading the fluorination channel dominates and the salt-side inventory scales
+linearly with $\cm{\mathrm{H}}$; at high loading recombination takes over and
+the scaling becomes quadratic. Defining the apparent interfacial exponent
+
+\begin{equation}
+    n \equiv \frac{\partial \ln \left(\text{total salt-side H}\right)}
+                  {\partial \ln \cm{\mathrm{H}}} ,
+    \qquad 1 \le n \le 2 ,
+    \label{eq:apparent_exponent}
+\end{equation}
+
+LTE requires $n$ to be a constant fixed in advance: $n = 2$ for the
+Sieverts/Henry closure of Eq.~(\ref{eq:lte_sh}), $n = 1$ for a Henry/Henry-like
+closure. Here $n$ is instead a solution-dependent quantity that drifts during a
+transient as the interfacial loading builds up. No fixed algebraic interface
+law can reproduce this behaviour.
+
+Second, $\Bra$ depends on the salt redox state through $a_\mathrm{F}$, which is
+itself dynamic: HF production, corrosion of the container and depletion of the
+buffer all move it. The behaviour of the interface is therefore coupled to the
+chemistry of the salt, and is not a material property of the metal/salt pair
+that could be tabulated once and reused.
+
+Third, fast kinetics does not rescue LTE here. Even when
+both channels are individually equilibrated, with a large Damk\"ohler number
+for each in the sense of Sec.~\ref{sec:damkohler}, the \emph{partition} of the
+flux between them is set by the ratio of the forward rate constants and not by
+thermodynamics. Making each channel faster makes each channel individually
+closer to its own equilibrium while leaving the split between them kinetic.
+
+One objection to all of this is worth answering in full. It is possible in
+principle to close the interface without any kinetic information, by imposing
+full local chemical equilibrium among all interfacial species, a Gibbs
+minimisation at $\Gamma$ at the prescribed fluorine potential. That closure is, however, (i) not what any macroscopic
+hydrogen transport code implements; (ii) valid only if every interconversion is
+fast compared with transport, which is exactly what the available evidence puts
+in doubt \cite{hodille_molecular_2022,calderoni_measurement_2008}; and
+(iii) still silent on how a given net flux divides between carriers, since
+equilibrium fixes concentrations and not fluxes. The last point is the decisive
+one for the quantity measured in a permeation experiment.
 
 % ---------------------------------------------------------------
 \subsection{Multiple isotopes: isotopologue channels}
 \label{sec:isotopes}
 % ---------------------------------------------------------------
 
-\begin{itemize}
-    \item Extend to $N_\mathrm{iso}$ mobile atomic species in the metal.
-          Recombination now populates every isotopologue; fluorination every
-          fluoride. For $\{\mathrm{H,T}\}$:
-\end{itemize}
+The framework extends to $N_\mathrm{iso}$ mobile atomic species in the metal
+without modification, but the structure that emerges is qualitatively new.
+Recombination now populates every isotopologue and fluorination every fluoride.
+For $\{\mathrm{H,T}\}$ the recombination channels are
 
 \begin{align}
     w_{\mathrm{HH}} &= k_{\mathrm{HH}}^{+}\left(\cm{\mathrm{H}}\right)^{2}
@@ -562,121 +589,143 @@
     \label{eq:iso_TT}
 \end{align}
 
+and the fluorination channels are
+
 \begin{align}
     w_{\mathrm{HF}} &= k_{\mathrm{f,H}}^{+} a_{\mathrm{F}} \cm{\mathrm{H}}
                      - k_{\mathrm{f,H}}^{-}\,\cs{\mathrm{HF}}
     \label{eq:iso_HF}\\
     w_{\mathrm{TF}} &= k_{\mathrm{f,T}}^{+} a_{\mathrm{F}} \cm{\mathrm{T}}
-                     - k_{\mathrm{f,T}}^{-}\,\cs{\mathrm{TF}}
+                     - k_{\mathrm{f,T}}^{-}\,\cs{\mathrm{TF}} .
     \label{eq:iso_TF}
 \end{align}
 
-\begin{itemize}
-    \item The factor 2 in Eq.~(\ref{eq:iso_HT}) is the statistical degeneracy of
-          the mixed pair. \TODO{state the convention explicitly.}
+The metal-side conditions follow from Eq.~(\ref{eq:bc_metal}) with the
+stoichiometry of Eq.~(\ref{eq:atom_balance}),
 
-    \item \KEY{The counting argument.} Two mobile species on the metal side feed
-          five carriers on the salt side:
-          \begin{equation*}
-              N_\mathrm{iso} \;\longrightarrow\;
-              \underbrace{\tfrac{1}{2}N_\mathrm{iso}(N_\mathrm{iso}+1)}_{\text{molecular}}
-              + \underbrace{N_\mathrm{iso}}_{\text{fluoride}},
-              \qquad
-              \mathrm{(H,T)}:\; 2 \rightarrow 3 + 2 = 5 .
-          \end{equation*}
-          LTE supplies one scalar constraint per transported species pair. With
-          two metal-side and five salt-side interfacial unknowns the per-species
-          Dirichlet closure is underdetermined. Worse, it is not merely
-          underdetermined but structurally wrong in form: by
-          Eq.~(\ref{eq:iso_HT}) the HT concentration is set by the
-          \emph{product} $\cm{\mathrm{H}}\cm{\mathrm{T}}$, so the
-          metal~$\rightarrow$~salt map is bilinear and non-diagonal. A condition
-          of the form $c_i/K_{S,i} = f(c_i')$ cannot represent an off-diagonal
-          coupling. LTE is not inaccurate here; it is ill-posed.
+\begin{align}
+    -D^{\mathrm{m}}_\mathrm{H}\nabla \cm{\mathrm{H}}\cdot\mathbf{n}\big|_\Gamma
+        &= 2\,w_{\mathrm{HH}} + w_{\mathrm{HT}} + w_{\mathrm{HF}}
+    \label{eq:iso_flux_H}\\
+    -D^{\mathrm{m}}_\mathrm{T}\nabla \cm{\mathrm{T}}\cdot\mathbf{n}\big|_\Gamma
+        &= 2\,w_{\mathrm{TT}} + w_{\mathrm{HT}} + w_{\mathrm{TF}} ,
+    \label{eq:iso_flux_T}
+\end{align}
 
-    \item Isotope exchange,
-          $\mathrm{H_2} + \mathrm{T_2} \rightleftharpoons 2\,\mathrm{HT}$, is
-          slow homogeneously but is catalysed by the metal surface. In this
-          framework it emerges automatically from
-          Eqs.~(\ref{eq:iso_HH})--(\ref{eq:iso_TT}): a $\mathrm{T_2}$ molecule
-          may dissociate at $\Gamma$, deposit T into the lattice, and the lattice
-          T may leave paired with an H. Interfacial scrambling is thus a
-          prediction of the model, not an input.
+each salt-side carrier being fed by the single channel that produces it.
 
-    \item Two observable consequences, both invisible to LTE:
-          \begin{itemize}
-              \item \textbf{Isotope swamping.} The T flux depends on the H
-                    inventory: raising $\cm{\mathrm{H}}$ shifts T from the
-                    $\mathrm{T_2}$ channel to the statistically favoured HT
-                    channel and changes the total T throughput. LTE, being
-                    diagonal, predicts no such coupling.
-              \item \textbf{Interfacial fractionation.} Because the R and F
-                    channels have different isotope dependences
-                    ($k_\mathrm{HH}$ vs $k_\mathrm{HT}$ vs $k_\mathrm{TT}$;
-                    $k_\mathrm{f,H}$ vs $k_\mathrm{f,T}$), the isotopic
-                    composition of the permeating flux differs from that of the
-                    metal, and differs between the molecular and the fluoride
-                    carrier. Define
-                    $\alpha = (\mathrm{T/H})_\mathrm{flux} /
-                              (\mathrm{T/H})_\mathrm{metal}$
-                    and report it as a model output.
-          \end{itemize}
+The factor of two in Eq.~(\ref{eq:iso_HT}) is the statistical degeneracy of the
+mixed pair, and we adopt the convention that it is carried explicitly in the
+forward term rather than absorbed into $k_{\mathrm{HT}}^{+}$. With this
+convention, taking all forward constants equal and all reverse constants equal
+in the mass-independent limit, reproduces the classical statistical
+equilibrium constant $K = 4$ for
+$\mathrm{H_2} + \mathrm{T_2} \rightleftharpoons 2\,\mathrm{HT}$, so that any
+departure from $K = 4$ appears where it belongs, in the rate constants
+themselves.
 
-    \item Detailed balance for the isotopologue channels: the ratios
-          $k^{+}/k^{-}$ are constrained by the isotopologue equilibrium
-          constants, which are close to but not exactly the classical
-          statistical values because of zero-point energy. Collected in
-          App.~\ref{app:balance}.
-\end{itemize}
+The counting is what makes the multi-isotope case structurally different. Two
+mobile species on the metal side feed five carriers on the salt side,
+
+\begin{equation}
+    N_\mathrm{iso} \;\longrightarrow\;
+    \underbrace{\tfrac{1}{2}N_\mathrm{iso}(N_\mathrm{iso}+1)}_{\text{molecular}}
+    + \underbrace{N_\mathrm{iso}}_{\text{fluoride}},
+    \qquad
+    \mathrm{(H,T)}:\; 2 \rightarrow 3 + 2 = 5 ,
+    \label{eq:counting}
+\end{equation}
+
+whereas LTE supplies one scalar constraint per transported species pair. With
+two metal-side and five salt-side interfacial unknowns the per-species
+Dirichlet closure is underdetermined. It is also wrong in form, which is the
+more serious objection: by Eq.~(\ref{eq:iso_HT}) the HT concentration is set by
+the \emph{product} $\cm{\mathrm{H}}\cm{\mathrm{T}}$, so the
+metal~$\rightarrow$~salt map is bilinear and non-diagonal, and a condition of
+the form $c_i/K_{S,i} = f(c_i')$ cannot represent an off-diagonal coupling. In
+the multi-isotope case LTE is not inaccurate; it is ill-posed.
+
+Isotope exchange, $\mathrm{H_2} + \mathrm{T_2} \rightleftharpoons
+2\,\mathrm{HT}$, is slow in the homogeneous phase but is catalysed by metal
+surfaces. In the present framework it requires no additional reaction: it
+emerges from Eqs.~(\ref{eq:iso_HH})--(\ref{eq:iso_TT}), since a $\mathrm{T_2}$
+molecule may dissociate at $\Gamma$ and deposit T into the lattice, and lattice
+T may subsequently leave paired with an H. Interfacial scrambling is thus a
+prediction of the model rather than an input to it.
+
+Two observable consequences follow, neither of which is expressible under LTE.
+The first is \emph{isotope swamping}: the tritium flux depends on the protium
+inventory, because raising $\cm{\mathrm{H}}$ shifts tritium from the
+$\mathrm{T_2}$ channel to the statistically favoured HT channel and thereby
+changes the total tritium throughput. A diagonal closure predicts no such
+coupling. The second is \emph{interfacial fractionation}: because the
+recombination and fluorination channels carry different isotope dependences
+($k_\mathrm{HH}$ against $k_\mathrm{HT}$ against $k_\mathrm{TT}$;
+$k_\mathrm{f,H}$ against $k_\mathrm{f,T}$), the isotopic composition of the
+permeating flux differs from that of the metal, and differs between the
+molecular and the fluoride carrier. We report it as the model output
+$\alpha = (\mathrm{T/H})_\mathrm{flux} / (\mathrm{T/H})_\mathrm{metal}$.
+
+Detailed balance applies channel by channel as in
+Eq.~(\ref{eq:detailed_balance_general}), the ratios $k^{+}/k^{-}$ being
+constrained by the isotopologue equilibrium constants. These are close to, but
+not exactly, the classical statistical values, the departure arising from
+zero-point energy; they are collected in App.~\ref{app:balance}.
 
 % ---------------------------------------------------------------
 \subsection{Dimensionless criteria for LTE validity}
 \label{sec:damkohler}
 % ---------------------------------------------------------------
 
-\begin{itemize}
-    \item \textbf{Within a channel}: compare interfacial equilibration with bulk
-          transport.
-\end{itemize}
+The framework of Sec.~\ref{sec:general} contains LTE as a limit, so it can also
+say when that limit is legitimate. Three questions have to be answered, in
+increasing order of structural severity.
+
+\paragraph{Within a channel} The relevant comparison is between interfacial
+equilibration and bulk transport. Because channels may be of different order,
+the comparison is made with the exchange velocity obtained by linearising the
+channel about the interfacial state,
+$k_r^\mathrm{eff} \equiv \partial w_r / \partial \cm{}\big|_\Gamma$, which
+reduces to $k^{+}$ for the first-order Model 1 and to
+$2 k_\mathrm{r}^{+} \cm{\mathrm{H}}|_\Gamma$ for the recombination channel of
+Model 2. The Damk\"ohler number of channel $r$ is then
 
 \begin{equation}
-    \Da_r = \frac{k_r^{+}\,L}{D}
+    \Da_r = \frac{k_r^\mathrm{eff}\,L}{D} .
     \label{eq:damkohler}
 \end{equation}
 
-\begin{itemize}
-    \item $\Da_r \gg 1$ implies channel $r$ is locally equilibrated and its
-          algebraic LTE form is recovered (Secs.~\ref{sec:model1},
-          \ref{sec:model2}). For asymmetric systems evaluate one $\Da$ per side
-          ($D_A, L_A$ vs $D_B, L_B$); the smaller governs.
+When $\Da_r \gg 1$ the channel is locally equilibrated and its algebraic LTE
+form is recovered, as shown in Secs.~\ref{sec:model1} and~\ref{sec:model2}. For
+asymmetric systems one Damk\"ohler number should be evaluated per side, using
+$D_A, L_A$ and $D_B, L_B$ respectively, and the smaller of the two governs.
+The caveat carried over from Ref.~\cite{silva-solis_hydrogen_2026} applies
+throughout: $\Da \gg 1$ is \emph{necessary but not sufficient}, since under a
+net flux the steady state departs from equilibrium by a term proportional to
+$\phi/k^{+}$, which LTE sets to zero by construction.
 
-    \item Caveat carried over from \cite{silva-solis_hydrogen_2026}:
-          $\Da \gg 1$ is \emph{necessary but not sufficient}. Under a net flux
-          the steady state departs from equilibrium by a term proportional to
-          $\phi/k^{+}$, which LTE sets to zero by construction.
+\paragraph{Between channels} The relevant group is the branching ratio $\Bra$
+of Eq.~(\ref{eq:branching}). In the limits $\Bra \rightarrow 0$ and
+$\Bra \rightarrow \infty$ one channel dominates and an LTE form exists,
+Sieverts/Henry and linear respectively. When $\Bra = \mathcal{O}(1)$, no
+single algebraic law applies at all, however large the Damk\"ohler numbers are.
+\TODO{present as a two-axis regime map $(\Da, \Bra)$. This figure is probably
+the single most useful deliverable of the paper.}
 
-    \item \textbf{Between channels}: the branching ratio $\Bra$ of
-          Eq.~(\ref{eq:branching}).
-          \begin{itemize}
-              \item $\Bra \rightarrow 0$ or $\Bra \rightarrow \infty$: one
-                    channel dominates, an LTE form exists (Sieverts/Henry or
-                    linear respectively).
-              \item $\Bra = \mathcal{O}(1)$: no single algebraic law applies at
-                    all, regardless of how large the $\Da$ are.
-          \end{itemize}
-          \TODO{present as a two-axis regime map $(\Da, \Bra)$. This figure is
-          probably the single most useful deliverable of the paper.}
+\paragraph{Across isotopes} LTE further requires the metal~$\rightarrow$~salt
+map to be diagonal. The departure is quantified by the fraction of the tritium
+flux carried by the mixed isotopologue,
 
-    \item \textbf{Across isotopes}: LTE requires the metal~$\rightarrow$~salt map
-          to be diagonal. Quantify the departure by the fraction of the T flux
-          carried by the mixed isotopologue,
-          \begin{equation*}
-              \chi_\mathrm{HT} = \frac{w_\mathrm{HT}}{w_\mathrm{HT} + 2 w_\mathrm{TT}} .
-          \end{equation*}
-          $\chi_\mathrm{HT} \rightarrow 0$ recovers a diagonal (per-isotope)
-          description; $\chi_\mathrm{HT} = \mathcal{O}(1)$ forbids it. In a
-          T-lean, H-rich system $\chi_\mathrm{HT} \rightarrow 1$.
-\end{itemize}
+\begin{equation}
+    \chi_\mathrm{HT} = \frac{w_\mathrm{HT}}{w_\mathrm{HT} + 2 w_\mathrm{TT}} .
+    \label{eq:chi_HT}
+\end{equation}
+
+A diagonal, per-isotope description is recovered as
+$\chi_\mathrm{HT} \rightarrow 0$ and is forbidden when
+$\chi_\mathrm{HT} = \mathcal{O}(1)$. In the tritium-lean, protium-rich
+conditions typical of a breeding blanket, $\chi_\mathrm{HT} \rightarrow 1$.
+
 
 % ===============================================================
 \section{Implementation in \FESTIM}
