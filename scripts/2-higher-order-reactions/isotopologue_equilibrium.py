@@ -16,7 +16,13 @@ The point of the test is to find out what FESTIM's mass-action convention
 gives, rather than to assume it.
 """
 
+import matplotlib
+
+matplotlib.use("Agg")
+
 import festim as F
+import matplotlib.pyplot as plt
+import morethemes as mt
 import numpy as np
 
 
@@ -104,20 +110,112 @@ def run(k_plus_HT, k_plus_homo=1.0, k_minus=1.0, c_H=1.0, c_T=1.0, duplicate_HT=
     model.initialise()
     model.run()
 
-    # liquid is uniform at equilibrium; take the interface node
-    return tuple(e.data[-1][0] for e in model.exports)
+    # liquid is uniform, so take the interface node of each profile at each
+    # exported time
+    t = np.array(model.exports[0].t)
+    series = np.array([[data[0] for data in e.data] for e in model.exports])
+    return t, series
+
+
+def plot(results, filename):
+    """The three carriers relaxing to equilibrium, labelled on the curves.
+
+    Left: equal forward constants, which give H2 : HT : T2 = 1 : 1 : 1. Right:
+    the statistical factor k_HT = 2 k_homo, which gives 1 : 2 : 1. The
+    duplicated-channel run is overlaid on the left panel to show that it only
+    rescales the approach in time and lands on the same equilibrium.
+    """
+    mt.set_theme("urban")
+    plt.rcParams["axes.prop_cycle"] = plt.cycler(
+        color=["#1a4848", "#f7b000", "#f46036", "#c9f2c7", "#aceca1"]
+    )
+    plt.rcParams["axes.spines.top"] = False
+    plt.rcParams["axes.spines.right"] = False
+
+    # the whole transient is over well before the end of the run; show only the
+    # part where anything happens
+    t_max = 30.0
+
+    fig, axes = plt.subplots(1, 2, figsize=(6.5, 3.2), sharey=True)
+
+    for ax, key, case, ratio in zip(
+        axes,
+        ("plain", "statistical"),
+        ("$k^+_{HT} = k^+_{HH}$", "$k^+_{HT} = 2\\,k^+_{HH}$"),
+        ("1 : 1 : 1", "1 : 2 : 1"),
+    ):
+        t, series = results[key]
+        window = t <= t_max
+        t = t[window]
+        c_H2, c_HT, c_T2 = series[:, window]
+
+        # H2 and T2 coincide by symmetry, so draw H2 thick and pale underneath
+        ax.plot(t, c_H2, color="C0", linewidth=3, alpha=0.4)
+        ax.plot(t, c_T2, color="C1", linestyle="--")
+        ax.plot(t, c_HT, color="C2")
+
+        ax.annotate(
+            "HT",
+            xy=(t[-1], c_HT[-1]),
+            xytext=(-22, 5),
+            textcoords="offset points",
+            color="C2",
+            weight="bold",
+        )
+        ax.annotate(
+            "H$_2$, T$_2$",
+            xy=(t[-1], c_H2[-1]),
+            xytext=(-58, -22),
+            textcoords="offset points",
+            color="C0",
+            weight="bold",
+        )
+        ax.annotate(
+            f"{case}\nH$_2$ : HT : T$_2$ = {ratio}",
+            xy=(0.04, 0.80),
+            xycoords="axes fraction",
+            color="C0",
+            weight="bold",
+        )
+        ax.set_xlabel("time")
+        ax.set_xlim(0, t_max)
+
+    # the duplication trick, on the panel whose equilibrium it fails to change
+    t_dup, series_dup = results["duplicated"]
+    window = t_dup <= t_max
+    axes[0].plot(
+        t_dup[window], series_dup[1][window], color="C2", linestyle=":", linewidth=1.5
+    )
+    axes[0].annotate(
+        "HT, channel declared twice:\nfaster, same equilibrium",
+        xy=(t_dup[3], series_dup[1][3]),
+        xytext=(18, -62),
+        textcoords="offset points",
+        color="C2",
+        weight="bold",
+    )
+
+    axes[0].set_ylabel("concentration")
+    axes[0].set_ylim(0, 2.3)
+    fig.tight_layout()
+    fig.savefig(filename)
 
 
 if __name__ == "__main__":
     cases = [
-        ("plain mass action     (k_HT = k_homo)", 1.0, False),
-        ("statistical factor    (k_HT = 2 k_homo)", 2.0, False),
-        ("duplicated channel    (H+T and T+H, k_HT = k_homo)", 1.0, True),
+        ("plain", "plain mass action     (k_HT = k_homo)", 1.0, False),
+        ("statistical", "statistical factor    (k_HT = 2 k_homo)", 2.0, False),
+        ("duplicated", "duplicated channel    (H+T and T+H, k_HT = k_homo)", 1.0, True),
     ]
-    for label, k_HT, duplicate in cases:
-        c_H2, c_HT, c_T2 = run(k_plus_HT=k_HT, duplicate_HT=duplicate)
+    results = {}
+    for key, label, k_HT, duplicate in cases:
+        t, series = run(k_plus_HT=k_HT, duplicate_HT=duplicate)
+        results[key] = (t, series)
+        c_H2, c_HT, c_T2 = series[:, -1]
         K = c_HT**2 / (c_H2 * c_T2)
         print(f"\n{label}")
         print(f"  c_H2 = {c_H2:.6f}  c_HT = {c_HT:.6f}  c_T2 = {c_T2:.6f}")
         print(f"  ratio H2 : HT : T2 = 1 : {c_HT / c_H2:.4f} : {c_T2 / c_H2:.4f}")
         print(f"  K_exch = {K:.6f}")
+
+    plot(results, "isotopologue_equilibrium.pdf")

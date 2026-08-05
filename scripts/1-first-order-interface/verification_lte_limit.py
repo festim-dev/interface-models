@@ -89,7 +89,10 @@ def sweep(all_da):
 
 
 def plot(rows, filename):
-    """Error against Da, labelled in the figure rather than in a legend box."""
+    """Two panels on a shared Da axis, labelled in the figure rather than in a
+    legend box: (a) the interfacial ratio approaching its LTE value, (b) the
+    rate at which it gets there.
+    """
     mt.set_theme("urban")
     plt.rcParams["axes.prop_cycle"] = plt.cycler(
         color=["#1a4848", "#f7b000", "#f46036", "#c9f2c7", "#aceca1"]
@@ -98,18 +101,52 @@ def plot(rows, filename):
     plt.rcParams["axes.spines.right"] = False
 
     da, err_ana, err_lte = rows[:, 0], rows[:, 6], rows[:, 7]
+    ratio = rows[:, 2] / rows[:, 3]
 
-    plt.figure(figsize=(6, 3.5))
+    fig, (ax_ratio, ax_err) = plt.subplots(
+        2, 1, figsize=(6, 5), sharex=True, height_ratios=[1, 1.3]
+    )
 
-    # 1/Da guide, anchored on the last point so that it lies on the asymptote
+    # (a) the physical readout
+    ax_ratio.semilogx(da, ratio, marker="o", markersize=4, alpha=0.5, color="C0")
+    ax_ratio.axhline(y=alpha, color="C1", linestyle="--")
+    ax_ratio.annotate(
+        "$k^-/k^+$",
+        xy=(da[0], alpha),
+        xytext=(0, -16),
+        textcoords="offset points",
+        color="C1",
+        weight="bold",
+    )
+    ax_ratio.annotate(
+        "kinetically limited",
+        xy=(da[1], ratio[1]),
+        xytext=(6, -14),
+        textcoords="offset points",
+        color="C0",
+        weight="bold",
+    )
+    ax_ratio.annotate(
+        "LTE recovered",
+        xy=(da[-4], ratio[-4]),
+        xytext=(-30, 14),
+        textcoords="offset points",
+        color="C0",
+        weight="bold",
+    )
+    ax_ratio.set_ylim(bottom=0)
+    ax_ratio.set_ylabel("$c_A/c_B$")
+
+    # (b) the convergence rate. 1/Da guide anchored on the last point so that it
+    # lies on the asymptote rather than on the pre-asymptotic first point
     asymptotic = da >= 1
-    plt.loglog(
+    ax_err.loglog(
         da[asymptotic],
         err_lte[-1] * da[-1] / da[asymptotic],
         linestyle="--",
         color="C1",
     )
-    plt.annotate(
+    ax_err.annotate(
         r"$\propto 1/\mathrm{Da}$",
         xy=(da[-4], err_lte[-1] * da[-1] / da[-4]),
         xytext=(-52, -14),
@@ -118,8 +155,8 @@ def plot(rows, filename):
         weight="bold",
     )
 
-    plt.loglog(da, err_lte, marker="o", markersize=4, alpha=0.5, color="C0")
-    plt.annotate(
+    ax_err.loglog(da, err_lte, marker="o", markersize=4, alpha=0.5, color="C0")
+    ax_err.annotate(
         "departure from LTE",
         xy=(da[3], err_lte[3]),
         xytext=(6, 10),
@@ -128,8 +165,8 @@ def plot(rows, filename):
         weight="bold",
     )
 
-    plt.loglog(da, err_ana, marker="s", markersize=4, alpha=0.5, color="C2")
-    plt.annotate(
+    ax_err.loglog(da, err_ana, marker="s", markersize=4, alpha=0.5, color="C2")
+    ax_err.annotate(
         "error vs closed form",
         xy=(da[3], err_ana[3]),
         xytext=(6, 10),
@@ -138,10 +175,11 @@ def plot(rows, filename):
         weight="bold",
     )
 
-    plt.xlabel("Damköhler number (Da)")
-    plt.ylabel("relative error")
-    plt.tight_layout()
-    plt.savefig(filename)
+    ax_err.set_xlabel("Damköhler number (Da)")
+    ax_err.set_ylabel("relative error")
+
+    fig.tight_layout()
+    fig.savefig(filename)
 
 
 if __name__ == "__main__":

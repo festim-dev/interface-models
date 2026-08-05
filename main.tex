@@ -12,6 +12,8 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{graphicx}
+% figures live next to the script that produces them, in scripts/
+\graphicspath{{scripts/1-first-order-interface/}{scripts/2-higher-order-reactions/}}
 \usepackage{xcolor}
 \usepackage{todonotes}
 \usepackage{overpic}
@@ -772,8 +774,51 @@ of Eq.~(\ref{eq:branching}). In the limits $\Bra \rightarrow 0$ and
 $\Bra \rightarrow \infty$ one channel dominates and an LTE form exists,
 Sieverts/Henry and linear respectively. When $\Bra = \mathcal{O}(1)$, no
 single algebraic law applies at all, however large the Damk\"ohler numbers are.
-\TODO{present as a two-axis regime map $(\Da, \Bra)$. This figure is probably
-the single most useful deliverable of the paper.}
+
+The two groups are independent, and Fig.~\ref{fig:regime_map} puts them on the
+two axes of a single map. The field plotted is the larger of two quantities,
+
+\begin{equation}
+    \mathcal{E} = \max\left(
+        \underbrace{\frac{1}{1 + \Da}}_{\text{within a channel}} ,\;
+        \underbrace{\frac{\min(1, \Bra)}{1 + \Bra}}_{\text{between channels}}
+    \right) ,
+    \label{eq:lte_indicator}
+\end{equation}
+
+the first being the relative error made on the flux by treating a channel as
+equilibrated, which is exact for Model 1 by Eq.~(\ref{eq:model1_convergence}),
+and the second the fraction of the atomic flux carried by the minority channel,
+which is the part of the flux that no single-channel closure represents at all.
+Taking the larger of the two is a convention: $\mathcal{E}$ is an indicator of
+how badly the best available LTE closure does, not a bound on the error of any
+particular simulation. The map is nevertheless entirely analytical, and the
+right-hand axis carries the apparent exponent
+$n = (2+\Bra)/(1+\Bra)$ of Eq.~(\ref{eq:n_of_B}), which is what a permeation
+experiment would report.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{regime_map.pdf}
+    \caption{Where a local-equilibrium interface is defensible. The indicator
+    $\mathcal{E}$ of Eq.~(\ref{eq:lte_indicator}) over the $(\Da, \Bra)$ plane,
+    with contours at $1\%$ and $10\%$. The abscissa is the two-sided group
+    $\Da^{\star}$ of Eq.~(\ref{eq:defect_1_explicit}), the ratio of the total
+    bulk resistance to the interfacial resistance $1/k^{+}$, since that is the
+    combination the flux error depends on.
+    LTE requires both a fast channel and a
+    dominant one: the pale regions at bottom right and top right are the
+    Sieverts/Henry and linear closures, the left-hand strip is kinetically
+    limited whatever the branching, and the band around $\Bra = 1$ admits no
+    algebraic interface law however fast the kinetics. The right-hand axis gives
+    the apparent exponent $n$ corresponding to each branching ratio.}
+    \label{fig:regime_map}
+\end{figure}
+
+Read as a decision aid, the map says that an LTE interface needs $\Da \gtrsim
+10$ \emph{and} a branching ratio at least an order of magnitude away from unity.
+Neither condition alone suffices, and the second is the one that the literature
+does not check.
 
 \paragraph{Across isotopes} LTE further requires the metal~$\rightarrow$~salt
 map to be diagonal. The departure is quantified by the fraction of the tritium
@@ -993,26 +1038,44 @@ $k^{-}/k^{+} = 0.5$. The steady problem is solved for seventeen values of the
 Damk\"ohler number spanning eight decades, $\Da = k^{+}L_A/D_A$ from $10^{-2}$
 to $10^{6}$, and each solution is compared both with the closed form of
 App.~\ref{app:analytical} and with the LTE condition
-Eq.~(\ref{eq:lte_ss}) that the channel should approach.
+Eq.~(\ref{eq:lte_ss}) that the channel should approach. The transient behaviour
+over the same sweep is shown in Fig.~\ref{fig:lte_transient}, and makes the
+first of the three consequences listed in Sec.~\ref{sec:lte} concrete: at
+moderate $\Da$ the interfacial ratio is far from its equilibrium value for most
+of the transient, which is the timescale an algebraic closure denies the
+interface.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.75\textwidth]
-        {scripts/1-first-order-interface/verification_lte_limit.pdf}
-    \caption{Verification of Model 1 on the two-slab problem. Squares: relative
-    difference between the computed interfacial concentrations and the closed
-    form of Eq.~(\ref{eq:model1_analytical}), at round-off throughout.
-    Circles: relative departure of the interfacial ratio $c_A/c_B$ from the LTE
-    value $k^{-}/k^{+}$, which decays as $1/\Da$ (dashed).}
+    \includegraphics[width=0.75\textwidth]{parametric_study_damkohler.pdf}
+    \caption{Interfacial ratio $c_A/c_B$ against time on the two-slab problem,
+    for Damk\"ohler numbers from $10^{-2}$ to $10^{2}$. The LTE condition
+    Eq.~(\ref{eq:lte_ss}) is the dashed line at $k^{-}/k^{+}$. At small $\Da$
+    the interface has a relaxation time of its own and the ratio spends the
+    transient far from its equilibrium value; only at large $\Da$ does it sit on
+    the LTE line throughout.}
+    \label{fig:lte_transient}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.75\textwidth]{verification_lte_limit.pdf}
+    \caption{Steady state of the same problem against $\Da$. Top: the
+    interfacial ratio $c_A/c_B$ approaching the LTE value $k^{-}/k^{+}$.
+    Bottom: circles, the relative departure of that ratio from the LTE value,
+    which decays as $1/\Da$ (dashed); squares, the relative difference between
+    the computed interfacial concentrations and the closed form of
+    Eq.~(\ref{eq:model1_analytical}), at round-off throughout.}
     \label{fig:lte_limit}
 \end{figure}
 
-The computed interfacial concentrations agree with
+The steady results are collected in Fig.~\ref{fig:lte_limit}. The computed
+interfacial concentrations agree with
 Eq.~(\ref{eq:model1_analytical}) to a relative error of at most
 $6\times10^{-12}$ over the whole sweep, which is round-off: the
 piecewise linear steady profile is represented exactly by the P1 elements, so
 this is a check of the interface term itself and not of the bulk discretisation.
-The departure from LTE, plotted in Fig.~\ref{fig:lte_limit}, is monotone and
+The departure from LTE, in the lower panel, is monotone and
 first order in $1/\Da$. The order measured between successive points reaches
 $0.997$ at $\Da = 10^{2}$ and $1.0000$ above $\Da = 10^{4}$, and the departure
 itself falls from $1.5\times10^{-2}$ at $\Da = 10^{2}$ to $1.5\times10^{-6}$ at
@@ -1070,6 +1133,20 @@ Eqs.~(\ref{eq:iso_HH})--(\ref{eq:iso_TT}) are allowed to equilibrate. At steady
 state every channel rate vanishes and we measure $K_\mathrm{exch}$ of
 Eq.~(\ref{eq:kexch}).
 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{isotopologue_equilibrium.pdf}
+    \caption{Zero-flux test of the isotopologue channels: the three carriers
+    relaxing to equilibrium from equal H and T populations on the metal side.
+    $\mathrm{H_2}$ and $\mathrm{T_2}$ coincide by symmetry. Left, equal forward
+    constants give $1:1:1$ and $K_\mathrm{exch} = 1$; the dotted curve is the
+    same case with the mixed channel declared twice, which reaches the same
+    equilibrium sooner and illustrates why the duplication cannot encode the
+    degeneracy. Right, the statistical factor of Eq.~(\ref{eq:stat_factor})
+    gives $1:2:1$ and $K_\mathrm{exch} = 4$.}
+    \label{fig:isotopologue}
+\end{figure}
+
 With all three forward constants equal the result is
 $\mathrm{H_2 : HT : T_2} = 1 : 1 : 1$ and $K_\mathrm{exch} = 1.000000$; with
 $k^{+}_\mathrm{HT} = 2k^{+}_\mathrm{HH}$ as prescribed by
@@ -1078,8 +1155,9 @@ $K_\mathrm{exch} = 4.000000$, the classical value. Declaring the mixed channel
 twice, once as $\mathrm{H+T}$ and once as $\mathrm{T+H}$, returns
 $K_\mathrm{exch} = 1.000000$, confirming the point made in Sec.~\ref{sec:weak}
 that the duplication trick rescales the channel without introducing the
-degeneracy. All three cases reproduce their analytical values to six significant
-figures.
+degeneracy: as the dotted curve of Fig.~\ref{fig:isotopologue} shows, it reaches
+the same equilibrium sooner. All three cases reproduce their analytical values
+to six significant figures.
 
 \TODO{global atom balance: check that the total number of H atoms in the metal,
 in the salt and released is conserved to machine precision over a transient.
