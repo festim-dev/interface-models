@@ -135,7 +135,8 @@
           local thermodynamic equilibrium (LTE), i.e.\ continuity of the
           chemical potential of the transported species. In practice this is
           imposed as an algebraic (Dirichlet-type) constraint relating the two
-          interfacial concentrations:
+          interfacial concentrations
+          \cite{ogorodnikova_model_2002,delaporte-mathurin_influence_2021}:
           \begin{itemize}
               \item Sieverts/Sieverts: $c_A/K_{S,A} = c_B/K_{S,B}$
               \item Sieverts/Henry: $c_B = K_{H,B}\,(c_A/K_{S,A})^2$
@@ -161,6 +162,13 @@
                     thermodynamic equilibrium state whenever a net flux is
                     carried.
           \end{itemize}
+          Both replace LTE by giving the interfacial plane a state of its own,
+          which generalises the closure along interfacial storage and two-step
+          kinetics. The generalisation pursued here runs in a different
+          direction, along the number of channels and the identity of the
+          carriers, and the two compose rather than compete;
+          App.~\ref{app:limits} records the limit in which the closure used here
+          is recovered from theirs.
 
     \item \KEY{(H2) and (H3) have received almost no attention, and this paper
           argues they are the more consequential failures.} The motivating
@@ -171,7 +179,8 @@
           dissolve physically (Henry's law, low solubility, high mobility), or
           it may be oxidised by the melt to HF and dissolve chemically (much
           higher solubility, corrosive, redox dependent). The branching between
-          the two is kinetic and depends on the salt redox state.
+          the two is kinetic and depends on the salt redox state
+          \cite{lam_impact_2021,carotti_electrochemical_2021}.
 
     \item This ambiguity is not hypothetical. Calderoni et al.\
           \cite{calderoni_measurement_2008}, measuring T permeation through a Ni
@@ -204,8 +213,19 @@
           continuity condition can express this --- LTE here is not inaccurate,
           it is ill-posed.
 
-    \item Gap: no macroscopic hydrogen transport code implements a general
-          kinetic interface condition with competing reaction channels and
+    \item Gap: every ingredient of a kinetic interface condition is standard
+          somewhere. Finite-rate surface kinetics has closed gas/solid
+          interfaces for four decades
+          \cite{ali-khan_rate_1978,pick_model_1985}; detailed balance is the
+          usual constraint tying forward and reverse constants in a surface
+          reaction network
+          \cite{mhadeshwar_thermodynamic_2003,gorban_extended_2011}; and the
+          geochemistry community abandoned local equilibrium for
+          transport-coupled interfacial chemistry three decades ago, on the same
+          grounds and with the same Damk\"ohler criterion
+          \cite{knapp_spatial_1989,steefel_coupled_1994}. What is missing is the
+          assembly: no macroscopic hydrogen transport code closes a
+          condensed/condensed interface with competing reaction channels and
           multiple isotopologues.
 
     \item This work:
@@ -231,9 +251,9 @@
           subject of a companion paper \cite{festim_codim1_inprep}. The Be/BeO
           and W/Cu interface-trapping cases of
           Refs.~\cite{hodille_molecular_2022,silva-solis_hydrogen_2026} belong
-          there.
-          \TODO{write this as two explicit sentences in the final prose so
-          referees do not ask.}
+          there. The two descriptions are nested rather than rival, and
+          App.~\ref{app:limits} gives the limit in which the one used here is
+          recovered from the other.
 
     \item \TODO{paper outline paragraph.}
 \end{itemize}
@@ -390,12 +410,20 @@ model: the same thermodynamic data that parameterise Eqs.~(\ref{eq:lte_ss})
 and~(\ref{eq:lte_sh}) parameterise Eq.~(\ref{eq:mass_action}), and the
 additional information supplied is exactly the information LTE assumes away.
 We stress that Eq.~(\ref{eq:detailed_balance_general}) is a modelling
-constraint on the user rather than something the discretisation can enforce;
+constraint on the user rather than something the discretisation can enforce
+\cite{mhadeshwar_thermodynamic_2003,mhadeshwar_thermodynamically_2005,gorban_extended_2011};
 Sec.~\ref{sec:params} returns to how the ratios are obtained in practice.
+Treating $\Gamma$ as a thermodynamic subsystem in its own right, with its own
+entropy production and its own finite transport coefficients, is the standard
+move in the non-equilibrium thermodynamics of heterogeneous systems
+\cite{kjelstrup_non-equilibrium_2019}; Eq.~(\ref{eq:mass_action}) is that idea
+written in mass-action form.
 
 Finally, the framework is agnostic to the nature of the two sides. The
 gas/solid dissociation--recombination boundary condition already available in
-\FESTIM{} is recovered as the special case in which $A$ is a gas phase, and the
+\FESTIM{}
+\cite{ali-khan_rate_1978,pick_model_1985,hodille_kinetic_2020,kulagin_kinetic_2024}
+is recovered as the special case in which $A$ is a gas phase, and the
 models below differ from one another only in their stoichiometry and in the
 number of channels they carry. Figure~\ref{fig:closures} collects them on the
 same geometry, together with the LTE closure they generalise.
@@ -452,6 +480,14 @@ Eq.~(\ref{eq:model1_flux}) to vanish. The derivation is given in
 App.~\ref{app:limits}; the correction at finite rate constants is
 $\mathcal{O}(\phi/k^{+}c)$ and is quantified in Sec.~\ref{sec:damkohler}.
 
+The structure of Eq.~(\ref{eq:model1_flux}), an interfacial rate constant in
+series with a bulk diffusive resistance, is familiar in the solid state: it
+underlies the linear term of the linear-parabolic oxidation law
+\cite{deal_general_1965} and the critical thickness separating
+reaction-controlled from diffusion-controlled growth in binary diffusion couples
+\cite{gosele_growth_1982,cui_interface-reaction_2013}. That an interface may
+present a finite resistance with no chemical transformation at all is likewise
+standard for heat \cite{swartz_thermal_1989}.
 Since interstitial diffusion is itself a first-order exchange between adjacent
 planes of sites, Eq.~(\ref{eq:model1_flux}) at a metal/metal interface is
 Fick's law with the barrier of a single plane modified, of which Fick's law is
@@ -511,8 +547,10 @@ Nothing in Sec.~\ref{sec:general} restricts the interface to a single channel,
 and at a metal/fluoride-melt interface there is no reason to expect one.
 Hydrogen leaving the metal may recombine and dissolve molecularly, or it may be
 oxidised by the melt and dissolve as HF, which is far more soluble, corrosive,
-and redox dependent. We therefore let two channels operate on the same
-interface (Fig.~\ref{fig:closures}d),
+and redox dependent. Competing interfacial half-reactions of different order
+setting the operating point is the ordinary situation in the corrosion of metals
+by molten fluorides \cite{chan_deciphering_2023}. We therefore let two channels
+operate on the same interface (Fig.~\ref{fig:closures}d),
 \begin{align*}
     \text{R:}&\quad 2\,\mathrm{H(m)} \rightleftharpoons \mathrm{H_2(s)} \\
     \text{F:}&\quad \mathrm{H(m)} + \mathrm{F^-(s)} + h^{+}
@@ -617,6 +655,12 @@ one for the quantity measured in a permeation experiment.
 The framework extends to $N_\mathrm{iso}$ mobile atomic species in the metal
 without modification, but the structure that emerges is qualitatively new.
 Recombination now populates every isotopologue and fluorination every fluoride.
+The gas/solid case has already met this structure: co-permeation of hydrogen
+isotopes through a metal forms the mixed molecule at the surface through a
+bilinear rate \cite{zhu_modeling_2024}, and the solubility of hydrogen from
+mixed gases is treated through the exchange equilibrium between isotopologues
+rather than per species \cite{san_marchi_solubility_2008}, whose rates have been
+measured directly in H/D/T mixtures \cite{ida_hydrogen_1992}.
 For $\{\mathrm{H,T}\}$ the recombination channels are
 
 \begin{align}
@@ -767,7 +811,12 @@ say when that limit is legitimate. Three questions have to be answered, in
 increasing order of structural severity.
 
 \paragraph{Within a channel} The relevant comparison is between interfacial
-equilibration and bulk transport. Because channels may be of different order,
+equilibration and bulk transport. A dimensionless group of this kind is the
+standard way of deciding whether a local equilibrium assumption is admissible,
+both for transport-coupled interfacial chemistry \cite{knapp_spatial_1989} and,
+under the name of a surface-limited regime, for gas-driven permeation through
+metals \cite{pisarev_gas-driven_2003,denisov_surface-limited_2018}. Because
+channels may be of different order,
 the comparison is made with the exchange velocity obtained by linearising the
 channel about the interfacial state,
 $k_r^\mathrm{eff} \equiv \partial w_r / \partial \cm{}\big|_\Gamma$, which
@@ -1049,7 +1098,8 @@ practice. Silva-Sol\'is et al.\ \cite{silva-solis_hydrogen_2026} reduce a
 site-resolved network computed from density functional theory to a single
 interfacial site exchanging with each bulk, fitting two of the four rate
 constants to the relaxation time of the full network and fixing the remaining
-two from the solution energies of the sites. The forward and reverse barriers of
+two from the solution energies of the sites \cite{silva-solis_solution_2024}.
+The forward and reverse barriers of
 the resulting transitions differ by $1.09 - 0.23 = 0.86$~eV on the tungsten side
 and by $0.82 - 0.57 = 0.25$~eV on the copper side, which are the solution-energy
 differences between the interfacial site and each bulk. The ratio is therefore
@@ -1097,6 +1147,9 @@ quoted with it.
 \subsection{Recovery of LTE in the fast-kinetics limit}
 \label{sec:lte_limit}
 % ---------------------------------------------------------------
+
+We check that each model recovers its LTE condition at large rate constants, and
+that it does so at the rate predicted in App.~\ref{app:limits}.
 
 The first test is Model 1 on a one-dimensional two-slab problem, with
 $D_A = 0.5$ and $D_B = 1$ in arbitrary units, slabs of equal thickness $0.5$,
@@ -1389,7 +1442,9 @@ measurement proposed in Sec.~\ref{sec:hyperion_branching}.
           \cite{hyperion_facility}: hydrogen isotopes permeate from a gas
           volume, through a Ni membrane, into a molten FLiBe pool held in a Ni
           container; the free surface of the salt is swept by a cover gas and
-          the released flux is measured.
+          the released flux is measured. The pumped fluoride salt loop of
+          Ref.~\cite{fuerst_molten_2025} addresses the same speciation question
+          in a flowing configuration and is complementary to it.
           \TODO{reproduce the geometry sketch; state dimensions, temperature
           range, sweep gas, and diagnostics (QMS / bubblers / ionisation
           chambers) --- confirm with the experimental team.}
@@ -1657,11 +1712,16 @@ measurement proposed in Sec.~\ref{sec:hyperion_branching}.
 % ---------------------------------------------------------------
 
 \begin{itemize}
-    \item Interfaces carry no stored inventory here. Interface trapping and the
-          codimension-1 formulation needed for it are the companion paper
-          \cite{festim_codim1_inprep}; the W/Cu
+    \item Interfaces carry no stored inventory here. This is a limit rather than
+          an omission: App.~\ref{app:limits} shows that eliminating a resolved
+          interfacial population, where it is quasi-steady and dilute, returns
+          the closures used here with detailed balance intact. What the limit
+          discards is the inventory itself, which matters in a transient
+          whenever it is comparable with the bulk loading, and the site blocking
+          that a finite site density imposes. Both belong to the companion paper
+          \cite{festim_codim1_inprep}, as do the W/Cu
           \cite{silva-solis_hydrogen_2026} and Be/BeO
-          \cite{hodille_molecular_2022} cases belong there.
+          \cite{hodille_molecular_2022} interface-trapping cases.
 
     \item $a_\mathrm{F}$ treated as a prescribed parameter: no coupled salt redox
           / corrosion model. Natural next step is two-way coupling to a
@@ -1748,6 +1808,12 @@ measurement proposed in Sec.~\ref{sec:hyperion_branching}.
 \section{Detailed balance constraints}
 \label{app:balance}
 % ---------------------------------------------------------------
+
+The constraints collected here are instances of the standard requirement that
+the forward and reverse constants of a surface reaction network cannot be chosen
+independently \cite{mhadeshwar_thermodynamic_2003,gorban_extended_2011}. Baskes
+\cite{baskes_calculation_1980} states the same relation for the single-channel
+gas/solid case.
 
 \begin{itemize}
     \item Model 1: derivation of $k^{+}/k^{-} = K_{S,B}/K_{S,A}$.
