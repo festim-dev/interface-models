@@ -452,6 +452,15 @@ Eq.~(\ref{eq:model1_flux}) to vanish. The derivation is given in
 App.~\ref{app:limits}; the correction at finite rate constants is
 $\mathcal{O}(\phi/k^{+}c)$ and is quantified in Sec.~\ref{sec:damkohler}.
 
+Since interstitial diffusion is itself a first-order exchange between adjacent
+planes of sites, Eq.~(\ref{eq:model1_flux}) at a metal/metal interface is
+Fick's law with the barrier of a single plane modified, of which Fick's law is
+in turn the special case $k^{+} = D/\lambda$ with $\lambda$ the jump distance,
+so LTE there amounts to assuming the interfacial plane to be kinetically
+indistinguishable from a bulk one, an assumption worth $\Da \sim L/\lambda \sim
+10^{6}$ to $10^{7}$ for a millimetre slab unless that plane is structurally
+distinct.
+
 % ---------------------------------------------------------------
 \subsection{Model 2: recombination into a molecular carrier}
 \label{sec:model2}
@@ -799,6 +808,20 @@ throughout: $\Da \gg 1$ is \emph{necessary but not sufficient}, since under a
 net flux the steady state departs from equilibrium by a term proportional to
 $\phi/k^{+}$, which LTE sets to zero by construction.
 
+A second and independent separation of timescales is implied whenever the
+interface is treated as having no state of its own. Equation~(\ref{eq:damkohler})
+compares an interfacial rate with bulk transport; it says nothing about how long
+an interfacial population, where there is one, takes to relax. Writing the
+interface condition algebraically in the trace values requires that relaxation
+to be fast compared with $L^{2}/D$, as set out in App.~\ref{app:limits}, and the
+two conditions are not equivalent. For W/Cu the separation is wide:
+Silva-Sol\'is et al.\ \cite{silva-solis_hydrogen_2026} report interfacial
+equilibration times of $4.7\times10^{2}$, $2.4\times10^{-1}$ and
+$5.0\times10^{-4}$~s at 347, 436 and 552~K, against permeation times of order
+$10^{5}$, $10^{4}$ and $10^{3}$~s for an ITER-like monoblock, a margin of three
+to six orders of magnitude. Where no such comparison is available, the algebraic
+form is an assumption in its own right and should be reported as one.
+
 \paragraph{Between channels} The relevant group is the branching ratio $\Bra$
 of Eq.~(\ref{eq:branching}). In the limits $\Bra \rightarrow 0$ and
 $\Bra \rightarrow \infty$ one channel dominates and an LTE form exists,
@@ -1019,6 +1042,20 @@ sensitivity of a prediction to that magnitude is exactly what the Damk\"ohler
 number of Eq.~(\ref{eq:damkohler}) measures: where $\Da \gg 1$ an order of
 magnitude in $k^{+}$ is immaterial, and where it is not, the interface is
 rate-limiting and the number has to be justified.
+
+An atomistic parameterisation of this kind exists for a metal/metal interface
+and is worth quoting, because it shows what the division of labour looks like in
+practice. Silva-Sol\'is et al.\ \cite{silva-solis_hydrogen_2026} reduce a
+site-resolved network computed from density functional theory to a single
+interfacial site exchanging with each bulk, fitting two of the four rate
+constants to the relaxation time of the full network and fixing the remaining
+two from the solution energies of the sites. The forward and reverse barriers of
+the resulting transitions differ by $1.09 - 0.23 = 0.86$~eV on the tungsten side
+and by $0.82 - 0.57 = 0.25$~eV on the copper side, which are the solution-energy
+differences between the interfacial site and each bulk. The ratio is therefore
+taken from thermodynamics and only the magnitude is computed, which is what
+Eq.~(\ref{eq:detailed_balance_general}) prescribes and the pattern we recommend
+wherever a suitable calculation exists.
 
 Two properties of the present implementation should be read as limitations of
 the code rather than of the framework. The rate constants are prescribed as
@@ -1823,6 +1860,17 @@ constants and not by any equilibrium constant. Fast kinetics thus removes the
 defect \emph{within} each channel while leaving the split \emph{between} them
 undetermined by thermodynamics, which is the assertion of
 Sec.~\ref{sec:model3}.
+
+Where the interfacial plane is instead resolved as a population of sites with
+its own rate equation \cite{hodille_molecular_2022,silva-solis_hydrogen_2026},
+eliminating that population under the assumptions that it is quasi-steady on the
+transport timescale and dilute returns Eq.~(\ref{eq:model1_flux}), with $k^{\pm}$
+built from the individual hop rates and Eq.~(\ref{eq:detailed_balance_1})
+unchanged, the site energy of the plane cancelling from the ratio and setting
+only the magnitude. Model 1 is in that sense the adiabatic elimination of such a
+description rather than an alternative to it, and the inventory held on the
+plane, identically zero here, belongs to the companion paper
+\cite{festim_codim1_inprep}.
 
 % ---------------------------------------------------------------
 \section{Analytical steady-state solutions}
