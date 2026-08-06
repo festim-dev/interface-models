@@ -6,8 +6,8 @@
 % Class option note: [preprint] gives a readable single-column draft.
 % Switch to [5p] for the two-column submission format.
 % ---------------------------------------------------------------
-\documentclass[preprint,11pt]{elsarticle}
-% \documentclass[5p]{elsarticle}   % <- submission format
+% \documentclass[preprint,11pt]{elsarticle}
+\documentclass[5p]{elsarticle}   % <- submission format
 
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -402,7 +402,7 @@ same geometry, together with the LTE closure they generalise.
 
 \begin{figure*}[htbp]
     \centering
-    \includegraphics[width=\textwidth]{interface_models_schematic.pdf}
+    \includegraphics[width=\linewidth]{interface_models_schematic.pdf}
     \caption{The four interface closures on the same two-subdomain geometry,
     differing only in the chemistry allowed on $\Gamma$. (a) LTE: nothing
     crosses, the two interfacial concentrations being tied by the algebraic
@@ -829,7 +829,7 @@ experiment would report.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.8\textwidth]{regime_map.pdf}
+    \includegraphics[width=0.8\linewidth]{regime_map.pdf}
     \caption{Where a local-equilibrium interface is defensible. The indicator
     $\mathcal{E}$ of Eq.~(\ref{eq:lte_indicator}) over the $(\Da, \Bra)$ plane,
     with contours at $1\%$ and $10\%$. The abscissa is the two-sided group
@@ -1084,7 +1084,7 @@ interface.
 
 \begin{figure*}[htbp]
     \centering
-    \includegraphics[width=\textwidth]{two_slab_setup.pdf}
+    \includegraphics[width=\linewidth]{two_slab_setup.pdf}
     \caption{The two-slab verification problem of Sec.~\ref{sec:lte_limit}.
     (a) Steady profiles at three Damk\"ohler numbers, drawn on a common scale so
     that LTE is continuity: $c_A$ on side $A$, $c_B/K$ on side $B$. The jump
@@ -1101,7 +1101,7 @@ interface.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.75\textwidth]{parametric_study_damkohler.pdf}
+    \includegraphics[width=0.75\linewidth]{parametric_study_damkohler.pdf}
     \caption{Interfacial ratio $c_A/c_B$ against time on the two-slab problem,
     for Damk\"ohler numbers from $10^{-2}$ to $10^{2}$. The LTE condition
     Eq.~(\ref{eq:lte_ss}) is the dashed line at $k^{-}/k^{+}$. At small $\Da$
@@ -1113,7 +1113,7 @@ interface.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.75\textwidth]{verification_lte_limit.pdf}
+    \includegraphics[width=0.75\linewidth]{verification_lte_limit.pdf}
     \caption{Steady state of the same problem against $\Da$. Top: the
     interfacial ratio $c_A/c_B$ approaching the LTE value $k^{-}/k^{+}$.
     Bottom: circles, the relative departure of that ratio from the LTE value,
@@ -1160,7 +1160,7 @@ the root of a quadratic rather than a sum of resistances in series.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.75\textwidth]{verification_model2_lte_limit.pdf}
+    \includegraphics[width=0.75\linewidth]{verification_model2_lte_limit.pdf}
     \caption{Model 2 on the metal/liquid two-slab problem, against the control
     Damk\"ohler number, laid out as Fig.~\ref{fig:lte_limit} for comparison.
     Top: the Sieverts/Henry readout
@@ -1245,7 +1245,7 @@ the floor.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.8\textwidth]{verification_model3_exponent.pdf}
+    \includegraphics[width=0.8\linewidth]{verification_model3_exponent.pdf}
     \caption{Two channels on one interface, and the exponent they produce.
     (a) The apparent exponent $n$ of Eq.~(\ref{eq:apparent_exponent}) against
     the interfacial loading, for three values of the effective fluoride activity
@@ -2041,7 +2041,7 @@ Eq.~(\ref{eq:kexch}).
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.85\textwidth]{isotopologue_equilibrium.pdf}
+    \includegraphics[width=0.85\linewidth]{isotopologue_equilibrium.pdf}
     \caption{Zero-flux test of the isotopologue channels: the three carriers
     relaxing to equilibrium from equal H and T populations on the metal side.
     $\mathrm{H_2}$ and $\mathrm{T_2}$ coincide by symmetry. Left, equal forward
