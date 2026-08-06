@@ -1094,7 +1094,7 @@ interface.
     resistances in series, the two bulk resistances and the interfacial
     resistance $1/k^{+}$ contributed by the channel. LTE is the short circuit of
     the middle element, and $\Da^{\star}$ is the ratio of the bulk resistances
-    to it. Both panels are analytical, from the same closed form that the
+    to it. Both panels are drawn from the same closed form that the
     numerical solutions are checked against.}
     \label{fig:two_slab}
 \end{figure*}
@@ -1305,8 +1305,11 @@ the second misplaces $\Bra$ by the resistance ratio.
 \label{sec:analytical}
 % ---------------------------------------------------------------
 
-Three closed-form results underpin the tests above and the regime map of
-Sec.~\ref{sec:damkohler}; all are derived in App.~\ref{app:analytical}.
+Three analytical steady-state results underpin the tests above and the regime
+map of Sec.~\ref{sec:damkohler}; all are derived in App.~\ref{app:analytical}.
+Each is a closed form, a finite algebraic expression rather than a truncated
+series, so the residual differences quoted above are those of the numerical
+solution alone.
 
 For Model 1 on the two-slab problem, combining flux continuity with
 Eq.~(\ref{eq:model1_flux}) gives the interfacial concentrations and the
@@ -1321,7 +1324,7 @@ solution used in Sec.~\ref{sec:lte_limit}.
 Model 2 on the same geometry is still solvable in closed form, but the answer is
 the root of a quadratic in the channel rate,
 Eq.~(\ref{eq:model2_analytical}), rather than a ratio. The three resistances no
-longer add, which is the analytical statement of the loading dependence
+longer add, which is the formal statement of the loading dependence
 described in Sec.~\ref{sec:damkohler}. This is the solution the metal/liquid
 sweep of Sec.~\ref{sec:lte_limit} is checked against.
 
