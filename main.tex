@@ -13,7 +13,7 @@
 \usepackage{amssymb}
 \usepackage{graphicx}
 % figures live next to the script that produces them, in scripts/
-\graphicspath{{scripts/0-schematics/}{scripts/1-first-order-interface/}{scripts/2-higher-order-reactions/}}
+\graphicspath{{scripts/0-schematics/}{scripts/1-first-order-interface/}{scripts/2-higher-order-reactions/}{scripts/3-competing-channels/}}
 \usepackage{xcolor}
 \usepackage{todonotes}
 \usepackage{overpic}
@@ -550,13 +550,15 @@ by the branching ratio
 whose consequences form the core of the argument of this paper.
 
 First, $\Bra$ depends \emph{inversely} on the interfacial loading. At low
-loading the fluorination channel dominates and the salt-side inventory scales
-linearly with $\cm{\mathrm{H}}$; at high loading recombination takes over and
-the scaling becomes quadratic. Defining the apparent interfacial exponent
+loading the fluorination channel dominates and the atomic flux crossing the
+interface scales linearly with $\cm{\mathrm{H}}$; at high loading recombination
+takes over and the scaling becomes quadratic. Defining the apparent interfacial
+exponent on that flux, which is the right-hand side of Eq.~(\ref{eq:bc_metal})
+for $i = \mathrm{H}$,
 
 \begin{equation}
-    n \equiv \frac{\partial \ln \left(\text{total salt-side H}\right)}
-                  {\partial \ln \cm{\mathrm{H}}} ,
+    n \equiv \frac{\partial \ln J}{\partial \ln \cm{\mathrm{H}}} ,
+    \qquad J \equiv \sum_r \nu_{\mathrm{H}r}\, w_r ,
     \qquad 1 \le n \le 2 ,
     \label{eq:apparent_exponent}
 \end{equation}
@@ -566,6 +568,13 @@ Sieverts/Henry closure of Eq.~(\ref{eq:lte_sh}), $n = 1$ for a Henry/Henry-like
 closure. Here $n$ is instead a solution-dependent quantity that drifts during a
 transient as the interfacial loading builds up. No fixed algebraic interface
 law can reproduce this behaviour.
+
+The same slope can be read off the salt-side inventory rather than the flux,
+which is what a fitted solubility reports, and the two are not the same number
+unless the carriers are transported alike. That variant is derived in
+App.~\ref{app:analytical} and measured alongside Eq.~(\ref{eq:apparent_exponent})
+in Sec.~\ref{sec:exponent_verification}; the flux is taken as the definition
+throughout because it is the quantity a permeation experiment measures directly.
 
 Second, $\Bra$ depends on the salt redox state through $a_\mathrm{F}$, which is
 itself dynamic: HF production, corrosion of the container and depletion of the
@@ -956,16 +965,17 @@ ratio, the surface terms of Eqs.~(\ref{eq:weak_metal})
 and~(\ref{eq:weak_salt}) come to dominate the bulk terms of
 Eq.~(\ref{eq:weak_bulk}), which scale as $D/L$, and the interface condition
 degenerates towards the algebraic constraint of Sec.~\ref{sec:lte}. No scaling
-of the interface residual is applied at present. For the first-order channel of
-Model 1 this turns out not to matter: the steady problem is linear, Newton
-converges in one iteration at every point of the sweep of
-Sec.~\ref{sec:lte_limit}, and the only trace of the growing stiffness is a loss
-of about one significant figure in the interfacial concentrations between
-$\Da = 10^{2}$ and $\Da = 10^{6}$, from a relative agreement of $10^{-13}$ with
-the closed form to $5\times10^{-12}$.
-\VERIFY{whether the higher-order channels behave as well; the corresponding
-sweep for Model 2 has not yet been run, and it is there that a residual scaling
-may become necessary.}
+of the interface residual is applied, and none was needed over the eight decades
+swept in Sec.~\ref{sec:lte_limit}. For the first-order channel of Model 1 the
+steady problem is linear, Newton converges in one iteration at every point of
+the sweep, and the only trace of the growing stiffness is a loss of about one
+significant figure in the interfacial concentrations between $\Da = 10^{2}$ and
+$\Da = 10^{6}$, from a relative agreement of $10^{-13}$ with the closed form to
+$5\times10^{-12}$. The second-order channel of Model 2 does not degrade at all:
+its agreement with Eq.~(\ref{eq:model2_analytical}) sits between
+$1.5\times10^{-16}$ and $4.5\times10^{-16}$ at every point above $\Da = 10$, and
+the two points at which it is coarser lie at the slow end of the sweep rather
+than the stiff one.
 
 The second is positivity. The channels of order two are quadratic and bilinear
 in the trace concentrations, and nothing in the formulation prevents a solution
@@ -1201,6 +1211,96 @@ mesh, and check that the two agree to solver tolerance at large $\Da$. Only the
 comparison against the closed form is done so far.}
 
 % ---------------------------------------------------------------
+\subsection{The apparent exponent of competing channels}
+\label{sec:exponent_verification}
+% ---------------------------------------------------------------
+
+The two tests above each equilibrate a single channel. The third exercises the
+configuration for which no algebraic closure exists at all, two channels
+competing on the same interface, and checks the exponent they produce against
+Eq.~(\ref{eq:n_of_B}). Geometry and metal-side transport are again those of
+Sec.~\ref{sec:lte_limit}. The liquid now carries two species,
+$\mathrm{H_2}$ fed by the recombination channel of Eq.~(\ref{eq:model2_rate})
+and HF fed by the fluorination channel of Eq.~(\ref{eq:model3_rate}), declared
+as two interface objects sharing one interface identifier so that their
+residual contributions add as described in Sec.~\ref{sec:weak}. Both carriers
+are held at zero on the outer liquid face, which is the swept-salt regime in
+which Eq.~(\ref{eq:n_of_B}) was derived, and they are given deliberately
+different diffusivities, $D_\mathrm{HF} = D_\mathrm{H_2}/4$, for a reason that
+appears below. The upstream loading is swept over five decades at three values
+of $a_\mathrm{F}$, 183 steady solves in all, which carries the branching ratio
+of Eq.~(\ref{eq:branching}) from $2.1\times10^{-3}$ to $6.0\times10^{3}$.
+
+Nothing about the exponent is imposed on the solver, and this is what makes the
+test meaningful. We measure it afterwards, as the logarithmic slope of the total
+atomic flux against the interfacial loading taken by centred differences along
+the sweep, which is the operation a permeation experiment performs on its own
+data. The computed interfacial concentrations agree with the closed form of
+App.~\ref{app:analytical} to a median relative error of $2.2\times10^{-16}$ over
+the whole set, below $10^{-14}$ at four fifths of the points and at worst
+$1.8\times10^{-8}$, that worst case occurring at the two smallest loadings of
+the most oxidising sweep where the interfacial concentration is itself
+$4\times10^{-4}$ and the solver tolerance rather than the interface term sets
+the floor.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{verification_model3_exponent.pdf}
+    \caption{Two channels on one interface, and the exponent they produce.
+    (a) The apparent exponent $n$ of Eq.~(\ref{eq:apparent_exponent}) against
+    the interfacial loading, for three values of the effective fluoride activity
+    $a_\mathrm{F}$: lines are Eq.~(\ref{eq:n_of_B}), circles the slopes measured
+    from the computed fluxes. Every sweep leaves the linear closure at low
+    loading and approaches Sieverts/Henry at high loading, and the redox state
+    sets where the crossover falls, not whether it happens.
+    (b) The two ways of reading the exponent, against the branching ratio
+    itself. Both follow Eq.~(\ref{eq:n_of_B}), the flux in $\Bra$ and the
+    salt-side inventory in $\Bra\,R_\mathrm{HF}/R_\mathrm{H_2}$, so the curves
+    have the same shape a constant factor apart: they agree on the law and not
+    on the number. The arrow marks the separation of their $n = 3/2$ crossings,
+    which is the resistance ratio, here $4$.}
+    \label{fig:model3_exponent}
+\end{figure}
+
+The results are collected in Fig.~\ref{fig:model3_exponent}. The measured
+exponent tracks Eq.~(\ref{eq:n_of_B}) to within $5.8\times10^{-4}$ everywhere,
+which is the truncation error of the centred difference at the sweep spacing
+used and not a discrepancy in the model, and it spans $1.0002$ to $1.9978$ as
+the branching ratio crosses the unit interval. At the point of the sweep nearest
+$\Bra = 1$ we obtain $n = 1.5000$, the midpoint of Eq.~(\ref{eq:n_of_B}) at
+which the two channels carry equal atomic fluxes. Read together with
+Fig.~\ref{fig:model3_exponent}a, this is the falsifiable content of
+Sec.~\ref{sec:units} in verified form: the exponent is a continuous function of
+the branching ratio over its whole range, so a redox sweep moves it and no fixed
+choice of $1$ or $2$ describes the interface across such a sweep.
+
+Two further points are worth extracting from the same solves. The reverse terms
+of both channels are active throughout, yet they leave the exponent untouched.
+The reason is visible in App.~\ref{app:analytical}: with the outer salt
+concentrations held at zero, eliminating the salt-side traces renormalises each
+forward constant by a factor that does not depend on the loading, so the two
+atomic fluxes remain exactly quadratic and exactly linear in $\cm{\mathrm{H}}$
+and the weighted mean of their orders is unchanged. Equation~(\ref{eq:n_of_B})
+therefore holds beyond the irreversible regime in which it was derived.
+
+The inventory variant of Eq.~(\ref{eq:apparent_exponent}) is a different number,
+and this is why the two carriers were given different diffusivities. The
+interfacial inventory $2\cs{\mathrm{H_2}} + \cs{\mathrm{HF}}$ weights each
+channel by the downstream resistance its carrier meets, so its logarithmic slope
+follows Eq.~(\ref{eq:n_of_B}) with $\Bra$ replaced by
+$\Bra\,R_\mathrm{HF}/R_\mathrm{H_2}$. The sweep reproduces this to
+$5.7\times10^{-4}$, again at the truncation error.
+Figure~\ref{fig:model3_exponent}b shows the two readouts on the same abscissa,
+where they are curves of identical shape separated by the resistance ratio: the
+flux exponent passes through $3/2$ at $\Bra = 1$ and the inventory exponent
+does so at $\Bra = 1/4$. At a branching ratio of $0.31$, for instance, the flux
+reports $n = 1.77$ and the inventory $n = 1.45$ on the same interface at the
+same instant. An exponent fitted to a sampled salt inventory and one fitted to
+a measured permeation flux therefore imply different branching ratios unless
+the two carriers are transported alike, and reading the first as though it were
+the second misplaces $\Bra$ by the resistance ratio.
+
+% ---------------------------------------------------------------
 \subsection{Analytical steady-state solutions}
 \label{sec:analytical}
 % ---------------------------------------------------------------
@@ -1230,8 +1330,9 @@ interfacial exponent of Eq.~(\ref{eq:apparent_exponent}) as a function of the
 branching ratio alone, $n = (2 + \Bra)/(1 + \Bra)$, Eq.~(\ref{eq:n_of_B}). It
 interpolates continuously between the two exponents that LTE offers as
 alternatives, passing through $n = 3/2$ when the two channels carry equal atomic
-fluxes, and it is the analytical backbone of the regime-map figure and of the
-exponent measurement proposed in Sec.~\ref{sec:hyperion_branching}.
+fluxes. This is the result verified in Sec.~\ref{sec:exponent_verification}, and
+it is the analytical backbone of the regime-map figure and of the exponent
+measurement proposed in Sec.~\ref{sec:hyperion_branching}.
 
 % ===============================================================
 \section{Application: the \HYPERION{} experiment}
@@ -1435,7 +1536,7 @@ exponent measurement proposed in Sec.~\ref{sec:hyperion_branching}.
           authors could not rule out. In the language of Sec.~\ref{sec:model3}, a
           system running with $\Bra \gg 1$ (fluorination-dominated) presents an
           apparent exponent $n \rightarrow 1$, i.e.\ a Sieverts-like square-root
-          response of salt inventory to upstream pressure, while a system with
+          response of the permeating flux to upstream pressure, while a system with
           $\Bra \ll 1$ presents $n \rightarrow 2$ and looks Henry-like. The
           pressure exponent measured in a permeation experiment is therefore a
           \emph{readout of the branching ratio}, not a fixed property of the
@@ -1842,7 +1943,19 @@ solubility is fitted to a sampled salt inventory, the same expression holds with
 $\Bra$ replaced by $\Bra\,(R_\mathrm{HF}/R_\mathrm{H_2})$, where the $R$ are the
 downstream transport resistances of the two carriers, since at steady state each
 salt-side concentration is its production rate times the resistance it sees. The
-two readouts coincide only when the two carriers are transported alike.
+two readouts coincide only when the two carriers are transported alike, and both
+are verified against \FESTIM{} in Sec.~\ref{sec:exponent_verification}.
+
+Neither expression requires the reverse terms to be neglected. Eliminating the
+salt-side traces, as in Eq.~(\ref{eq:two_slab_traces_2}), makes each rate an
+explicit function of $c$ alone, $w_\mathrm{rec} = A c^{2} - a_0$ and
+$w_\mathrm{F} = B_1 c - b_0$, with
+$A = k_\mathrm{r}^{+}/(1 + k_\mathrm{r}^{-}R_\mathrm{H_2})$ and $B_1$ the
+corresponding renormalisation of $k_\mathrm{f}^{+}a_\mathrm{F}$. When the salt
+side is swept the constants $a_0$ and $b_0$ vanish, the two atomic fluxes stay
+exactly quadratic and exactly linear in $c$, and Eq.~(\ref{eq:n_of_B}) holds
+with the reverse terms fully active. The downstream resistance rescales each
+channel without moving the exponent it contributes.
 
 % ---------------------------------------------------------------
 \section{Weak form derivations}
