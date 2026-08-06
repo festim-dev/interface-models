@@ -224,5 +224,22 @@ against the code before claiming a capability in the paper:
   in the plainest order, and move on. Some emphatic constructions in the
   outline are the author's own voice (e.g. "LTE is not inaccurate; it is
   ill-posed") and should be preserved as written.
+- **Three tics to keep counting.** A first prose pass introduced them at a rate
+  the author flagged as obviously machine-written; re-grep before declaring a
+  section done.
+  - `rather than`: was 35 in the draft, now 0. The author's own papers use it
+    essentially never. Prefer restructuring, "instead of", "and not", or a
+    second sentence, and vary the replacement so "and not" does not become the
+    next tic.
+  - the trailing gloss `, which is <restatement>`: drop the "which is" and leave
+    the bare appositive, or split the sentence.
+  - `This is the <noun> that/used in ...` as a cross-reference ("This is the
+    solution used in Sec. 4.1"). Say "We use this solution in Sec. 4.1".
+- **Voice benchmark.** Delaporte-Mathurin et al., arXiv:2603.25751 (PathSim
+  fuel-cycle workflow) is the closest sample of the first author's own prose:
+  plainer and more expository than this draft, mean sentence ~23 words,
+  first-person plural roughly once per 200 words, plain connectives
+  ("However,", "To address these challenges, we propose", "In this section, we
+  start by"), and almost no compressed epigrams. Match that register.
 - The single most valuable planned figure, per the outline, is the two-axis
   `(Da, B)` regime map in `sec:damkohler`.
