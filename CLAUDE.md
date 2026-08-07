@@ -204,6 +204,14 @@ against the code before claiming a capability in the paper:
   \half \flibe \cm{} \cs{} \Bra`. `\cm{i}` = metal-side (atomic), `\cs{α}` =
   salt-side (molecular/fluoride), `\Bra` = branching ratio. Reuse them; don't
   hand-roll new notation for the same quantity.
+- **Units go through `siunitx`** (v3 macros): `\qty{2.032}{\milli\metre}` for a
+  quantity, `\unit{\metre\per\second}` for a bare unit, `\num{1.31e5}` for a
+  bare number in scientific notation. Never hand-roll `$1.31\times10^{5}$~Pa`
+  or `$\mathrm{mol\,m^{-3}\,Pa^{-1}}$` again. Spell units out in full inside
+  `\qty`/`\unit` (`\centi\metre`, never `\cm`): siunitx ships a short `\cm`
+  that collides with the concentration macro, and the preamble saves/restores
+  `\cm` around the `\usepackage` line to settle the clash. Clean powers of ten
+  that are part of a math relation (`$\Da = 10^{2}$`) stay as maths.
 - When converting a bullet block to prose, keep every equation and its label;
   labels are cross-referenced throughout (`eq:lte_ss`, `eq:lte_sh`,
   `eq:mass_action`, `eq:model1_flux`, `eq:model2_rate`, `eq:model3_rate`,
