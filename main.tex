@@ -178,8 +178,8 @@ interfacial plane a state of its own. The generalisation we pursue runs in a
 different direction, along the number of channels and the identity of the
 carriers, and the two compose.
 
-\KEY{(A2) and (A3) have received almost no attention, and we argue that they are
-the more consequential failures.} The system that motivates the argument is a
+(A2) and (A3) have received almost no attention, and we argue that they are
+the more consequential failures. The system that motivates the argument is a
 metal in contact with a fluoride melt, where neither assumption survives contact
 with the chemistry.
 
@@ -921,7 +921,7 @@ parent mesh, the two integrals are assembled with an interior-facet measure
 whose integration data map each facet to the cell it belongs to on each side,
 one restriction per subdomain.
 
-\KEY{No interfacial degrees of freedom are introduced.} Every channel is
+No interfacial degrees of freedom are introduced. Every channel is
 algebraic in the trace values, so no function space on $\Gamma$ and no
 additional unknowns are required, and the size of the linear system is unchanged
 relative to an LTE interface on the same mesh. This is the simplification
@@ -985,9 +985,6 @@ $k_\mathrm{f}^{+}$ by hand. More importantly, the ratio $k_r^{+}/k_r^{-}$ is not
 checked against Eq.~(\ref{eq:detailed_balance_general}) by the solver:
 thermodynamic consistency is a property of how the model is parameterised, and
 it remains the responsibility of whoever writes the input.
-\TODO{explain how $a_\mathrm{F}$ is set here, imposed $\mathrm{HF/H_2}$ ratio in
-the cover gas or a Be-metal buffer, and state which \HYPERION{} campaigns fix
-it.}
 
 % ===============================================================
 \section{Verification}
@@ -1022,9 +1019,9 @@ in Sec.~\ref{sec:lte} concrete: at moderate $\Da$ the interfacial ratio is far
 from its equilibrium value for most of the transient, the timescale an algebraic
 closure denies the interface.
 
-\begin{figure}[htbp]
+\begin{figure*}[htbp]
     \centering
-    \includegraphics[width=1\linewidth]{two_slab_setup.pdf}
+    \includegraphics[width=0.8\linewidth]{two_slab_setup.pdf}
     \caption{The two-slab verification problem of Sec.~\ref{sec:lte_limit}.
     (a) Steady profiles at three Damk\"ohler numbers, drawn on a common scale so
     that LTE is continuity: $c_A$ on side $A$, $c_B/K$ on side $B$. The jump
@@ -1033,7 +1030,7 @@ closure denies the interface.
     (b) The closed form Eq.~(\ref{eq:model1_analytical}) read as three
     resistances in series, LTE being the short circuit of the middle element.}
     \label{fig:two_slab}
-\end{figure}
+\end{figure*}
 
 \begin{figure}[htbp]
     \centering
@@ -1129,9 +1126,6 @@ $1/k_\mathrm{r}^{+}$ is not a resistance in series with the bulk ones, and it is
 only about an operating point that
 $(2k_\mathrm{r}^{+}\cm{\mathrm{H}}|_\Gamma)^{-1}$ plays that role.
 
-\TODO{benchmark both against the existing \FESTIM{} LTE interface on the same
-mesh, and check that the two agree to solver tolerance at large $\Da$. Only the
-comparison against the closed form is done so far.}
 
 % ---------------------------------------------------------------
 \subsection{The apparent exponent of competing channels}
@@ -1271,7 +1265,7 @@ treatment of that geometry is the subject of Ref.~\cite{hyperion_multidim}. We
 use the one-dimensional reduction to demonstrate the interface models and not to
 infer properties from data, so the omitted path is a caveat and not an error bar.
 
-\begin{figure}[htbp]
+\begin{figure*}[htbp]
     \centering
     \includegraphics[width=1\linewidth]{geometry_sketch.pdf}
     \caption{(a) The vessel as an axisymmetric half-section, drawn to the
@@ -1281,7 +1275,7 @@ infer properties from data, so the omitted path is a caveat and not an error bar
     Sec.~\ref{sec:hyperion}, which keeps the membrane and the pool. The two
     areas quoted in the figure size the sidewall path that the reduction drops.}
     \label{fig:hyperion_geometry}
-\end{figure}
+\end{figure*}
 
 Table~\ref{tab:hyperion_params} collects the operating point. Geometry and
 conditions are read off the \HYPERION{} modelling repository and the transport
@@ -1321,9 +1315,9 @@ unambiguously interfacial.
             \HYPERION{} operating range \\
         Downstream & swept, $p \simeq 0$ & & idealisation \\
         $D_\mathrm{Ni}$ & \qty{1.501e-9}{\square\metre\per\second} &
-            atomic H & Louthan et al.\ (1975) \\
+            atomic H & Louthan et al. \cite{louthan_hydrogen_1975}\\
         $K_{S,\mathrm{Ni}}$ & \qty{2.836e22}{\per\cubic\metre\pascal\tothe{-1/2}} &
-            atomic H, Sieverts & Louthan et al.\ (1975) \\
+            atomic H, Sieverts & Louthan et al. \cite{louthan_hydrogen_1975} \\
         $D_\mathrm{FLiBe}$ & \qty{1.352e-9}{\square\metre\per\second} &
             unspecified & Calderoni et al.\ \cite{calderoni_measurement_2008} \\
         $K_{H,\mathrm{FLiBe}}$ & \qty{2.055e20}{\per\cubic\metre\per\pascal} &
@@ -1338,11 +1332,6 @@ unambiguously interfacial.
         \hline
     \end{tabular}
 \end{table*}
-
-\TODO{\texttt{references.bib} has no entry for Louthan et al.\ (1975), the
-source of both nickel rows, and none for the property compilation the Arrhenius
-fits were taken from. Both are needed before the table can be cited as it
-stands.}
 
 Three derived quantities set the run length and the centres of the sweeps that
 follow. The two bulk diffusion times are $L^{2}/D = \qty{2.75e3}{\second}$ in
@@ -1573,12 +1562,12 @@ crosses the interface and wrong about when. The transient is what discriminates,
 and the valley is the sharpest instance of the distinction drawn in
 Sec.~\ref{sec:lte} between a steady state and an equilibrium.
 
-\TODO{the identifiability experiment is still to run: fit the LTE model, with
-$D_\mathrm{FLiBe}$ and $K_H$ free, to a synthetic reducing-case transient, apply
-it unchanged to an oxidising one and quantify the misfit; and report whether
-$k_\mathrm{r}^{+}$ and $k_\mathrm{f}^{+}$ are separately identifiable from a
-single transient or only through their ratio. Ground truth is known for
-synthetic data, so the answer is cleaner than it would be against a measurement.}
+% \TODO{the identifiability experiment is still to run: fit the LTE model, with
+% $D_\mathrm{FLiBe}$ and $K_H$ free, to a synthetic reducing-case transient, apply
+% it unchanged to an oxidising one and quantify the misfit; and report whether
+% $k_\mathrm{r}^{+}$ and $k_\mathrm{f}^{+}$ are separately identifiable from a
+% single transient or only through their ratio. Ground truth is known for
+% synthetic data, so the answer is cleaner than it would be against a measurement.}
 
 % ---------------------------------------------------------------
 \subsection{H and T together: swamping and fractionation}
@@ -1664,7 +1653,7 @@ dissolved diatomic $\mathrm{H_2}$ in a molten salt to obey Henry's law
 currently taken from a secondary summary \cite{mit_thesis_flibe} and needs the
 Fukada reference proper.}
 
-\KEY{A square-root dependence in an ionic melt is not a measurement artefact.}
+A square-root dependence in an ionic melt is not a measurement artefact.
 It is the signature of \emph{dissociative} dissolution, that is, of exactly the
 fluoride-bound carrier that the same authors could not rule out. Since the
 metal-side loading follows Sieverts' law, $\cm{\mathrm{H}} \propto \sqrt{P}$,
@@ -1695,8 +1684,7 @@ so that the number survives a change in the speciation interpretation.
 \label{sec:when_lte}
 % ---------------------------------------------------------------
 
-The criteria of Sec.~\ref{sec:damkohler} reduce to three questions, to be asked
-in this order.
+The criteria of Sec.~\ref{sec:damkohler} reduce to three questions, to be asked in this order.
 
 \begin{enumerate}
     \item Is there a single exchange channel? If not, LTE is unavailable,
@@ -1707,8 +1695,7 @@ in this order.
           $\phi/(k^{+}c) \ll 1$.
 \end{enumerate}
 
-\KEY{The ordering matters: the structural questions come first.} The literature
-has concentrated on step 3, where the failure of LTE is a quantifiable error,
+The literature has concentrated on step 3, where the failure of LTE is a quantifiable error,
 and has skipped steps 1 and 2, where it is not an error but the absence of any
 admissible algebraic closure.
 
