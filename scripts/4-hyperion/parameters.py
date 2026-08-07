@@ -192,27 +192,33 @@ def detailed_balance_k_minus(k_plus, temperature=TEMPERATURE):
     return k_plus / ratio
 
 
-def damkohler_recombination(k_plus, c_gamma=None, temperature=TEMPERATURE):
+def damkohler_recombination(k_plus, c_ref=None, temperature=TEMPERATURE, p_up=P_UP):
     """Damkoehler number of the recombination channel.
 
     The channel is second order, so `k_plus` is a m^4/s and not a velocity, and
-    it has to be made dimensionless with an interfacial loading as well as with
-    the metal-side transport scale,
+    it has to be made dimensionless with a loading as well as with the
+    metal-side transport scale. Following Eq. (damkohler) of the paper the
+    channel is linearised about the interfacial state, which gives the exchange
+    velocity 2 k_+ c_m|G, and the reference loading is the upstream Sieverts
+    value c* = K_S sqrt(P_up):
 
-        Da = k_+ c_G L_m / D_m .
+        Da = 2 k_+ c* L_m / D_m .
 
-    The LTE interfacial loading is used as the reference when none is given,
-    which makes Da an input to a sweep instead of an output of one.
+    The same convention runs through the paper, in
+    2-higher-order-reactions/verification_model2_lte_limit.py as well as here:
+    c* is known from the boundary condition before anything is solved, so Da is
+    an input to a sweep, and the value actually attained at the interface is
+    reported as a diagnostic.
     """
-    if c_gamma is None:
-        c_gamma = lte_steady_state(temperature)[1]
-    return k_plus * c_gamma * L_NI / D_nickel(temperature)
+    if c_ref is None:
+        c_ref = upstream_concentration(temperature, p_up)
+    return 2 * k_plus * c_ref * L_NI / D_nickel(temperature)
 
 
-def k_plus_from_damkohler(damkohler, temperature=TEMPERATURE):
+def k_plus_from_damkohler(damkohler, temperature=TEMPERATURE, p_up=P_UP):
     """Forward recombination constant giving a target Damkoehler number."""
-    c_gamma = lte_steady_state(temperature)[1]
-    return damkohler * D_nickel(temperature) / (c_gamma * L_NI)
+    c_ref = upstream_concentration(temperature, p_up)
+    return damkohler * D_nickel(temperature) / (2 * c_ref * L_NI)
 
 
 if __name__ == "__main__":

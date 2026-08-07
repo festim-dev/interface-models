@@ -20,15 +20,17 @@ law-independent units" there could not be one that is independent of an assumed
 carrier. So the channel is not given a solubility. It is driven by the two
 dimensionless groups the paper already defines:
 
-    Da   = k_r+ c_G L_m / D_m            the recombination Damkoehler number
+    Da   = 2 k_r+ c* L_m / D_m           the recombination Damkoehler number
     B    = w_F / (2 w_rec)               the branching ratio, Eq. (branching)
 
-Far from equilibrium B -> k_f+ a_F / (2 k_r+ c_G), so a target B at a reference
-loading fixes the forward constant of the F channel,
+both built at the same reference loading c* = K_S sqrt(P_up), the upstream
+Sieverts value, as in parameters.damkohler_recombination. Far from equilibrium
+B -> k_f+ a_F / (2 k_r+ c_m|G), so a target B at that reference fixes the
+forward constant of the F channel,
 
-    k_f+ a_F = 2 B k_r+ c_G ,
+    k_f+ a_F = 2 B k_r+ c* ,
 
-and the Damkoehler number of the F channel is then not free: Da_F = 2 B Da.
+and the Damkoehler number of the F channel is then not free: Da_F = B Da.
 a_F never appears on its own, only folded into the forward constant, which is
 also all the implementation supports.
 
@@ -87,12 +89,12 @@ def channel_constants(damkohler=DAMKOHLER, branching=1.0, temperature=p.TEMPERAT
     detailed balance; k_f_minus from rho_F = rho_R as set out in the module
     docstring.
     """
-    c_gamma = p.lte_steady_state(temperature)[1]
+    c_ref = p.upstream_concentration(temperature)
 
     k_r_plus = p.k_plus_from_damkohler(damkohler, temperature)
     k_r_minus = p.detailed_balance_k_minus(k_r_plus, temperature)
 
-    k_f_plus = 2.0 * branching * k_r_plus * c_gamma
+    k_f_plus = 2.0 * branching * k_r_plus * c_ref
 
     # rho = k_minus L_s / D, equal for the two channels; both carriers share D
     k_f_minus = k_r_minus

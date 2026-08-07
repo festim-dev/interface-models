@@ -795,7 +795,11 @@ Model 2 about an operating point alone. And a parametric sweep in $\Da$ requires
 a reference loading to be fixed: we use the upstream Sieverts value
 $c^{\star} = K_S\sqrt{P_\mathrm{up}}$, giving the control parameter
 $2k_\mathrm{r}^{+}c^{\star}L/D$, and report the local value attained at the
-interface as a diagnostic.
+interface as a diagnostic. That reference is known from the boundary condition
+before anything is solved, and we use it for every dimensionless group quoted in
+this paper, the branching ratio included, so that the two axes of the map below
+refer to one loading. Which loading a Damk\"ohler number is built at is part of
+its definition and should be quoted with it.
 
 The caveat carried over from Ref.~\cite{silva-solis_hydrogen_2026} applies
 throughout: $\Da \gg 1$ is \emph{necessary but not sufficient}, since under a
@@ -1393,23 +1397,23 @@ reducing salt, and let hydrogen cross the interface by recombination alone. The
 channel is that of Eq.~(\ref{eq:model2_rate}), and its reverse constant is fixed
 by Eq.~(\ref{eq:detailed_balance_2}) from the same $K_S$ and $K_H$ that
 parameterise the baseline. The forward constant is then the only number left
-free, and we report it as the Damk\"ohler number
-$\Da = k_\mathrm{r}^{+}\,c^{\star}L_\mathrm{Ni}/D_\mathrm{Ni}$ with $c^{\star}$
-the LTE interfacial loading, which makes $\Da$ an input to a sweep instead of an
-output of one.
-\VERIFY{this section builds $\Da$ from $k_\mathrm{r}^{+}c^{\star}$ while
-Eq.~(\ref{eq:damkohler}) linearises the channel to
-$2k_\mathrm{r}^{+}\cm{\mathrm{H}}|_\Gamma$, so the two differ by a factor of
-two. Reconcile the two conventions, in the scripts as well as in the text,
-before submission.}
+free, and we report it as the Damk\"ohler number of
+Eq.~(\ref{eq:damkohler}),
+$\Da = 2k_\mathrm{r}^{+}\,c^{\star}L_\mathrm{Ni}/D_\mathrm{Ni}$, built as
+everywhere in this paper at the upstream Sieverts loading
+$c^{\star} = K_S\sqrt{P_\mathrm{up}}$ of Table~\ref{tab:hyperion_params}. That
+makes $\Da$ an input to a sweep instead of an output of one. The loading the
+interface actually reaches is lower, \qty{63}{\percent} of $c^{\star}$ in the
+equilibrated limit here, so the local Damk\"ohler number sits below the control
+value, as in the two-slab test of Sec.~\ref{sec:lte_limit}.
 
 Sweeping $\Da$ over six decades at fixed thermodynamics, geometry and transport,
 the computed steady state agrees with the closed form of the single-channel
-problem to a relative \num{1.4e-5} at the slow end of the sweep and to better
-than \num{6e-6} everywhere else. The steady flux approaches the LTE one from
-below and first order in $1/\Da$: taking $J/J_\mathrm{LTE}$, we obtain $0.0782$
-at $\Da = 10^{-2}$, $0.883$ at $\Da = 1$, $0.987$ at $\Da = 10$, $0.9987$ at
-$\Da = 10^{2}$ and $0.99998$ at $\Da = 10^{4}$. That the two closed forms are
+problem to a relative \num{7.7e-6} at the slow end of the sweep and to better
+than \num{5e-6} everywhere else. The steady flux approaches the LTE one from
+below and first order in $1/\Da$: taking $J/J_\mathrm{LTE}$, we obtain $0.0262$
+at $\Da = 10^{-2}$, $0.709$ at $\Da = 1$, $0.959$ at $\Da = 10$, $0.9957$ at
+$\Da = 10^{2}$ and $0.99995$ at $\Da = 10^{4}$. That the two closed forms are
 nested is not a numerical result: the coefficient of the Model 2 quadratic tends
 term by term to the coefficient of the LTE quadratic as $k_\mathrm{r}^{+}$ grows
 at fixed ratio, so the agreement above tests the implementation and not the
@@ -1434,20 +1438,20 @@ definition.
 
 Figure~\ref{fig:hyperion_damkohler} shows the transients themselves. The steady
 flux is the more sensitive of the two diagnostics: at $\Da = 10^{-2}$ it is
-\qty{7.8}{\percent} of the LTE value, while the time lag is only
-\qty{47}{\percent} longer than the LTE one. A normalised transient is therefore
+\qty{2.6}{\percent} of the LTE value, while the time lag is only
+\qty{49}{\percent} longer than the LTE one. A normalised transient is therefore
 a weaker discriminator than an absolute one, though the discrimination does not
 vanish, since a slow interface delays the breakthrough as well as suppressing it.
 Moreover, applying the classical
 single-slab inversion $D = L^{2}/6t_\mathrm{lag}$ to each computed transient, as
 an experimentalist might do to a measured one, returns an apparent diffusivity
-\qty{32}{\percent} below the LTE value at $\Da = 10^{-2}$ and \qty{23}{\percent}
+\qty{33}{\percent} below the LTE value at $\Da = 10^{-2}$ and \qty{29}{\percent}
 below it at $\Da = 10^{-1}$, with every diffusivity in the model held fixed. A
 time-lag analysis of a permeation curve is therefore not a readout of the bulk
 transport properties alone, and at this operating point the interface is capable
 of moving the inferred diffusivity by a third without any bulk property changing.
-The discrepancy falls to \qty{1.1}{\percent} at $\Da = 10$ and
-\qty{0.2}{\percent} at $\Da = 10^{2}$, so the requirement $\Da \gtrsim 10$ read
+The discrepancy falls to \qty{3.0}{\percent} at $\Da = 10$ and
+\qty{0.4}{\percent} at $\Da = 10^{2}$, so the requirement $\Da \gtrsim 10$ read
 off the regime map of Sec.~\ref{sec:damkohler} is confirmed at a dimensional
 operating point.
 
@@ -1463,9 +1467,10 @@ branching ratio of Eq.~(\ref{eq:branching}) reduces to
 $\Bra \rightarrow k_\mathrm{f}^{+}a_\mathrm{F}/(2k_\mathrm{r}^{+}
 \cm{\mathrm{H}}|_\Gamma)$, so a target $\Bra$ at the reference loading
 $c^{\star}$ fixes the forward constant of the F channel through
-$k_\mathrm{f}^{+}a_\mathrm{F} = 2\Bra\,k_\mathrm{r}^{+}c^{\star}$, and the
-Damk\"ohler number of that channel is then not free but $\Da_\mathrm{F} =
-2\Bra\,\Da$. The reverse constant needs one further choice. At steady state the
+$k_\mathrm{f}^{+}a_\mathrm{F} = 2\Bra\,k_\mathrm{r}^{+}c^{\star}$. Both groups
+are built at the same $c^{\star}$, so the Damk\"ohler number of the F channel is
+not free either but $\Da_\mathrm{F} = \Bra\,\Da$. The reverse constant needs one
+further choice. At steady state the
 reverse term enters only through the combination
 $\rho = k^{-}L_\mathrm{s}/D_\mathrm{s}$, since the swept downstream face gives
 $c|_\Gamma = wL_\mathrm{s}/D_\mathrm{s}$ for each carrier, and $\rho$ only
@@ -1490,13 +1495,15 @@ differential transport away from it.
     \label{fig:hyperion_redox}
 \end{figure*}
 
-Figure~\ref{fig:hyperion_redox} collects the sweep, run at $\Da = 10$ so that the
-recombination channel is comfortably equilibrated in the sense of
-Sec.~\ref{sec:hyperion_lte} and nothing in the result can be blamed on a slow
+Figure~\ref{fig:hyperion_redox} collects the sweep, run at $\Da = 10$, where the
+recombination channel on its own reaches \qty{96}{\percent} of the LTE flux by
+Sec.~\ref{sec:hyperion_lte}. That \qty{4}{\percent} residual is the whole of the
+slow-channel error at this operating point, and the departures reported below
+reach a factor of $2.67$, so they are the work of the branching and not of a slow
 channel. Three features stand out.
 
 The first is the direction of the error. The steady flux rises \emph{above} the
-LTE prediction, by a factor $1.36$ at $\Bra \simeq 1.3$ and by $2.65$ at the
+LTE prediction, by a factor $1.49$ at $\Bra \simeq 2.2$ and by $2.67$ at the
 oxidising end of the sweep. The fluorination channel is a pathway in parallel
 with the one the single-carrier closure contains, so a Sieverts/Henry interface
 does not merely misestimate the flux, it underestimates it, and by an amount the
@@ -1514,11 +1521,14 @@ in bubbler counting, and LTE cannot define it at all.
 
 The third is a consistency check that turns into a result. The measured branching
 ratio departs from the nominal one as soon as the F channel carries a substantial
-share: a target of $10$ is realised as $43$ and a target of $10^{2}$ as
-\num{3.7e3}, because the F channel drains the interfacial loading and $\Bra$
-rises as $\cm{\mathrm{H}}|_\Gamma$ falls. The nominal value is built from the LTE
-loading and the true one is not, so the two separate exactly where the branching
-matters. All results here are reported against the measured value.
+share: a target of $10$ is realised as $96$ and a target of $10^{2}$ as
+\num{8.6e3}, because the F channel drains the interfacial loading and $\Bra$
+rises as $\cm{\mathrm{H}}|_\Gamma$ falls. The nominal value is built from
+$c^{\star}$ and the true one from the loading the interface actually reaches. At
+low branching the two differ only by the fixed ratio
+$c^{\star}/\cm{\mathrm{H}}|_\Gamma \simeq 1.6$ of Sec.~\ref{sec:hyperion_lte};
+where the branching matters they separate by nearly two decades. All results
+here are reported against the measured value.
 
 \begin{figure}[htbp]
     \centering
@@ -1542,7 +1552,7 @@ mapped, because an LTE closure can be wrong about the steady state and about the
 timing independently, and both are signed, since the two failure modes push the
 steady flux in opposite directions.
 
-Both errors stay below \qty{10}{\percent} at $15$ of the $81$ grid points, the
+Both errors stay below \qty{10}{\percent} at $12$ of the $81$ grid points, the
 high-$\Da$, low-$\Bra$ corner that the closure assumes it is always in. The
 indicator $\mathcal{E}$ of Eq.~(\ref{eq:lte_indicator}) is not drawn on the
 figure, for a structural reason: its between-channel term is the flux fraction in
@@ -1550,16 +1560,20 @@ the minority channel, so it asks whether \emph{some} single algebraic law could
 describe the interface and saturates at one half, whereas the map asks how wrong
 the \emph{conventional} Sieverts/Henry choice is, and the error of a fixed wrong
 law does not saturate. At $(\Da, \Bra) = (10^{2}, 10^{2})$ the indicator reports
-\qty{1}{\percent} against a measured steady-flux error of \qty{166}{\percent}.
+\qty{1}{\percent} against a measured steady-flux error of \qty{167}{\percent}.
 Read as a decision aid, $\mathcal{E}$ bounds the existence of a good algebraic
 law, not the error of the usual one.
 
 The best result on the map is the diagonal valley running across panel (a), where
-the two failure modes cancel. Below $\Da \simeq 1$ the interfacial resistance
-suppresses the flux below LTE, and above $\Bra \simeq 1$ the second channel
-raises it; along the diagonal the two errors are equal and opposite.
-A steady permeation measurement therefore cannot validate an LTE closure: agreement on the
-steady flux is compatible with the closure being wrong about which species
+the two failure modes cancel. A slow interface holds the steady flux below LTE
+and a second channel lifts it above, and the two are equal and opposite along a
+line of constant $\Bra\Da$: in the nominal groups the axes carry, the crossing
+sits at $\Bra\Da \simeq 0.5$ across the whole sweep, which by
+$\Da_\mathrm{F} = \Bra\Da$ is a fixed Damk\"ohler number of the fluorination
+channel. Along that line the steady flux is right to a few per cent while the
+time lag is wrong by up to \qty{38}{\percent} at the slow end. A steady
+permeation measurement therefore cannot validate an LTE closure: agreement on
+the steady flux is compatible with the closure being wrong about which species
 crosses the interface and wrong about when. The transient is what discriminates,
 and the valley is the sharpest instance of the distinction drawn in
 Sec.~\ref{sec:lte} between a steady state and an equilibrium.
@@ -1767,10 +1781,10 @@ loading and with salt redox state, so no fixed LTE closure reproduces the
 behaviour across a redox sweep. Because the fluorination channel is a pathway in
 parallel with the one a single-carrier closure contains, an LTE interface does
 not merely misestimate the steady flux but underestimates it, by a factor of
-$2.65$ at the oxidising end of our sweep. Along a diagonal of the $(\Da, \Bra)$
+$2.67$ at the oxidising end of our sweep. Along a diagonal of the $(\Da, \Bra)$
 plane the two failure modes cancel: there the LTE steady flux is right to a few
 per cent while the closure is wrong about which species crosses the interface and
-mistimes the transient by up to \qty{36}{\percent}. A steady permeation
+mistimes the transient by up to \qty{38}{\percent}. A steady permeation
 measurement therefore cannot validate an LTE closure, and the transient is what
 discriminates.
 

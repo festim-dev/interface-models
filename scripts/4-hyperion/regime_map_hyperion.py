@@ -22,7 +22,7 @@ Sieverts/Henry closure of lte_baseline.py that a macroscopic code implements.
 At large B those diverge, because almost all the flux is then fluorination and a
 single linear law would do well while Sieverts/Henry is missing the dominant
 pathway. `indicator` below is kept for the comparison in the working notes, and
-at (Da, B) = (100, 100) it reports 1 % against a true error of 166 %.
+at (Da, B) = (100, 100) it reports 1 % against a true error of 167 %.
 
 Two errors are mapped, because an LTE closure can be wrong about the steady
 state and about the timing independently:
@@ -39,7 +39,7 @@ zero contour into islands. Panel (a) is drawn from the closed form in
 needs no grid at all; panel (b) needs the transients and carries its sample
 points.
 
-Both axes are nominal groups evaluated at the LTE reference loading, the same
+Both axes are nominal groups evaluated at the upstream Sieverts loading, the same
 convention parameters.py uses for Da. That keeps the grid rectangular and makes
 the axes quantities a reader can estimate for their own system without solving
 anything. The branching ratio measured from the converged rates runs higher
