@@ -429,7 +429,7 @@ with the LTE closure they generalise.
 
 \begin{figure*}[htbp]
     \centering
-    \includegraphics[width=\linewidth]{interface_models_schematic.pdf}
+    \includegraphics[width=0.6\linewidth]{interface_models_schematic.pdf}
     \caption{The four interface closures on the same two-subdomain geometry,
     differing only in the chemistry allowed on $\Gamma$. (a) LTE: nothing
     crosses, the two interfacial concentrations being tied by the algebraic
@@ -1022,33 +1022,6 @@ it remains the responsibility of whoever writes the input.
 \TODO{explain how $a_\mathrm{F}$ is set here, imposed $\mathrm{HF/H_2}$ ratio in
 the cover gas or a Be-metal buffer, and state which \HYPERION{} campaigns fix
 it.}
-
-Two numerical properties are worth recording. No scaling of the interface
-residual is applied, and none was needed over the eight decades in $\Da$ swept
-in Sec.~\ref{sec:lte_limit}: the surface terms come to dominate the bulk terms
-as $k^{+}$ grows, but the only trace of the growing stiffness is a loss of about
-one significant figure in the interfacial concentrations of the first-order
-channel between $\Da = 10^{2}$ and $\Da = 10^{6}$, and the second-order channel
-does not degrade at all. Positivity, by contrast, is not safeguarded. The
-channels of order two are quadratic and bilinear in the trace concentrations,
-and a negative excursion in $\cm{\mathrm{H}}$ leaves the recombination rate of
-Eq.~(\ref{eq:model2_rate}) positive, since the concentration enters squared,
-while the bilinear channel of Eq.~(\ref{eq:iso_HT}) instead changes sign. We
-control this by refining the mesh and the time step through the initial
-transient and by monitoring the minimum trace value, and we report it as an open
-item.
-
-The transport data available for FLiBe do not make any of this easy. Reported
-solubilities and diffusivities for $\mathrm{H_2}$ and HF, and a fortiori for
-their isotopologues, span orders of magnitude \cite{libra_2022}. That spread is
-a reason to build an interface model whose parameters can be \emph{inferred}
-from permeation data, and not an argument against attempting one. Part of it
-is not experimental scatter: as developed in Sec.~\ref{sec:units}, a tabulated
-solubility carries units of \unit{\mole\per\cubic\metre\per\pascal} or
-\unit{\mole\per\cubic\metre\pascal\tothe{-1/2}} according to whether Henry's or
-Sieverts' law was assumed in reducing the measurement, so a literature value
-cannot be used without knowing which carrier was assumed when it was obtained.
-Whenever a solubility is quoted in this paper, the assumed law is quoted with it.
 
 % ===============================================================
 \section{Verification}
