@@ -847,8 +847,8 @@ experiment would report.
     \includegraphics[width=1\linewidth]{regime_map.pdf}
     \caption{Where a local-equilibrium interface is defensible. The indicator
     $\mathcal{E}$ of Eq.~(\ref{eq:lte_indicator}) over the $(\Da, \Bra)$ plane,
-    with contours at \qty{1}{\percent} and \qty{10}{\percent}. The abscissa is
-    the two-sided group
+    with contours at \qty{1}{\percent} and \qty{10}{\percent}. The Damk\"ohler
+    number plotted is the two-sided group
     $\Da^{\star}$ of Eq.~(\ref{eq:defect_1_explicit}), the ratio of the total
     bulk resistance to the interfacial resistance $1/k^{+}$, since that is the
     combination the flux error depends on.
@@ -1007,11 +1007,11 @@ $D_A = 0.5$ and $D_B = 1$ in arbitrary units, slabs of equal thickness $0.5$,
 concentrations $c_0 = 2$ and $c_L = 1$ imposed at the outer faces, and
 $k^{-}/k^{+} = 0.5$. The steady problem is solved for seventeen values of the
 Damk\"ohler number spanning eight decades, $\Da = k^{+}L_A/D_A$ from $10^{-2}$
-to $10^{6}$. Figure~\ref{fig:two_slab} shows the problem and the reading of its
-steady solution that the rest of this section uses: plotting the two slabs on a
-common scale, $c_A$ on one side and $c_B/K$ on the other, turns
-Eq.~(\ref{eq:lte_ss}) into continuity, so what is left at $\Gamma$ is the defect
-$\Delta = \phi/k^{+}$ of Eq.~(\ref{eq:defect_1_explicit}). It closes as $\Da$
+to $10^{6}$. Plotting the two slabs on a common scale, $c_A$ on one side and
+$c_B/K$ on the other, turns Eq.~(\ref{eq:lte_ss}) into continuity, so what is
+left at $\Gamma$ is the defect $\Delta = \phi/k^{+}$ of
+Eq.~(\ref{eq:defect_1_explicit}) (see Fig.~\ref{fig:two_slab}). We read every
+steady solution below this way. The defect closes as $\Da$
 grows and is nonzero at any finite rate constant, because the interface is
 carrying a flux. The transient behaviour over the same sweep,
 Fig.~\ref{fig:lte_transient}, makes the first of the three consequences listed
@@ -1099,9 +1099,9 @@ reporting the value attained at the interface as a diagnostic.
     \label{fig:lte_limit}
 \end{figure}
 
-Table~\ref{tab:convergence} collects both sweeps and Fig.~\ref{fig:lte_limit}
-shows the Model 1 one. Agreement with the closed forms sits at the level of
-round-off throughout, and for Model 1 the piecewise linear steady profile is
+Agreement with the closed forms sits at the level of round-off throughout both
+sweeps (Table~\ref{tab:convergence}, the Model 1 sweep also in
+Fig.~\ref{fig:lte_limit}), and for Model 1 the piecewise linear steady profile is
 represented exactly by the P1 elements, so this is a check of the interface term
 itself and not of the bulk discretisation. The departure from LTE is monotone
 and first order in $1/\Da$ for both channels, and approaches the asymptote
@@ -1198,9 +1198,10 @@ interfacial inventory $2\cs{\mathrm{H_2}} + \cs{\mathrm{HF}}$ weights each
 channel by the downstream resistance its carrier meets, so its logarithmic slope
 follows Eq.~(\ref{eq:n_of_B}) with $\Bra$ replaced by
 $\Bra\,R_\mathrm{HF}/R_\mathrm{H_2}$, and the sweep reproduces this to
-\num{5.7e-4}. Figure~\ref{fig:model3_exponent}b shows the two readouts on the
-same abscissa, where they are curves of identical shape separated by the
-resistance ratio: the flux exponent passes through $3/2$ at $\Bra = 1$ and the
+\num{5.7e-4}. Plotted against the same branching ratio, the two readouts are
+curves of identical shape separated by the resistance ratio
+(Fig.~\ref{fig:model3_exponent}b): the
+flux exponent passes through $3/2$ at $\Bra = 1$ and the
 inventory exponent does so at $\Bra = 1/4$. At a branching ratio of $0.31$, for
 instance, the flux reports $n = 1.77$ and the inventory $n = 1.45$ on the same
 interface at the same instant. An exponent fitted to a sampled salt inventory
@@ -1251,13 +1252,12 @@ LTE that question has to be answered before the simulation is set up, since the
 carrier is what the solubility law refers to. In the kinetic framework it is a
 branching ratio, and so a quantity the model reports.
 
-Figure~\ref{fig:hyperion_geometry} shows the vessel and the reduction we apply
-to it. The vessel is an axisymmetric nickel can of inner radius
+The vessel is an axisymmetric nickel can of inner radius
 \qty{39.0}{\milli\metre} and outer radius \qty{41.0}{\milli\metre}; a membrane
 separates a \qty{20}{\milli\metre} upstream plenum from a FLiBe pool
 \qty{5.14}{\milli\metre} deep at \qty{500}{\degreeCelsius}, with a cover-gas
-space above. The one-dimensional model keeps the membrane and the pool and drops
-the rest. What that discards can be sized: the salt wets
+space above (Fig.~\ref{fig:hyperion_geometry}). The one-dimensional model keeps
+the membrane and the pool and drops the rest. What that discards can be sized: the salt wets
 \qty{1.26e-3}{\square\metre} of sidewall against \qty{4.78e-3}{\square\metre} of
 membrane, so the omitted nickel carries a permeation path in parallel with the
 modelled one worth \qty{26}{\percent} of the membrane area. The multidimensional
@@ -1277,9 +1277,9 @@ infer properties from data, so the omitted path is a caveat and not an error bar
     \label{fig:hyperion_geometry}
 \end{figure*}
 
-Table~\ref{tab:hyperion_params} collects the operating point. Geometry and
-conditions are read off the \HYPERION{} modelling repository and the transport
-properties are Arrhenius fits from the literature, one source per material. Two
+Geometry and conditions are read off the \HYPERION{} modelling repository and
+the transport properties are Arrhenius fits from the literature, one source per
+material (Table~\ref{tab:hyperion_params}). Two
 conventions apply throughout. The rate constants of the present implementation
 carry no Arrhenius form (Sec.~\ref{sec:params}), so this whole section is run at
 a single temperature, \qty{773.15}{\kelvin}, at the low end of the \HYPERION{}
@@ -1420,8 +1420,8 @@ definition.
     \label{fig:hyperion_damkohler}
 \end{figure*}
 
-Figure~\ref{fig:hyperion_damkohler} shows the transients themselves. The steady
-flux is the more sensitive of the two diagnostics: at $\Da = 10^{-2}$ it is
+Of the two diagnostics the steady flux is the more sensitive
+(Fig.~\ref{fig:hyperion_damkohler}): at $\Da = 10^{-2}$ it is
 \qty{2.6}{\percent} of the LTE value, while the time lag is only
 \qty{49}{\percent} longer than the LTE one. A normalised transient is therefore
 a weaker discriminator than an absolute one, though the discrimination does not
@@ -1479,7 +1479,7 @@ differential transport away from it.
     \label{fig:hyperion_redox}
 \end{figure*}
 
-Figure~\ref{fig:hyperion_redox} collects the sweep, run at $\Da = 10$, where the
+The redox sweep of Fig.~\ref{fig:hyperion_redox} is run at $\Da = 10$, where the
 recombination channel on its own reaches \qty{96}{\percent} of the LTE flux by
 Sec.~\ref{sec:hyperion_lte}. That \qty{4}{\percent} residual is the whole of the
 slow-channel error at this operating point, and the departures reported below
