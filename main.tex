@@ -100,9 +100,8 @@
 \address[mit]{Massachusetts Institute of Technology, Cambridge, MA, USA}
 
 \begin{abstract}
-Macroscopic hydrogen transport codes close material interfaces with local
-thermodynamic equilibrium (LTE), imposing continuity of chemical potential as an
-algebraic per-species constraint. Three assumptions hide in that closure: fast
+Macroscopic hydrogen transport codes model material interfaces with local
+thermodynamic equilibrium (LTE), imposing continuity of chemical potential as a per-species constraint. Three assumptions hide in that closure: fast
 interfacial equilibration, a single exchange pathway between the two sides, and
 a carrier species known in advance on each side. The literature scrutinises the
 first, but the other two are the more consequential failures, and neither
@@ -186,13 +185,11 @@ with the chemistry.
 
 Hydrogen leaving a metal lattice into a molten fluoride has more than one
 chemical fate. It may recombine to $\mathrm{H_2}$ and dissolve physically,
-obeying Henry's law with a low solubility and a high mobility, or it may be
-oxidised by the melt to HF and dissolve chemically, with a much higher
-solubility, corrosive behaviour and a strong dependence on the redox state of
+obeying Henry's law, or it may be
+oxidised by the melt to HF and dissolve chemically with a strong dependence on the redox state of
 the salt. The branching between the two is kinetic, and it moves with that redox
 state \cite{lam_impact_2021,carotti_electrochemical_2021}. Assumption (H2)
-asserts that one of these pathways may be ignored, and the chemistry does not
-say which.
+asserts that one of these pathways may be ignored, and the chemistry does not say which.
 
 The ambiguity is not hypothetical. Measuring tritium permeation through a nickel
 membrane into FLiBe, Calderoni et al.\ \cite{calderoni_measurement_2008}
@@ -205,8 +202,7 @@ a fortiori for their isotopologues, still span orders of magnitude
 \cite{libra_2022}.
 
 The ambiguity has already contaminated the data record, because \emph{a
-solubility constant has no law-independent units}. Sieverts-type dissolution
-gives \unit{\mole\per\cubic\metre\pascal\tothe{-1/2}} and Henry-type gives
+solubility constant has no law-independent units}. Sieverts-type dissolution gives \unit{\mole\per\cubic\metre\pascal\tothe{-1/2}} and Henry-type gives
 \unit{\mole\per\cubic\metre\per\pascal}, and the two cannot be interconverted by
 any fixed factor, so reporting a number presupposes the speciation that is
 itself the quantity in question. Section~\ref{sec:units} takes the point up. We
@@ -754,7 +750,7 @@ also wrong in form: by Eq.~(\ref{eq:iso_HT}) the HT concentration is set by
 the \emph{product} $\cm{\mathrm{H}}\cm{\mathrm{T}}$, so the
 metal~$\rightarrow$~salt map is bilinear and non-diagonal, and a condition of
 the form $c_i/K_{S,i} = f(c_i')$ cannot represent an off-diagonal coupling. In
-the multi-isotope case LTE is not inaccurate; it is ill-posed.
+the multi-isotope case LTE is simply ill-posed.
 
 Isotope exchange, $\mathrm{H_2} + \mathrm{T_2} \rightleftharpoons
 2\,\mathrm{HT}$, is slow in the homogeneous phase but is catalysed by metal
@@ -1471,10 +1467,9 @@ flux is the more sensitive of the two diagnostics: at $\Da = 10^{-2}$ it is
 \qty{47}{\percent} longer than the LTE one. A normalised transient is therefore
 a weaker discriminator than an absolute one, though the discrimination does not
 vanish, since a slow interface delays the breakthrough as well as suppressing it.
-
-The number worth carrying away is in the third panel. Applying the classical
+Moreover, applying the classical
 single-slab inversion $D = L^{2}/6t_\mathrm{lag}$ to each computed transient, as
-an experimentalist would to a measured one, returns an apparent diffusivity
+an experimentalist might do to a measured one, returns an apparent diffusivity
 \qty{32}{\percent} below the LTE value at $\Da = 10^{-2}$ and \qty{23}{\percent}
 below it at $\Da = 10^{-1}$, with every diffusivity in the model held fixed. A
 time-lag analysis of a permeation curve is therefore not a readout of the bulk
@@ -1758,8 +1753,7 @@ the natural next step. The interface is taken as planar and uniform, there is no
 natural convection in the salt and no wetting or gas-bubble effects at the free
 surface, and the rate constants are independent of concentration.
 
-Parameter provenance deserves stating plainly, because a referee will otherwise
-raise it. Since the available FLiBe solubility data are reported under an
+Since the available FLiBe solubility data are reported under an
 assumed dissolution law (Sec.~\ref{sec:units}), the salt-side transport
 parameters used here are not independently measured. What we demonstrate is that
 the framework is internally consistent, that it reproduces LTE wherever LTE
