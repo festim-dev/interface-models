@@ -207,7 +207,7 @@ solubility constant has no law-independent units}. Sieverts-type dissolution giv
 any fixed factor, so reporting a number presupposes the speciation that is
 itself the quantity in question. Section~\ref{sec:units} takes the point up. We
 treat it as a motivating symptom and not as a criticism of any measurement: it
-is what assumption (H3) looks like when it fails in practice.
+is what assumption (A3) looks like when it fails in practice.
 
 With more than one isotope the difficulty becomes structural. Two mobile atomic
 species in the metal, H and T, feed five carriers in the salt, $\mathrm{H_2}$,
@@ -218,7 +218,7 @@ chemical potential can express such a map. LTE here is not inaccurate, it is
 ill-posed.
 
 Every ingredient of a kinetic interface condition is standard somewhere.
-Finite-rate surface kinetics has closed gas/solid interfaces for four decades
+Finite-rate surface kinetics has closed gas/solid interfaces
 \cite{ali-khan_rate_1978,pick_model_1985}; detailed balance is the usual
 constraint tying forward and reverse constants in a surface reaction network
 \cite{mhadeshwar_thermodynamic_2003,gorban_extended_2011}; and the geochemistry
@@ -227,13 +227,13 @@ chemistry three decades ago, on the same grounds, deciding when it may
 nonetheless be used with a Damk\"ohler number that compares the rate of the
 interfacial reaction with the rate at which transport supplies it
 \cite{knapp_spatial_1989,steefel_coupled_1994}. What is
-missing is the assembly: no macroscopic hydrogen transport code closes a
-condensed/condensed interface with competing reaction channels and multiple
+missing is the assembly: no macroscopic hydrogen transport code models a
+condensed/condensed (eg. metal/metal, metal/liquid) interface with competing reaction channels and multiple
 isotopologues.
 
 This paper supplies that assembly. We formulate a general kinetic interface
-framework in which the algebraic constraint is replaced by reversible reaction
-channels obeying mass action, with detailed balance fixing the ratio of each
+framework in which the algebraic (Dirichlet-type) constraint is replaced by reversible reaction
+channels obeying mass action law, with detailed balance fixing the ratio of each
 pair of rate constants from the same thermodynamic data that parameterise LTE,
 and we implement it in \FESTIM{} \cite{dark_festim_2026}. We recover LTE
 analytically as the fast-kinetics limit of a single channel, in both its
@@ -241,16 +241,13 @@ Sieverts/Sieverts and Sieverts/Henry forms, so that what we propose is a strict
 generalisation of LTE, not a competing model. We then derive two dimensionless
 groups that delimit its validity, a Damk\"ohler number within a channel and a
 branching ratio between channels. Finally, we apply the framework to the
-\HYPERION{} Ni/FLiBe/gas experiment \cite{hyperion_facility}, in single-isotope
-and in H/T modes.
+\HYPERION{} Ni/FLiBe/gas experiment \cite{hyperion_facility}, in single-isotope.
 
 Interfaces are treated throughout as reactive surfaces without their own stored
 inventory. Intermediate trapped states localised on the interface, and the
 codimension-1 formulation needed to carry an interfacial ODE alongside the bulk
-equations, are the subject of a companion paper \cite{festim_codim1_inprep}, as
-are the Be/BeO and W/Cu interface-trapping cases. The two descriptions are
-nested, and App.~\ref{app:limits} gives the limit in which the one used here is
-recovered from the other.
+equations, are the subject of a future paper, as
+are the Be/BeO and W/Cu interface-trapping cases. 
 
 % ===============================================================
 \section{Interface conditions for hydrogen transport}
@@ -928,7 +925,7 @@ one restriction per subdomain.
 algebraic in the trace values, so no function space on $\Gamma$ and no
 additional unknowns are required, and the size of the linear system is unchanged
 relative to an LTE interface on the same mesh. This is the simplification
-relative to the companion codimension-1 work \cite{festim_codim1_inprep}, where
+relative to the companion codimension-1 work, where
 an interfacial inventory is transported along $\Gamma$ and does carry its own
 degrees of freedom.
 
@@ -1528,7 +1525,7 @@ $c^{\star}/\cm{\mathrm{H}}|_\Gamma \simeq 1.6$ of Sec.~\ref{sec:hyperion_lte};
 where the branching matters they separate by nearly two decades. All results
 here are reported against the measured value.
 
-\begin{figure}[htbp]
+\begin{figure*}[htbp]
     \centering
     \includegraphics[width=1\linewidth]{regime_map_hyperion.pdf}
     \caption{The error of the LTE closure over the $(\Da, \Bra)$ plane at the
@@ -1541,7 +1538,7 @@ here are reported against the measured value.
     upper axis carries the forward rate constant of the recombination channel
     corresponding to each $\Da$ at this operating point.}
     \label{fig:hyperion_regime_map}
-\end{figure}
+\end{figure*}
 
 Sweeping both groups together gives the map of
 Fig.~\ref{fig:hyperion_regime_map}, drawn from $81$ transient solves of Model 3
@@ -1725,8 +1722,7 @@ App.~\ref{app:limits} shows that eliminating a resolved interfacial population,
 where it is quasi-steady and dilute, returns the closures used above with
 detailed balance intact. What the limit discards is the inventory itself, which
 matters in a transient whenever it is comparable with the bulk loading, and the
-site blocking that a finite site density imposes. Both belong to the companion
-paper \cite{festim_codim1_inprep}, as do the W/Cu
+site blocking that a finite site density imposes. Both will be the subject of future work, as do the W/Cu
 \cite{silva-solis_hydrogen_2026} and Be/BeO \cite{hodille_molecular_2022}
 interface-trapping cases.
 
@@ -1946,9 +1942,7 @@ transport timescale and dilute returns Eq.~(\ref{eq:model1_flux}), with $k^{\pm}
 built from the individual hop rates and Eq.~(\ref{eq:detailed_balance_1})
 unchanged, the site energy of the plane cancelling from the ratio and setting
 only the magnitude. Model 1 is in that sense the adiabatic elimination of such a
-description, not an alternative to it, and the inventory held on the
-plane, identically zero here, belongs to the companion paper
-\cite{festim_codim1_inprep}.
+description, not an alternative to it.
 
 % ---------------------------------------------------------------
 \section{Analytical steady-state solutions}
