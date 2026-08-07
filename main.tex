@@ -120,9 +120,7 @@ permeating flux. The measured pressure
 exponent is a readout of the branching ratio and not a property of the
 salt: a redox sweep at fixed temperature should move it continuously between 1
 and 2. With two isotopes, two metal-side species feed five salt-side carriers
-through a bilinear, non-diagonal map, and a per-species LTE condition is not
-merely inaccurate but ill-posed. Flux speciation becomes a direct simulation
-output.
+through a bilinear, non-diagonal map, and a per-species LTE condition is ill-posed.
 \end{abstract}
 
 \begin{keyword}
@@ -151,8 +149,8 @@ or release point, so the condition imposed at that interface enters every
 quantity a designer needs to predict.
 
 Macroscopic transport codes such as \FESTIM{} \cite{dark_festim_2026},
-\TMAP{}8 \cite{simon_moose-based_2025} and \MHIMS{}
-\cite{hodille_macroscopic_2015} close such interfaces with local thermodynamic
+\TMAP{}8 \cite{simon_moose-based_2025}
+model such interfaces with local thermodynamic
 equilibrium (LTE), that is, with continuity of the chemical potential of the
 transported species. In practice this becomes an algebraic constraint of
 Dirichlet type, imposed per species, relating the two interfacial concentrations
@@ -161,24 +159,26 @@ $c_A/K_{S,A} = c_B/K_{S,B}$ where hydrogen dissolves dissociatively on both
 sides, and $c_B = K_{H,B}\,(c_A/K_{S,A})^2$ where it dissolves dissociatively on
 one side and molecularly on the other.
 
-Three assumptions are hidden in that closure, and they are rarely stated
-together. (H1) is that interfacial equilibration is fast compared with bulk
-transport. (H2) is that a \emph{single} exchange pathway connects the two sides.
-(H3) is that the identity of the carrier species on each side is known a priori
+Three assumptions are hidden in this model, and they are rarely stated
+together. (A1) is that interfacial equilibration is fast compared with bulk
+transport. (A2) is that a \emph{single} exchange pathway connects the two sides.
+(A3) is that the identity of the carrier species on each side is known a priori
 and fixed, so that one solubility law applies throughout.
 
-Of the three, (H1) is the one usually scrutinised, and it is known to fail.
+Of the three, (A1) is the one usually scrutinised, and it is known to fail.
 Molecular dynamics at the Be/BeO interface shows that LTE is not reached even
-at \qty{1500}{\kelvin} \cite{hodille_molecular_2022}, and a combined
+at \qty{1500}{\kelvin} \cite{hodille_molecular_2022}.
+Moreover a combined
 density-functional and rate-equation treatment of W/Cu shows that the steady
 state reached at such an interface is not the thermodynamic equilibrium state
-whenever a net flux is carried \cite{silva-solis_hydrogen_2026}. Both generalise
+whenever a net flux is carried \cite{silva-solis_hydrogen_2026}.
+Both generalise
 the closure along interfacial storage and two-step kinetics, by giving the
 interfacial plane a state of its own. The generalisation we pursue runs in a
 different direction, along the number of channels and the identity of the
 carriers, and the two compose.
 
-\KEY{(H2) and (H3) have received almost no attention, and we argue that they are
+\KEY{(A2) and (A3) have received almost no attention, and we argue that they are
 the more consequential failures.} The system that motivates the argument is a
 metal in contact with a fluoride melt, where neither assumption survives contact
 with the chemistry.
@@ -188,7 +188,7 @@ chemical fate. It may recombine to $\mathrm{H_2}$ and dissolve physically,
 obeying Henry's law, or it may be
 oxidised by the melt to HF and dissolve chemically with a strong dependence on the redox state of
 the salt. The branching between the two is kinetic, and it moves with that redox
-state \cite{lam_impact_2021,carotti_electrochemical_2021}. Assumption (H2)
+state \cite{lam_impact_2021,carotti_electrochemical_2021}. Assumption (A2)
 asserts that one of these pathways may be ignored, and the chemistry does not say which.
 
 The ambiguity is not hypothetical. Measuring tritium permeation through a nickel
