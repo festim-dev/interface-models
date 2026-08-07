@@ -100,32 +100,30 @@
 \address[mit]{Massachusetts Institute of Technology, Cambridge, MA, USA}
 
 \begin{abstract}
-\TODO{write the abstract last. Points to hit:}
-\begin{itemize}
-    \item Macroscopic hydrogen transport codes (\FESTIM, \TMAP, \MHIMS) impose
-          local thermodynamic equilibrium (LTE) at interfaces: continuity of
-          chemical potential, realised as a per-species Dirichlet constraint.
-    \item We formulate a general kinetic interface framework: a set of
-          reversible interfacial reaction channels obeying mass action, with
-          detailed balance fixing the rate ratios.
-    \item LTE is recovered analytically as the fast-kinetics limit of a
-          \emph{single} channel, in both the Sieverts/Sieverts and the
-          Sieverts/Henry forms.
-    \item A Damk\"ohler criterion identifies when kinetics matter \emph{within}
-          a channel; a branching ratio identifies when no LTE form exists at all.
-    \item Applied to \HYPERION{} (Ni / molten FLiBe / gas): hydrogen leaving the
-          Ni can recombine to $\mathrm{H_2}$ or be fluorinated to HF, giving a
-          permeating flux that is a kinetically-set mixture of two carriers. The
-          apparent interfacial law is neither Sieverts nor Henry, but drifts
-          between them with loading, temperature and salt redox state.
-    \item With H and T present the salt carries five species
-          ($\mathrm{H_2}$, HT, $\mathrm{T_2}$, HF, TF) fed by two metal-side
-          species through a bilinear map: a per-species LTE condition is not
-          merely inaccurate, it is ill-posed. Isotope swamping and interfacial
-          fractionation are predicted; neither is expressible under LTE.
-    \item Flux speciation becomes a direct simulation output, comparable with
-          \HYPERION{} bubbler and mass-spectrometry diagnostics.
-\end{itemize}
+Macroscopic hydrogen transport codes close material interfaces with local
+thermodynamic equilibrium (LTE), imposing continuity of chemical potential as an
+algebraic per-species constraint. Three assumptions hide in that closure: fast
+interfacial equilibration, a single exchange pathway between the two sides, and
+a carrier species known in advance on each side. The literature scrutinises the
+first, but the other two are the more consequential failures, and neither
+survives at a metal/molten-salt interface. We replace the constraint by
+reversible reaction channels on the interface obeying mass action, with detailed
+balance fixing each ratio of rate constants from the thermodynamic data that
+already parameterise LTE, and we implement the framework in \FESTIM{}. LTE is
+recovered as the fast-kinetics limit of a \emph{single} channel, in both its
+Sieverts/Sieverts and its Sieverts/Henry form, so the framework generalises LTE
+and does not compete with it. A Damk\"ohler number delimits validity within a
+channel, a branching ratio between channels. In a representative nickel/FLiBe
+system, hydrogen partitions kinetically between molecular and fluoride
+carriers. The apparent interfacial law then drifts between Sieverts and Henry
+with loading and salt redox state, and an LTE closure underestimates the steady
+permeating flux. The measured pressure
+exponent is a readout of the branching ratio and not a property of the
+salt: a redox sweep at fixed temperature should move it continuously between 1
+and 2. With two isotopes, two metal-side species feed five salt-side carriers
+through a bilinear, non-diagonal map, and a per-species LTE condition is not
+merely inaccurate but ill-posed. Flux speciation becomes a direct simulation
+output.
 \end{abstract}
 
 \begin{keyword}
