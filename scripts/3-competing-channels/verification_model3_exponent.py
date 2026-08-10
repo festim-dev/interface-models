@@ -83,6 +83,18 @@ ALL_A_F = (0.1, 1.0, 10.0)
 # the concentration readout
 R_RATIO = (L_s / D_HF) / (L_s / D_H2)
 
+# renormalised forward constants of App. (analytical): with both carriers held at
+# zero downstream, each channel rate is an explicit function of the metal-side
+# trace alone, w_rec = A_REC c**2 and w_F = b_fluo(a_F) c. The recombination one
+# carries no a_F, so the quadratic branch is common to the three sweeps
+A_REC = kr_plus / (1 + kr_minus * L_s / D_H2)
+
+
+def b_fluo(a_F):
+    """Renormalised forward constant of the fluorination channel."""
+    return kf_plus * a_F / (1 + kf_minus * L_s / D_HF)
+
+
 COLUMNS = (
     "a_F,c_0,c_m,c_H2,c_HF,w_rec,w_F,J,B,"
     "n_flux,n_flux_pred,n_conc,n_conc_pred,err_analytical"
@@ -106,9 +118,7 @@ def run_model(c_0, a_F):
     # material carries a per-species diffusivity rather than a single one
     liquid = F.VolumeSubdomain1D(
         id=2,
-        material=F.Material(
-            D_0={"H2": D_H2, "HF": D_HF}, E_D={"H2": 0.0, "HF": 0.0}
-        ),
+        material=F.Material(D_0={"H2": D_H2, "HF": D_HF}, E_D={"H2": 0.0, "HF": 0.0}),
         borders=[x_interface, 1],
     )
     left = F.SurfaceSubdomain(id=3, locator=lambda x: np.isclose(x[0], 0))
@@ -240,10 +250,14 @@ def sweep(all_c_0, a_F):
 
 
 def plot(rows, filename):
-    """Two panels. (a) the exponent against the interfacial loading, one sweep
-    per redox state, which is the shape a pressure sweep would report: lines are
-    Eq. (n_of_B), markers the slopes measured from the FESTIM fluxes.
-    (b) the two readouts against the branching ratio itself. Both follow
+    """Three panels. (a) the total atomic flux against the interfacial loading,
+    which is what the exponent below is the slope of: each sweep starts on its
+    own linear branch and ends on the quadratic branch the three share.
+    (b) the exponent against the interfacial loading, one sweep per redox state,
+    which is the shape a pressure sweep would report: lines are Eq. (n_of_B),
+    markers the slopes measured from the FESTIM fluxes. It shares its x axis with
+    (a), so the bend in a flux curve sits above the rise of its exponent.
+    (c) the two readouts against the branching ratio itself. Both follow
     Eq. (n_of_B), the flux one in B and the inventory one in B R_HF/R_H2, so the
     curves are the same shape a constant factor apart on the log axis."""
     mt.set_theme("urban")
@@ -257,9 +271,73 @@ def plot(rows, filename):
     # disappear against the background when used for a line
     ticks = [1.0, 1.25, 1.5, 1.75, 2.0]
 
-    fig, (ax_load, ax_branching) = plt.subplots(2, 1, figsize=(6, 6.6))
+    # (a) and (b) share the loading axis and are stacked tight against each
+    # other; (c) is read against a different abscissa, so it goes in its own
+    # subfigure with a gap wide enough that the two axes are not taken for one
+    fig = plt.figure(figsize=(6, 10.2), layout="constrained")
+    sub_load, sub_branching = fig.subfigures(2, 1, height_ratios=[2.15, 1], hspace=0.15)
+    ax_flux, ax_load = sub_load.subplots(2, 1, sharex=True, height_ratios=[1.15, 1])
+    ax_branching = sub_branching.subplots()
 
-    # (a) exponent against loading, one sweep per redox state. The two exponents
+    # (a) the flux itself. The exponent of the panel below is the local slope of
+    # these curves, so the two horizontal guides there are the two straight lines
+    # here: the quadratic branch 2 w_rec, common to the three sweeps because a_F
+    # does not enter the recombination channel, and a linear branch b_fluo(a_F) c
+    # per sweep
+    c_grid = np.logspace(np.log10(rows[:, 2].min()), np.log10(rows[:, 2].max()), 400)
+
+    # the crossover of each sweep, where its two channels carry equal atomic flux
+    c_cross = {a_F: b_fluo(a_F) / (2 * A_REC) for a_F in ALL_A_F}
+
+    # drawn from a third of the earliest crossover upwards; below that it is far
+    # under every sweep and only stretches the axis
+    c_quad = c_grid[c_grid > min(c_cross.values()) / 3]
+    ax_flux.loglog(
+        c_quad,
+        2 * A_REC * c_quad**2,
+        color=guide,
+        linestyle="--",
+        linewidth=1,
+        label="recombination alone, $n = 2$",
+    )
+
+    for i, a_F in enumerate(ALL_A_F):
+        sel = rows[:, 0] == a_F
+        c_m, J = rows[sel, 2], rows[sel, 7]
+
+        ax_flux.loglog(
+            c_grid,
+            2 * A_REC * c_grid**2 + b_fluo(a_F) * c_grid,
+            color=f"C{i}",
+            linewidth=1.2,
+        )
+        ax_flux.loglog(
+            c_m[::4],
+            J[::4],
+            linestyle="none",
+            marker="o",
+            markersize=4,
+            markerfacecolor="none",
+            color=f"C{i}",
+        )
+        # the linear branch each sweep leaves, stopped a little past its own
+        # crossover so the three guides do not overrun the panel
+        c_lin = c_grid[c_grid < 3 * c_cross[a_F]]
+        ax_flux.loglog(
+            c_lin,
+            b_fluo(a_F) * c_lin,
+            color=guide,
+            linestyle=":",
+            linewidth=1,
+            label="fluorination alone, $n = 1$" if i == 0 else None,
+        )
+
+    ax_flux.set_ylabel(r"total atomic flux $J$")
+    ax_flux.legend(
+        loc="upper left", frameon=False, handletextpad=0.5, borderaxespad=0.2
+    )
+
+    # (b) exponent against loading, one sweep per redox state. The two exponents
     # LTE offers are the horizontal guides; every sweep spends most of its range
     # between them
     for level, label, x, ha in (
@@ -372,7 +450,6 @@ def plot(rows, filename):
         loc="upper right", frameon=False, handletextpad=0.5, borderaxespad=0.2
     )
 
-    fig.tight_layout()
     fig.savefig(filename)
 
 
@@ -394,12 +471,18 @@ if __name__ == "__main__":
     print(f"max |err_analytical|            : {rows[:, 13].max():.3e}")
     print(f"max |n_flux - (2+B)/(1+B)|      : {d_flux.max():.3e}")
     print(f"max |n_conc - (2+Br)/(1+Br)|    : {d_conc.max():.3e}  (r = {R_RATIO:g})")
-    print(f"n_flux range                    : {rows[:, 9].min():.4f} to {rows[:, 9].max():.4f}")
-    print(f"B range                         : {rows[:, 8].min():.3e} to {rows[:, 8].max():.3e}")
+    print(
+        f"n_flux range                    : {rows[:, 9].min():.4f} to {rows[:, 9].max():.4f}"
+    )
+    print(
+        f"B range                         : {rows[:, 8].min():.3e} to {rows[:, 8].max():.3e}"
+    )
 
     # n = 3/2 at B = 1 is the midpoint of Eq. (n_of_B); report the closest point
     k = np.argmin(np.abs(np.log(rows[:, 8])))
-    print(f"closest point to B = 1          : B = {rows[k, 8]:.4f}, n = {rows[k, 9]:.4f}")
+    print(
+        f"closest point to B = 1          : B = {rows[k, 8]:.4f}, n = {rows[k, 9]:.4f}"
+    )
 
     np.savetxt(
         "verification_model3_exponent.csv",

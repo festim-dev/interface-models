@@ -1162,13 +1162,21 @@ the solver tolerance sets the floor.
     \centering
     \includegraphics[width=1\linewidth]{verification_model3_exponent.pdf}
     \caption{Two channels on one interface, and the exponent they produce.
-    (a) The apparent exponent $n$ of Eq.~(\ref{eq:apparent_exponent}) against
-    the interfacial loading, for three values of the effective fluoride activity
-    $a_\mathrm{F}$: lines are Eq.~(\ref{eq:n_of_B}), circles the slopes measured
-    from the computed fluxes. Every sweep leaves the linear closure at low
+    (a) The total atomic flux $J$ leaving the metal against the interfacial
+    loading, for three values of the effective fluoride activity
+    $a_\mathrm{F}$: lines are the closed form of App.~\ref{app:analytical},
+    circles the computed fluxes. Each sweep runs along the linear branch of its
+    fluorination channel at low loading and joins the quadratic branch of the
+    recombination channel at high loading, the same branch for all three because
+    $a_\mathrm{F}$ does not enter that channel. The apparent exponent is the
+    local slope of these curves.
+    (b) That slope, the apparent exponent $n$ of
+    Eq.~(\ref{eq:apparent_exponent}), on the same loading axis and in the same
+    colours: lines are Eq.~(\ref{eq:n_of_B}), circles the slopes measured from
+    the computed fluxes. Every sweep leaves the linear closure at low
     loading and approaches Sieverts/Henry at high loading, and the redox state
     sets where the crossover falls, not whether it happens.
-    (b) The two ways of reading the exponent, against the branching ratio
+    (c) The two ways of reading the exponent, against the branching ratio
     itself. Both follow Eq.~(\ref{eq:n_of_B}), the flux in $\Bra$ and the
     salt-side inventory in $\Bra\,R_\mathrm{HF}/R_\mathrm{H_2}$, so the curves
     have the same shape a constant factor apart: they agree on the law and not
@@ -1182,7 +1190,7 @@ everywhere, the truncation error of the centred difference at the sweep spacing
 used, and it spans $1.0002$ to $1.9978$ as the branching ratio crosses the unit
 interval. At the point of the sweep nearest $\Bra = 1$ we obtain $n = 1.5000$,
 the midpoint of Eq.~(\ref{eq:n_of_B}) at which the two channels carry equal
-atomic fluxes. Read together with Fig.~\ref{fig:model3_exponent}a, this is the
+atomic fluxes. Read together with Fig.~\ref{fig:model3_exponent}a,b, this is the
 falsifiable content of Sec.~\ref{sec:units} in verified form: the exponent is a
 continuous function of the branching ratio over its whole range, so a redox
 sweep moves it and no fixed choice of $1$ or $2$ describes the interface across
@@ -1200,7 +1208,7 @@ follows Eq.~(\ref{eq:n_of_B}) with $\Bra$ replaced by
 $\Bra\,R_\mathrm{HF}/R_\mathrm{H_2}$, and the sweep reproduces this to
 \num{5.7e-4}. Plotted against the same branching ratio, the two readouts are
 curves of identical shape separated by the resistance ratio
-(Fig.~\ref{fig:model3_exponent}b): the
+(Fig.~\ref{fig:model3_exponent}c): the
 flux exponent passes through $3/2$ at $\Bra = 1$ and the
 inventory exponent does so at $\Bra = 1/4$. At a branching ratio of $0.31$, for
 instance, the flux reports $n = 1.77$ and the inventory $n = 1.45$ on the same
