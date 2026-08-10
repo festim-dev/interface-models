@@ -32,7 +32,7 @@ say so rather than installing TeX Live unprompted.
 
 Macroscopic H-transport codes close material interfaces with local thermodynamic
 equilibrium (LTE), continuity of chemical potential, imposed as an algebraic
-per-species constraint. Three assumptions hide in that closure:
+per-species constraint. Three assumptions hide in that condition:
 
 - (H1) interfacial equilibration is fast vs bulk transport;
 - (H2) a **single** exchange pathway connects the two sides;
@@ -82,7 +82,7 @@ and W/Cu cases belong.
 
 - `1-first-order-interface/`: `example_usage.py` (1D two-slab,
   `InterfaceReaction` with `reactants=[A]`, `products=[A]`),
-  `analytical_solution.py` (closed-form interfacial concentrations and flux with
+  `analytical_solution.py` (analytical interfacial concentrations and flux with
   interfacial resistance in series with `L/D`, this is the analytical backbone
   of `sec:analytical` / `app:analytical`), `parametric_study.py` (Da sweep over
   `logspace(-2, 2)`, transient + steady; produces
@@ -243,6 +243,14 @@ against the code before claiming a capability in the paper:
     the bare appositive, or split the sentence.
   - `This is the <noun> that/used in ...` as a cross-reference ("This is the
     solution used in Sec. 4.1"). Say "We use this solution in Sec. 4.1".
+- **Banned words: "closure" and "closed form".** The author does not use either,
+  in the paper or in the script docstrings, and both were removed everywhere on
+  2026-08-10. For the algebraic LTE constraint write "condition" ("an LTE
+  condition", "the Sieverts/Henry condition"), "interface law", "constraint", or
+  "model", picking whichever does not repeat a neighbouring word. For the
+  analytical steady states of App. `app:analytical` write "analytical
+  solution". Avoid the verb too: an interface is "treated" or "described" a
+  given way, it is not "closed" by it.
 - **Voice benchmark.** Delaporte-Mathurin et al., arXiv:2603.25751 (PathSim
   fuel-cycle workflow) is the closest sample of the first author's own prose:
   plainer and more expository than this draft, mean sentence ~23 words,

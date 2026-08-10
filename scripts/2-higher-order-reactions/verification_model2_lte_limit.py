@@ -1,5 +1,5 @@
 """Verification of Model 2 on a metal/liquid problem: the same eight-decade
-Damkoehler sweep as the Model 1 test, converging to the Sieverts/Henry closure.
+Damkoehler sweep as the Model 1 test, converging to the Sieverts/Henry condition.
 
 Backs Sec. "Recovery of LTE in the fast-kinetics limit". The geometry is the
 two-slab problem of `1-first-order-interface/`, but the interface now carries
@@ -25,7 +25,7 @@ value K_S sqrt(P_up), and the value actually attained at the interface,
 is reported as a diagnostic. Three quantities are measured per Da:
 
   err_analytical : relative difference between the FESTIM interfacial
-                   concentrations and the closed form of
+                   concentrations and the analytical solution of
                    analytical_solution_model2.py. A code-verification number;
                    the steady profiles are piecewise linear and so nodally
                    exact on P1, which leaves the interface term alone under
@@ -124,7 +124,7 @@ def run_model(k_plus, k_minus):
 
 
 def sweep(all_da):
-    """Solve at each control Da and compare with the closed form. One row per
+    """Solve at each control Da and compare with the analytical solution. One row per
     Da, with the columns of COLUMNS."""
     rows = []
     for da in all_da:
@@ -271,7 +271,7 @@ def plot(rows, filename):
         color="C2",
     )
     ax_err.annotate(
-        "error vs closed form",
+        "error vs analytical",
         xy=(da[8], np.finfo(float).eps),
         xytext=(-30, 10),
         textcoords="offset points",

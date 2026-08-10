@@ -1,4 +1,4 @@
-"""Closed-form steady state of Model 3 on a metal/liquid two-slab problem.
+"""Analytical steady state of Model 3 on a metal/liquid two-slab problem.
 
 The metal occupies [0, L_m] with the atomic species H, the liquid occupies
 [L_m, L_m + L_s] with two carriers, H2 and HF, and the interface at x = L_m

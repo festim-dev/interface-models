@@ -15,7 +15,7 @@ how far the interface reaction sits from detailed balance. Da = k_plus L / D
 carries the bulk lengths and diffusivities instead. Nothing ties them together,
 and the boundary conditions can hold the trace ratio fixed while Da is swept.
 
-From the closed form of analytical_solution.py, with u = c_L / (K c_0),
+From the analytical solution of analytical_solution.py, with u = c_L / (K c_0),
 Da_A = k_plus L_A / D_A and Da_B = k_minus L_B / D_B,
 
     phi / (k_plus c_A|_Gamma) = (1 - u) / (1 + Da_B + u Da_A),
@@ -35,7 +35,7 @@ and reports what LTE gets wrong in each. The flux error is 1 / (1 + Da*) in
 both, as Eq. (model1_convergence) says it must be, and in the balanced
 configuration the error on c_A|_Gamma is the same number. In the swept
 configuration it is not: it is larger by 1e6, the diffusivity contrast, and at
-Da* = 1e4 the closed forms differ by a factor of 101 on a flux the two agree on
+Da* = 1e4 the analytical solutions differ by a factor of 101 on a flux the two agree on
 to four digits.
 
 The reading for Sec. "When can LTE still be used?": Da* bounds the error on the
@@ -46,7 +46,7 @@ Produces:
 
   - defect_ratio_vs_damkohler.pdf
 
-The closed form is the reference throughout, and FESTIM is run at three points
+The analytical solution is the reference throughout, and FESTIM is run at three points
 per configuration to confirm it, against both the kinetic InterfaceReaction and
 the LTE Interface.
 """
@@ -94,7 +94,7 @@ def lte_solution(D_B):
 
 
 def sweep(D_B, all_da):
-    """Closed-form solve at each Da, with Da the two-sided group Da* of
+    """Analytical solve at each Da, with Da the two-sided group Da* of
     Eq. (defect_1_explicit). Returns the defect ratio and the two errors LTE
     makes, on the flux and on the metal-side interfacial concentration."""
     R_A = L_A / D_A
@@ -123,7 +123,7 @@ def sweep(D_B, all_da):
 
 
 def festim_check(D_B, all_da):
-    """Run both interface classes at each Da and compare with the closed forms.
+    """Run both interface classes at each Da and compare with the analytical solutions.
 
     The LTE penalty term has to beat the diffusive stiffness of the stiffer
     slab, which is max(D)/h here, so it is scaled with D_B: the constraint
@@ -151,9 +151,9 @@ def festim_check(D_B, all_da):
         c_A_lte_num = run_lte_model(D_B, penalty_term=1e6 * D_B)
 
         print(
-            f"  Da*={da:8.1e}  kinetic c_A={c_A_num:.6e} (closed form "
+            f"  Da*={da:8.1e}  kinetic c_A={c_A_num:.6e} (analytical solution "
             f"{c_A_ana:.6e}, rel {abs(c_A_num - c_A_ana) / c_A_ana:.1e})   "
-            f"LTE c_A={c_A_lte_num:.6e} (closed form {c_A_lte:.6e}, rel "
+            f"LTE c_A={c_A_lte_num:.6e} (analytical solution {c_A_lte:.6e}, rel "
             f"{abs(c_A_lte_num - c_A_lte) / c_A_lte:.1e})"
         )
 
@@ -276,7 +276,7 @@ def plot(results, filename):
         weight="bold",
     )
     ax_err.set_xlabel(r"Damköhler number $\mathrm{Da}^{\star}$")
-    ax_err.set_ylabel("relative error of the LTE closure")
+    ax_err.set_ylabel("relative error of the LTE condition")
 
     fig.tight_layout()
     fig.savefig(filename)
@@ -301,7 +301,7 @@ if __name__ == "__main__":
             f"{results['swept'][idx, column]:>14.3e}"
         )
 
-    print("\nFESTIM check against the closed forms:")
+    print("\nFESTIM check against the analytical solutions:")
     for name, D_B in CONFIGURATIONS.items():
         print(f" {name}:")
         festim_check(D_B, [1e2, 1e4, 1e6])

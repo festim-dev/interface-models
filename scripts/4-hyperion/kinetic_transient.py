@@ -13,7 +13,7 @@ one molecule per event.
 Detailed balance fixes k_+/k_- = K_H_molecular / K_S^2 from the same
 thermodynamics LTE uses, which is what makes this a strict generalisation and
 not a competing model. FESTIM does not enforce it, so parameters.py imposes it
-and `model2_steady_state` below reduces exactly to the LTE closed form in the
+and `model2_steady_state` below reduces exactly to the LTE analytical solution in the
 fast-kinetics limit. That reduction is analytic, not numerical: the coefficient
 A of the quadratic goes over to the LTE one term by term as k_+ grows at fixed
 ratio. The numbers printed by this script check that FESTIM agrees.
@@ -26,7 +26,7 @@ recover LTE.
 
 Produces, when run directly:
 
-  - a table of FESTIM against the closed form across six decades of Da
+  - a table of FESTIM against the analytical solution across six decades of Da
   - kinetic_transient.csv
 """
 
@@ -43,7 +43,7 @@ from lte_baseline import FINAL_TIME, INITIAL_STEP, MAX_STEP, graded_vertices
 
 
 def model2_steady_state(k_plus, k_minus=None, temperature=p.TEMPERATURE, p_up=p.P_UP):
-    """Closed-form steady state of the single recombination channel.
+    """Analytical steady state of the single recombination channel.
 
     Both bulk profiles are linear at steady state, so eliminating them leaves
     an algebraic problem in the interfacial loading. The salt carries molecules
@@ -58,7 +58,7 @@ def model2_steady_state(k_plus, k_minus=None, temperature=p.TEMPERATURE, p_up=p.
 
     and the positive root is taken. As k_+ grows at fixed k_+/k_-, A tends to
     (K_H_atomic / K_S^2) L_m D_s / (L_s D_m), which is exactly the coefficient
-    of the LTE quadratic in parameters.lte_steady_state. The two closed forms
+    of the LTE quadratic in parameters.lte_steady_state. The two analytical solutions
     are therefore the same equation in that limit, term by term.
 
     Returns (c_0, c_metal|G, c_H2|G, J_atomic).
@@ -194,10 +194,10 @@ if __name__ == "__main__":
 
     print("Detailed balance check: one channel, k_-/k_+ from thermodynamics.")
     print("As Da grows the kinetic steady state must approach the LTE one.\n")
-    print(f"LTE closed form: c_m|G = {c_gamma_lte:.6e} m^-3, "
+    print(f"LTE analytical solution: c_m|G = {c_gamma_lte:.6e} m^-3, "
           f"J = {flux_lte:.6e} m^-2 s^-1\n")
     print(f"{'Da':>10s} {'c_m|G':>14s} {'J':>14s} {'J/J_LTE':>10s} "
-          f"{'err vs closed form':>20s}")
+          f"{'err vs analytical':>20s}")
 
     rows = []
     for damkohler in np.logspace(-2, 4, 7):

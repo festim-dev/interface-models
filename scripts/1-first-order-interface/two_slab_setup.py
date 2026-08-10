@@ -1,5 +1,5 @@
 """The two-slab verification problem of Sec. "Recovery of LTE in the
-fast-kinetics limit", and the series-resistance reading of its closed form.
+fast-kinetics limit", and the series-resistance reading of its analytical solution.
 
 Left: the steady profile at three Damkoehler numbers, plotted on a common scale
 (c_A on side A, c_B/K on side B) so that the LTE condition Eq. (lte_ss) is
@@ -10,11 +10,11 @@ continuity. The jump left at the interface is then exactly the defect
 of Eq. (defect_1_explicit), which closes as Da grows but is nonzero at any
 finite rate constant, because the interface is carrying a flux.
 
-Right: the same closed form read as three resistances in series,
+Right: the same analytical solution read as three resistances in series,
 Eq. (model1_analytical). LTE is the short circuit of the middle one.
 
 Analytical throughout, no solve: the profiles come from analytical_solution.py,
-the same closed form that verification_lte_limit.py checks FESTIM against.
+the same analytical solution that verification_lte_limit.py checks FESTIM against.
 Produces two_slab_setup.pdf.
 """
 

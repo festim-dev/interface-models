@@ -101,7 +101,7 @@
 
 \begin{abstract}
 Macroscopic hydrogen transport codes model material interfaces with local
-thermodynamic equilibrium (LTE), imposing continuity of chemical potential as a per-species constraint. Three assumptions hide in that closure: fast
+thermodynamic equilibrium (LTE), imposing continuity of chemical potential as a per-species constraint. Three assumptions hide in that condition: fast
 interfacial equilibration, a single exchange pathway between the two sides, and
 a carrier species known in advance on each side. The literature scrutinises the
 first, but the other two are the more consequential failures, and neither
@@ -115,7 +115,7 @@ and does not compete with it. A Damk\"ohler number delimits validity within a
 channel, a branching ratio between channels. In a representative nickel/FLiBe
 system, hydrogen partitions kinetically between molecular and fluoride
 carriers. The apparent interfacial law then drifts between Sieverts and Henry
-with loading and salt redox state, and an LTE closure underestimates the steady
+with loading and salt redox state, and an LTE condition underestimates the steady
 permeating flux. The measured pressure
 exponent is a readout of the branching ratio and not a property of the
 salt: a redox sweep at fixed temperature should move it continuously between 1
@@ -173,7 +173,7 @@ density-functional and rate-equation treatment of W/Cu shows that the steady
 state reached at such an interface is not the thermodynamic equilibrium state
 whenever a net flux is carried \cite{silva-solis_hydrogen_2026}.
 Both generalise
-the closure along interfacial storage and two-step kinetics, by giving the
+the interface condition along interfacial storage and two-step kinetics, by giving the
 interfacial plane a state of its own. The generalisation we pursue runs in a
 different direction, along the number of channels and the identity of the
 carriers, and the two compose.
@@ -293,7 +293,7 @@ molecularly (Henry's law) it becomes
 
 Both conditions are \emph{algebraic}: they fix a ratio, or a power law, between
 the two interfacial concentrations independently of the flux the interface is
-carrying. Three consequences follow, and they are properties of the closure,
+carrying. Three consequences follow, and they are properties of the constraint,
 not of the physical system it is applied to. First, the interface has
 no timescale of its own: it responds instantaneously to any change in the
 adjacent bulk fields. Second, it offers no resistance, so $\Gamma$ can never be
@@ -415,13 +415,13 @@ dissociation--recombination boundary condition already available in \FESTIM{}
 \cite{ali-khan_rate_1978,pick_model_1985,hodille_kinetic_2020,kulagin_kinetic_2024}
 is the special case in which $A$ is a gas phase. The models below differ from
 one another only in their stoichiometry and in the number of channels they
-carry, and Fig.~\ref{fig:closures} collects them on the same geometry, together
-with the LTE closure they generalise.
+carry, and Fig.~\ref{fig:interface_models} collects them on the same geometry, together
+with the LTE condition they generalise.
 
 \begin{figure*}[htbp]
     \centering
     \includegraphics[width=0.8\linewidth]{interface_models_schematic.pdf}
-    \caption{The four interface closures on the same two-subdomain geometry,
+    \caption{The four interface models on the same two-subdomain geometry,
     differing only in the chemistry allowed on $\Gamma$. (a) LTE: nothing
     crosses, the two interfacial concentrations being tied by the algebraic
     constraint of Eq.~(\ref{eq:lte_ss}), which gives the interface no rate
@@ -434,7 +434,7 @@ with the LTE closure they generalise.
     of different order, recombination (quadratic) and fluorination (linear),
     and the branching ratio $\Bra$ of Eq.~(\ref{eq:branching}) sets how the
     atomic flux divides between them.}
-    \label{fig:closures}
+    \label{fig:interface_models}
 \end{figure*}
 
 % ---------------------------------------------------------------
@@ -444,7 +444,7 @@ with the LTE closure they generalise.
 
 The simplest case is a single channel $X_A \rightleftharpoons X_B$ in which an
 atom crosses the interface without changing chemical identity, as at a
-metal/metal interface (Fig.~\ref{fig:closures}b).
+metal/metal interface (Fig.~\ref{fig:interface_models}b).
 Equation~(\ref{eq:mass_action}) then reduces to a
 Robin-type flux condition,
 
@@ -453,10 +453,10 @@ Robin-type flux condition,
     \label{eq:model1_flux}
 \end{equation}
 
-with both rate constants an exchange velocity in \unit{\metre\per\second},
-closed by mass conservation, $-D_A \,\partial_n c_A = D_B\, \partial_n c_B =
-\phi$. Setting $\phi = 0$ and requiring the resulting concentration ratio to
-coincide with Eq.~(\ref{eq:lte_ss}) fixes
+with both rate constants an exchange velocity in \unit{\metre\per\second}, and
+with mass conservation across $\Gamma$ giving $-D_A \,\partial_n c_A =
+D_B\, \partial_n c_B = \phi$. Setting $\phi = 0$ and requiring the resulting
+concentration ratio to coincide with Eq.~(\ref{eq:lte_ss}) fixes
 
 \begin{equation}
     \frac{k^{+}}{k^{-}} = \frac{K_{S,B}(T)}{K_{S,A}(T)} ,
@@ -491,7 +491,7 @@ millimetre slab.
 The second case retains a single channel but changes the chemical identity of
 the transported species, $2\,X_A \rightleftharpoons Y_{A_2}$: atomic hydrogen
 dissolved in the metal recombines into a molecule that dissolves physically in
-the liquid (Fig.~\ref{fig:closures}c). It is the metal/molten-salt analogue of
+the liquid (Fig.~\ref{fig:interface_models}c). It is the metal/molten-salt analogue of
 surface recombination, and its net rate is
 
 \begin{equation}
@@ -536,7 +536,7 @@ oxidised by the melt and dissolve as HF, which is far more soluble, corrosive,
 and redox dependent. Competing interfacial half-reactions of different order
 setting the operating point is the ordinary situation in the corrosion of metals
 by molten fluorides \cite{chan_deciphering_2023}. We therefore let two channels
-operate on the same interface (Fig.~\ref{fig:closures}d),
+operate on the same interface (Fig.~\ref{fig:interface_models}d),
 \begin{align*}
     \text{R:}&\quad 2\,\mathrm{H(m)} \rightleftharpoons \mathrm{H_2(s)} \\
     \text{F:}&\quad \mathrm{H(m)} + \mathrm{F^-(s)} + h^{+}
@@ -597,8 +597,8 @@ $i = \mathrm{H}$,
 \end{equation}
 
 LTE requires $n$ to be a constant fixed in advance: $n = 2$ for the
-Sieverts/Henry closure of Eq.~(\ref{eq:lte_sh}), $n = 1$ for a Henry/Henry-like
-closure. Here $n$ is instead a solution-dependent quantity that drifts during a
+Sieverts/Henry condition of Eq.~(\ref{eq:lte_sh}), $n = 1$ for a Henry/Henry-like
+one. Here $n$ is instead a solution-dependent quantity that drifts during a
 transient as the interfacial loading builds up. No fixed algebraic interface
 law can reproduce this behaviour.
 
@@ -622,9 +622,9 @@ thermodynamics. Making each channel faster makes each channel individually
 closer to its own equilibrium while leaving the split between them kinetic.
 
 One objection to all of this is worth answering in full. It is possible in
-principle to close the interface without any kinetic information, by imposing
+principle to treat the interface without any kinetic information, by imposing
 full local chemical equilibrium among all interfacial species, a Gibbs
-minimisation at $\Gamma$ at the prescribed fluorine potential. That closure is, however, (i) not what any macroscopic
+minimisation at $\Gamma$ at the prescribed fluorine potential. That description is, however, (i) not what any macroscopic
 hydrogen transport code implements; (ii) valid only if every interconversion is
 fast compared with transport, which is exactly what the available evidence puts
 in doubt \cite{hodille_molecular_2022,calderoni_measurement_2008}; and
@@ -711,7 +711,7 @@ species on the metal side feed five carriers on the salt side, whereas LTE suppl
 %     \label{eq:counting}
 % \end{equation}
 With two metal-side and five salt-side interfacial unknowns the per-species
-Dirichlet closure is underdetermined. The more serious objection is that it is
+Dirichlet condition is underdetermined. The more serious objection is that it is
 also wrong in form: by Eq.~(\ref{eq:iso_HT}) the HT concentration is set by
 the \emph{product} $\cm{\mathrm{H}}\cm{\mathrm{T}}$, so the
 metal~$\rightarrow$~salt map is bilinear and non-diagonal, and a condition of
@@ -730,7 +730,7 @@ Two observable consequences follow, neither of which is expressible under LTE.
 The first is \emph{isotope swamping}: the tritium flux depends on the protium
 inventory, because raising $\cm{\mathrm{H}}$ shifts tritium from the
 $\mathrm{T_2}$ channel to the statistically favoured HT channel and thereby
-changes the total tritium throughput. A diagonal closure predicts no such
+changes the total tritium throughput. A diagonal condition predicts no such
 coupling. The second is \emph{interfacial fractionation}: because the
 recombination and fluorination channels carry different isotope dependences
 ($k_\mathrm{HH}$ against $k_\mathrm{HT}$ against $k_\mathrm{TT}$;
@@ -832,9 +832,9 @@ two axes of a single map. The field plotted is the larger of two quantities,
 the first being the relative error made on the flux by treating a channel as
 equilibrated, exact for Model 1 by Eq.~(\ref{eq:model1_convergence}), and the
 second the fraction of the atomic flux carried by the minority channel, the part
-of the flux that no single-channel closure represents at all.
+of the flux that no single-channel model represents at all.
 Taking the larger of the two is a convention: $\mathcal{E}$ is an indicator of
-how badly the best available LTE closure does, not a bound on the error of any
+how badly the best available LTE condition does, not a bound on the error of any
 particular simulation. The map is nevertheless entirely analytical, and the
 right-hand axis carries the apparent exponent
 $n = (2+\Bra)/(1+\Bra)$ of Eq.~(\ref{eq:n_of_B}), the quantity a permeation
@@ -852,7 +852,7 @@ experiment would report.
     combination the flux error depends on.
     LTE requires both a fast channel and a
     dominant one: the pale regions at bottom right and top right are the
-    Sieverts/Henry and linear closures, the left-hand strip is kinetically
+    Sieverts/Henry and linear limits, the left-hand strip is kinetically
     limited whatever the branching, and the band around $\Bra = 1$ admits no
     algebraic interface law however fast the kinetics. The right-hand axis gives
     the apparent exponent $n$ corresponding to each branching ratio.}
@@ -944,7 +944,7 @@ surface integrals of Eqs.~(\ref{eq:weak_metal}) and~(\ref{eq:weak_salt}) are the
 only terms coupling one block to another. Each block is differentiated
 symbolically with respect to every unknown of the coupled system, so the
 Jacobian is exact by construction and its sparsity pattern follows the channels
-declared. The isotopologue channels populate a block that no per-species closure
+declared. The isotopologue channels populate a block that no per-species condition
 possesses: since $\partial w_\mathrm{HT}/\partial \cm{\mathrm{H}} =
 k^{+}_\mathrm{HT}\cm{\mathrm{T}}$, the residual of H acquires a block against the
 trial function of T, so two species on the \emph{same} side of the interface are
@@ -996,7 +996,7 @@ it remains the responsibility of whoever writes the input.
 
 We check that each model recovers its LTE condition at large rate constants, and
 that it does so at the rate predicted in App.~\ref{app:limits}. Both tests are
-run against the closed-form steady states of App.~\ref{app:analytical}, which
+run against the analytical steady states of App.~\ref{app:analytical}, which
 are finite algebraic expressions with no series truncation, so the residual
 differences quoted below are those of the numerical solution alone.
 
@@ -1015,7 +1015,7 @@ carrying a flux. The transient behaviour over the same sweep,
 Fig.~\ref{fig:lte_transient}, makes the first of the three consequences listed
 in Sec.~\ref{sec:lte} concrete: at moderate $\Da$ the interfacial ratio is far
 from its equilibrium value for most of the transient, the timescale an algebraic
-closure denies the interface.
+condition denies the interface.
 
 \begin{figure*}[htbp]
     \centering
@@ -1025,7 +1025,7 @@ closure denies the interface.
     that LTE is continuity: $c_A$ on side $A$, $c_B/K$ on side $B$. The jump
     remaining at $\Gamma$ is the defect $\Delta$ of
     Eq.~(\ref{eq:defect_1_explicit}), marked here for the slowest channel.
-    (b) The closed form Eq.~(\ref{eq:model1_analytical}) read as three
+    (b) The analytical solution Eq.~(\ref{eq:model1_analytical}) read as three
     resistances in series, LTE being the short circuit of the middle element.}
     \label{fig:two_slab}
 \end{figure*}
@@ -1071,7 +1071,7 @@ reporting the value attained at the interface as a diagnostic.
         \hline
          & Model 1 & Model 2 \\
         \hline
-        Closed form & Eq.~(\ref{eq:model1_analytical})
+        Analytical solution & Eq.~(\ref{eq:model1_analytical})
                     & Eq.~(\ref{eq:model2_analytical}) \\
         Agreement with it & $\le \num{6e-12}$ & $\le \num{2.2e-11}$ \\
         Departure at $\Da = 10^{2}$ & \num{1.5e-2} & \num{4.4e-3} \\
@@ -1090,14 +1090,14 @@ reporting the value attained at the interface as a diagnostic.
     interfacial ratio $c_A/c_B$ approaching the LTE value $k^{-}/k^{+}$.
     Bottom: circles, the relative departure of that ratio from the LTE value,
     which decays as $1/\Da$ (dashed); squares, the relative difference between
-    the computed interfacial concentrations and the closed form of
+    the computed interfacial concentrations and the analytical solution of
     Eq.~(\ref{eq:model1_analytical}), at round-off throughout. Model 2 behaves
     the same way on its own equilibrated quantity, as
     Table~\ref{tab:convergence} records.}
     \label{fig:lte_limit}
 \end{figure}
 
-Agreement with the closed forms sits at the level of round-off throughout both
+Agreement with the analytical solutions sits at the level of round-off throughout both
 sweeps (Table~\ref{tab:convergence}, the Model 1 sweep also in
 Fig.~\ref{fig:lte_limit}), and for Model 1 the piecewise linear steady profile is
 represented exactly by the P1 elements, so this is a check of the interface term
@@ -1131,7 +1131,7 @@ $(2k_\mathrm{r}^{+}\cm{\mathrm{H}}|_\Gamma)^{-1}$ plays that role.
 % ---------------------------------------------------------------
 
 The two tests above each equilibrate a single channel. The third exercises the
-configuration for which no algebraic closure exists at all, two channels
+configuration for which no algebraic interface law exists at all, two channels
 competing on the same interface, and checks the exponent they produce against
 Eq.~(\ref{eq:n_of_B}). Geometry and metal-side transport are again those of
 Sec.~\ref{sec:lte_limit}. The liquid now carries two species, $\mathrm{H_2}$ fed
@@ -1150,7 +1150,7 @@ Nothing about the exponent is imposed on the solver, and this is what makes the
 test meaningful. We measure it afterwards, as the logarithmic slope of the total
 atomic flux against the interfacial loading taken by centred differences along
 the sweep, the same operation a permeation experiment performs on its own data.
-The computed interfacial concentrations agree with the closed form of
+The computed interfacial concentrations agree with the analytical solution of
 App.~\ref{app:analytical} to a median relative error of \num{2.2e-16} over the
 whole set, and at worst \num{1.8e-8} at the two smallest loadings of the most
 oxidising sweep, where the interfacial concentration is itself \num{4e-4} and
@@ -1162,7 +1162,7 @@ the solver tolerance sets the floor.
     \caption{Two channels on one interface, and the exponent they produce.
     (a) The total atomic flux $J$ leaving the metal against the interfacial
     loading, for three values of the effective fluoride activity
-    $a_\mathrm{F}$: lines are the closed form of App.~\ref{app:analytical},
+    $a_\mathrm{F}$: lines are the analytical solution of App.~\ref{app:analytical},
     circles the computed fluxes. Each sweep runs along the linear branch of its
     fluorination channel at low loading and joins the quadratic branch of the
     recombination channel at high loading, the same branch for all three because
@@ -1171,7 +1171,7 @@ the solver tolerance sets the floor.
     (b) That slope, the apparent exponent $n$ of
     Eq.~(\ref{eq:apparent_exponent}), on the same loading axis and in the same
     colours: lines are Eq.~(\ref{eq:n_of_B}), circles the slopes measured from
-    the computed fluxes. Every sweep leaves the linear closure at low
+    the computed fluxes. Every sweep leaves the linear branch at low
     loading and approaches Sieverts/Henry at high loading, and the redox state
     sets where the crossover falls, not whether it happens.
     (c) The two ways of reading the exponent, against the branching ratio
@@ -1229,7 +1229,7 @@ The scope is deliberately narrow. Nothing below is fitted and nothing is
 compared with a measurement. \HYPERION{} supplies a realistic geometry, an
 operating window and a set of literature transport properties, and the
 simulations report what the kinetic framework predicts there. Every result is
-read against the LTE closure applied to the same problem, and not against data.
+read against the LTE condition applied to the same problem, and not against data.
 Inferring interfacial rate constants from measured transients belongs to the
 experimental campaign; Sec.~\ref{sec:limitations} states what that would
 require.
@@ -1246,7 +1246,7 @@ the salt is swept by a cover gas and the released flux is measured by measuring 
 fluoride salt loop of Ref.~\cite{fuerst_molten_2025} addresses the same
 speciation question in a flowing configuration.
 
-Three interfaces appear in the problem. The gas/Ni interface is closed by the
+Three interfaces appear in the problem. The gas/Ni interface uses the
 existing dissociation-recombination boundary condition and the FLiBe/cover gas
 interface releases the carriers from the free surface. The Ni/FLiBe interface is
 the one of interest, and it is the configuration of Sec.~\ref{sec:model3}, with
@@ -1362,19 +1362,19 @@ That the community has reported $K_H$ for the molecular carrier in FLiBe from
 several studies and none for the fluoride carrier is itself a consequence of
 assumption (H3): the carrier was chosen before the measurement was reduced.
 
-The baseline against which everything below is read closes the interface the way
-a macroscopic code closes it, with Sieverts on the nickel against Henry in the
+The baseline against which everything below is read treats the interface the way
+a macroscopic code does, with Sieverts on the nickel against Henry in the
 salt, Eq.~(\ref{eq:lte_sh}), imposed as the algebraic constraint of
 Sec.~\ref{sec:lte} through the penalty formulation \FESTIM{} already provides.
 At the final time the computed interfacial concentrations and the downstream flux
-match the closed form of the two-slab LTE problem to \num{1.1e-6} and
+match the analytical solution of the two-slab LTE problem to \num{1.1e-6} and
 \num{3.4e-6} respectively, and the interface constraint itself holds to
 \num{3.6e-7}, so the baseline is a reference curve and not a second numerical
 solution carrying an error budget of its own. Reaching that agreement requires a
 nonlinear tolerance set from the residual of the interface term and not from the
 magnitude of the unknowns: with $c \sim \qty{e25}{\per\cubic\metre}$ an absolute
 tolerance of \num{e15} stops the Newton iteration early and leaves the final
-state a few parts per thousand from the closed form, an error that grows under
+state a few parts per thousand from the analytical solution, an error that grows under
 mesh refinement and is easily misread as a discretisation error.
 
 % ---------------------------------------------------------------
@@ -1398,12 +1398,12 @@ equilibrated limit here, so the local Damk\"ohler number sits below the control
 value, as in the two-slab test of Sec.~\ref{sec:lte_limit}.
 
 Sweeping $\Da$ over six decades at fixed thermodynamics, geometry and transport,
-the computed steady state agrees with the closed form of the single-channel
+the computed steady state agrees with the analytical solution of the single-channel
 problem to a relative \num{7.7e-6} at the slow end of the sweep and to better
 than \num{5e-6} everywhere else. The steady flux approaches the LTE one from
 below and first order in $1/\Da$: taking $J/J_\mathrm{LTE}$, we obtain $0.0262$
 at $\Da = 10^{-2}$, $0.709$ at $\Da = 1$, $0.959$ at $\Da = 10$, $0.9957$ at
-$\Da = 10^{2}$ and $0.99995$ at $\Da = 10^{4}$. That the two closed forms are
+$\Da = 10^{2}$ and $0.99995$ at $\Da = 10^{4}$. That the two solutions are
 nested is not a numerical result: the coefficient of the Model 2 quadratic tends
 term by term to the coefficient of the LTE quadratic as $k_\mathrm{r}^{+}$ grows
 at fixed ratio, so the agreement above tests the implementation and not the
@@ -1478,7 +1478,7 @@ differential transport away from it.
     bulk is identical to Fig.~\ref{fig:hyperion_damkohler} and to the LTE
     baseline. (a) Each transient on its own steady value: the redox state alone
     retimes the breakthrough. (b) The fraction of the atomic flux carried by HF
-    against time, a direct output of the model that no LTE closure can define.
+    against time, a direct output of the model that no LTE condition can define.
     (c) The steady flux and the time lag against the measured branching ratio,
     both relative to LTE. Curves are coloured by the measured $\Bra$, blue where
     recombination dominates and red where fluorination does.}
@@ -1495,11 +1495,11 @@ channel. Three features stand out.
 The first is the direction of the error. The steady flux rises \emph{above} the
 LTE prediction, by a factor $1.49$ at $\Bra \simeq 2.2$ and by $2.67$ at the
 oxidising end of the sweep. The fluorination channel is a pathway in parallel
-with the one the single-carrier closure contains, so a Sieverts/Henry interface
+with the one the single-carrier model contains, so a Sieverts/Henry interface
 does not merely misestimate the flux, it underestimates it, and by an amount the
 redox state sets. This is testable: raising the fluorine potential at fixed
 temperature and fixed upstream pressure should raise the permeating flux, which
-no LTE closure predicts.
+no LTE condition predicts.
 
 The second is that the carrier split drifts through the transient. Every case in
 Fig.~\ref{fig:hyperion_redox}b starts fluorination-dominated and settles to its
@@ -1523,11 +1523,11 @@ here are reported against the measured value.
 \begin{figure*}[htbp]
     \centering
     \includegraphics[width=1\linewidth]{regime_map_hyperion.pdf}
-    \caption{The error of the LTE closure over the $(\Da, \Bra)$ plane at the
+    \caption{The error of the LTE condition over the $(\Da, \Bra)$ plane at the
     Ni/FLiBe operating point, the dimensional counterpart of
-    Fig.~\ref{fig:regime_map}. (a) The signed steady-flux error, from the closed
-    form; teal where LTE reads high because the interface is slow, orange where
-    it reads low because the second channel carries flux the closure has no
+    Fig.~\ref{fig:regime_map}. (a) The signed steady-flux error, from the
+    analytical solution; teal where LTE reads high because the interface is slow,
+    orange where it reads low because the second channel carries flux LTE has no
     pathway for, and the white contour where the two cancel. (b) The signed
     time-lag error, from 81 transient solves whose sample points are marked. The
     upper axis carries the forward rate constant of the recombination channel
@@ -1538,12 +1538,12 @@ here are reported against the measured value.
 Sweeping both groups together gives the map of
 Fig.~\ref{fig:hyperion_regime_map}, drawn from $81$ transient solves of Model 3
 on a $9\times9$ grid with both axes running over four decades. Two errors are
-mapped, because an LTE closure can be wrong about the steady state and about the
+mapped, because an LTE condition can be wrong about the steady state and about the
 timing independently, and both are signed, since the two failure modes push the
 steady flux in opposite directions.
 
 Both errors stay below \qty{10}{\percent} at $12$ of the $81$ grid points, the
-high-$\Da$, low-$\Bra$ corner that the closure assumes it is always in. The
+high-$\Da$, low-$\Bra$ corner that LTE assumes it is always in. The
 indicator $\mathcal{E}$ of Eq.~(\ref{eq:lte_indicator}) is not drawn on the
 figure, for a structural reason: its between-channel term is the flux fraction in
 the minority channel, so it asks whether \emph{some} single algebraic law could
@@ -1562,8 +1562,8 @@ sits at $\Bra\Da \simeq 0.5$ across the whole sweep, which by
 $\Da_\mathrm{F} = \Bra\Da$ is a fixed Damk\"ohler number of the fluorination
 channel. Along that line the steady flux is right to a few per cent while the
 time lag is wrong by up to \qty{38}{\percent} at the slow end. A steady
-permeation measurement therefore cannot validate an LTE closure: agreement on
-the steady flux is compatible with the closure being wrong about which species
+permeation measurement therefore cannot validate an LTE condition: agreement on
+the steady flux is compatible with the interface model being wrong about which species
 crosses the interface and wrong about when. The transient is what discriminates,
 and the valley is the sharpest instance of the distinction drawn in
 Sec.~\ref{sec:lte} between a steady state and an equilibrium.
@@ -1587,13 +1587,13 @@ species, H and T, then feed the five salt-side carriers. We run a tritium-lean,
 protium-rich case representative of a breeding blanket inventory, and a case with
 comparable inventories of the two.
 
-Two consequences follow that no per-species closure can express, and each is a
+Two consequences follow that no per-species condition can express, and each is a
 direct model output. The first is \emph{isotope swamping}. Sweeping the protium
 partial pressure at a fixed tritium source moves the tritium permeation flux and
 the tritium inventory in the salt, because raising $\cm{\mathrm{H}}$ shifts
 tritium out of the $\mathrm{T_2}$ channel and into the statistically favoured HT
 channel, and $\chi_\mathrm{HT}$ of Eq.~(\ref{eq:chi_HT}) approaches unity. An LTE
-closure predicts no such coupling: its tritium condition does not contain the
+interface predicts no such coupling: its tritium condition does not contain the
 protium concentration. The second is \emph{interfacial fractionation}. We report
 $\alpha = (\mathrm{T/H})_\mathrm{flux}/(\mathrm{T/H})_\mathrm{metal}$ separately
 for the molecular and the fluoride carrier. The two differ, because the
@@ -1703,7 +1703,7 @@ The criteria of Sec.~\ref{sec:damkohler} reduce to three questions, to be asked 
 
 The literature has concentrated on step 3, where the failure of LTE is a quantifiable error,
 and has skipped steps 1 and 2, where it is not an error but the absence of any
-admissible algebraic closure.
+admissible algebraic interface law.
 
 % ---------------------------------------------------------------
 \subsection{Limitations and future work}
@@ -1712,7 +1712,7 @@ admissible algebraic closure.
 
 Interfaces carry no stored inventory here. This is a limit and not an omission:
 App.~\ref{app:limits} shows that eliminating a resolved interfacial population,
-where it is quasi-steady and dilute, returns the closures used above with
+where it is quasi-steady and dilute, returns the channels used above with
 detailed balance intact. What the limit discards is the inventory itself, which
 matters in a transient whenever it is comparable with the bulk loading, and the
 site blocking that a finite site density imposes. Both will be the subject of future work, as do the W/Cu
@@ -1764,15 +1764,15 @@ divides between competing channels.
 At the Ni/FLiBe operating point of \HYPERION{}, hydrogen leaving the metal
 partitions kinetically between a molecular and a fluoride carrier. The apparent
 interfacial law is neither Sieverts nor Henry but drifts between them with
-loading and with salt redox state, so no fixed LTE closure reproduces the
+loading and with salt redox state, so no fixed LTE condition reproduces the
 behaviour across a redox sweep. Because the fluorination channel is a pathway in
-parallel with the one a single-carrier closure contains, an LTE interface does
+parallel with the one a single-carrier model contains, an LTE interface does
 not merely misestimate the steady flux but underestimates it, by a factor of
 $2.67$ at the oxidising end of our sweep. Along a diagonal of the $(\Da, \Bra)$
 plane the two failure modes cancel: there the LTE steady flux is right to a few
-per cent while the closure is wrong about which species crosses the interface and
+per cent while the model is wrong about which species crosses the interface and
 mistimes the transient by up to \qty{38}{\percent}. A steady permeation
-measurement therefore cannot validate an LTE closure, and the transient is what
+measurement therefore cannot validate an LTE condition, and the transient is what
 discriminates.
 
 With H and T present, two metal-side species feed five salt-side carriers through
@@ -1780,7 +1780,7 @@ a bilinear, non-diagonal map. A per-species LTE condition is then not merely
 inaccurate but ill-posed, and isotope swamping and interfacial fractionation
 follow, neither of which is expressible under LTE. Speciation controls where
 tritium goes, the fluoride carrier being soluble and corrosive and the molecular
-carrier mobile and permeable, so a closure that cannot predict the split can
+carrier mobile and permeable, so a model that cannot predict the split can
 predict neither the salt inventory nor the release, and the salt redox state
 becomes a design variable an operator can move. Flux speciation is a direct
 output of the model, comparable with bubbler and mass-spectrometry diagnostics,
@@ -1942,7 +1942,7 @@ description, not an alternative to it.
 \label{app:analytical}
 % ---------------------------------------------------------------
 
-% The Model 1 closed form below is the one implemented in
+% The Model 1 analytical solution below is the one implemented in
 % scripts/1-first-order-interface/analytical_solution.py
 \paragraph{Model 1, two slabs in series} Take $\Omega_A = [0, L_A]$ and
 $\Omega_B = [L_A, L_A + L_B]$ with the interface at $x = L_A$, concentrations
@@ -1975,9 +1975,9 @@ $1/k^{+}$ contributed by the channel. Setting $1/k^{+} = 0$ recovers the LTE
 result, so \emph{LTE is the zero-interfacial-resistance limit} of Model 1, and
 Eqs.~(\ref{eq:defect_1_explicit}) and~(\ref{eq:model1_convergence}) follow by
 substitution. The interfacial concentrations are then given by
-Eq.~(\ref{eq:two_slab_traces}), which closes the problem.
+Eq.~(\ref{eq:two_slab_traces}).
 
-% The Model 2 closed form below is the one implemented in
+% The Model 2 analytical solution below is the one implemented in
 % scripts/2-higher-order-reactions/analytical_solution_model2.py
 \paragraph{Model 2, two slabs in series} Take the same geometry with the metal
 on $[0, L_\mathrm{m}]$ and the liquid on
@@ -2045,9 +2045,9 @@ two orders,
 \end{equation}
 
 The exponent falls monotonically from $n = 2$ at $\Bra \rightarrow 0$, where
-recombination carries everything and the Sieverts/Henry closure
+recombination carries everything and the Sieverts/Henry condition
 Eq.~(\ref{eq:lte_sh}) applies, to $n = 1$ at $\Bra \rightarrow \infty$, where
-fluorination does and the closure is linear, passing through $n = 3/2$ at
+fluorination does and the interface law is linear, passing through $n = 3/2$ at
 $\Bra = 1$. Every value in between is attainable, and since $\Bra$ depends on
 $c$ through Eq.~(\ref{eq:branching}), a single interface visits a range of $n$
 as its loading changes.

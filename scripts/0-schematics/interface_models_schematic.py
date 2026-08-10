@@ -1,4 +1,4 @@
-"""The four interface closures of Sec. "Interface conditions for hydrogen
+"""The four interface models of Sec. "Interface conditions for hydrogen
 transport", drawn on the same two-subdomain geometry so that only the interface
 chemistry changes between panels.
 

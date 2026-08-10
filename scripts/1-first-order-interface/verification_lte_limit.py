@@ -1,4 +1,4 @@
-"""Verification of Model 1 against the closed-form two-slab solution, and of the
+"""Verification of Model 1 against the analytical two-slab solution, and of the
 approach to LTE as the Damkoehler number grows.
 
 Backs Sec. "Recovery of LTE in the fast-kinetics limit" and Sec. "Analytical
@@ -10,7 +10,7 @@ steady-state solutions" of the paper. Produces:
 Two quantities are reported per Da:
 
   err_analytical : relative difference between the FESTIM interfacial
-                   concentrations and the closed form of analytical_solution.py.
+                   concentrations and the analytical solution of analytical_solution.py.
                    This is a code-verification number and should sit at
                    round-off (P1 elements are nodally exact for the piecewise
                    linear steady profile).
@@ -167,7 +167,7 @@ def plot(rows, filename):
 
     ax_err.loglog(da, err_ana, marker="s", markersize=4, alpha=0.5, color="C2")
     ax_err.annotate(
-        "error vs closed form",
+        "error vs analytical",
         xy=(da[3], err_ana[3]),
         xytext=(6, 10),
         textcoords="offset points",

@@ -151,7 +151,7 @@ def upstream_concentration(temperature=TEMPERATURE, pressure=P_UP):
 
 
 def lte_steady_state(temperature=TEMPERATURE, p_up=P_UP):
-    """Closed-form LTE steady state of the two-slab problem, atomic convention.
+    """Analytical LTE steady state of the two-slab problem, atomic convention.
 
     Both profiles are linear at steady state. Continuity of the atomic flux and
     equality of the equilibrium pressure across the interface give

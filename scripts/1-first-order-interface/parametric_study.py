@@ -4,7 +4,7 @@ Backs the transient figure of Sec. "Recovery of LTE in the fast-kinetics
 limit": the interfacial ratio c_A/c_B against time, for Da from 1e-2 to 1e2,
 approaching the LTE value k_minus/k_plus of Eq. (lte_ss). At small Da the
 interface has a relaxation time of its own and the ratio spends the transient
-far from that value, which is the timescale an algebraic closure denies it.
+far from that value, which is the timescale an algebraic interface law denies it.
 Produces:
 
   - parametric_study_damkohler.pdf

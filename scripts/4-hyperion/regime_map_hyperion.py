@@ -1,7 +1,7 @@
 """Experiment C: the measured (Da, B) regime map at the Ni/FLiBe operating point.
 
 scripts/2-higher-order-reactions/regime_map.py draws the same two axes
-analytically, from the two closed-form indicators
+analytically, from the two analytical indicators
 
     within a channel   : 1 / (1 + Da)
     between channels   : min(1, B) / (1 + B)
@@ -18,13 +18,13 @@ different thing and overlaying it invites the reader to compare quantities that
 are not comparable: the between-channel term is the flux fraction in the
 minority channel, so it asks whether *some* single algebraic law could describe
 the interface, whereas this map asks how wrong *the conventional choice* is, the
-Sieverts/Henry closure of lte_baseline.py that a macroscopic code implements.
+Sieverts/Henry condition of lte_baseline.py that a macroscopic code implements.
 At large B those diverge, because almost all the flux is then fluorination and a
 single linear law would do well while Sieverts/Henry is missing the dominant
 pathway. `indicator` below is kept for the comparison in the working notes, and
 at (Da, B) = (100, 100) it reports 1 % against a true error of 167 %.
 
-Two errors are mapped, because an LTE closure can be wrong about the steady
+Two errors are mapped, because an LTE condition can be wrong about the steady
 state and about the timing independently:
 
     steady    : J_ss / J_ss^LTE - 1
@@ -34,7 +34,7 @@ Both signed, not absolute. The two failure modes push the steady flux in
 opposite directions, a slow interface holding it below LTE and a second channel
 carrying flux LTE has no pathway for, so taking a modulus would fold the map
 about a line that is itself the most interesting feature and would break the
-zero contour into islands. Panel (a) is drawn from the closed form in
+zero contour into islands. Panel (a) is drawn from the analytical solution in
 `sweep_redox.model3_steady_state`, which the 81 solves confirm to 8e-6, so it
 needs no grid at all; panel (b) needs the transients and carries its sample
 points.
@@ -125,7 +125,7 @@ def compute(all_da=ALL_DA, all_b=ALL_B):
 
 
 def steady_error_field(n=241):
-    """Signed steady-flux error of the LTE closure, from the closed form.
+    """Signed steady-flux error of the LTE condition, analytically.
 
     The steady state of Model 3 is algebraic, so this panel needs no solves and
     can be drawn as finely as we like. `sweep_redox.model3_steady_state` agrees
@@ -157,7 +157,7 @@ def plot(rows, filename, all_da=ALL_DA, all_b=ALL_B):
 
     fig, axes = plt.subplots(1, 2, figsize=(9.8, 4.4), constrained_layout=True)
 
-    # ---- (a) steady flux, signed, closed form on a fine grid ----------------
+    # ---- (a) steady flux, signed, analytical on a fine grid -----------------
     da_fine, b_fine, steady = steady_error_field()
 
     # teal where LTE reads high, orange where it reads low, grey through zero so
@@ -222,7 +222,7 @@ def plot(rows, filename, all_da=ALL_DA, all_b=ALL_B):
     )
 
     for ax, title in (
-        (axes[0], "(a) steady flux, closed form"),
+        (axes[0], "(a) steady flux, analytical solution"),
         (axes[1], "(b) time lag, 81 transient solves"),
     ):
         ax.set_xscale("log")

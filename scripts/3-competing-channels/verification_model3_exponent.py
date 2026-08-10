@@ -21,7 +21,7 @@ a permeation experiment would measure it. Produces:
 Three quantities are measured at each loading:
 
   err_analytical : relative difference between the FESTIM interfacial
-                   concentrations and the closed form of
+                   concentrations and the analytical solution of
                    analytical_solution_model3.py. A code-verification number;
                    the steady profiles are piecewise linear and so nodally exact
                    on P1, which leaves the two interface terms alone under test.
@@ -173,7 +173,7 @@ def run_model(c_0, a_F):
 
 
 def sweep(all_c_0, a_F):
-    """Solve at each upstream loading and compare with the closed form. Returns
+    """Solve at each upstream loading and compare with the analytical solution. Returns
     one row per loading, with the columns of COLUMNS."""
     c_m, c_H2, c_HF, err = [], [], [], []
 

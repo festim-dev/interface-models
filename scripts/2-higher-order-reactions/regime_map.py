@@ -1,7 +1,7 @@
 """The (Da, B) regime map for the validity of a local-equilibrium interface.
 
 Purely analytical: no solve is involved. The two axes are the two ways an LTE
-closure can fail, and they are independent.
+condition can fail, and they are independent.
 
   Da : Damkoehler number of a channel, Eq. (damkohler). A single channel is
        locally equilibrated when Da >> 1. The relative error made on the flux by
@@ -11,10 +11,10 @@ closure can fail, and they are independent.
   B  : branching ratio between the two channels, Eq. (branching). A single
        algebraic law exists only when one channel dominates. The fraction of the
        atomic flux carried by the minority channel, min(1, B)/(1 + B), is the
-       part of the flux that any single-channel closure fails to describe.
+       part of the flux that any single-channel model fails to describe.
 
 The field plotted is the larger of the two, which is an indicator of how badly
-the best available LTE closure does, not a rigorous error bound. The apparent
+the best available LTE condition does, not a rigorous error bound. The apparent
 exponent n = (2 + B)/(1 + B) of Eq. (n_of_B) is carried on the right-hand axis.
 
 Produces regime_map.pdf, the figure of Sec. "Dimensionless criteria for LTE

@@ -2,10 +2,10 @@
 
 This is the baseline the kinetic interface models have to reproduce in the
 fast-kinetics limit, and it is the curve every later figure in Sec. 5 is read
-against. The interface is closed the way a macroscopic hydrogen transport code
-closes it: an algebraic per-species constraint, here Sieverts on the metal
+against. The interface is treated the way a macroscopic hydrogen transport code
+treats it: an algebraic per-species constraint, here Sieverts on the metal
 against Henry in the salt, imposed by `F.Interface` with the penalty method.
-That is the same closure `para_1d.py` in the HYPERION modelling repo uses, made
+That is the same condition `para_1d.py` in the HYPERION modelling repo uses, made
 transient.
 
 A single species carries hydrogen on both sides, so the salt-side variable is
@@ -16,7 +16,7 @@ conventions straight is what makes the fast-kinetics limit land on this curve
 rather than a factor of two away from it.
 
 Verification: at the final time the computed interfacial concentrations and the
-downstream flux are compared with the closed form in
+downstream flux are compared with the analytical solution in
 `parameters.lte_steady_state`. The steady profiles are piecewise linear and so
 nodally exact on P1, which leaves the interface condition alone under test.
 
@@ -71,7 +71,7 @@ def graded_vertices(n_metal=160, n_salt=220, bias=2.5):
 
 
 def build_model(temperature=p.TEMPERATURE, p_up=p.P_UP, p_down=p.P_DOWN):
-    """Two-slab transient permeation problem closed by LTE at the interface."""
+    """Two-slab transient permeation problem with LTE at the interface."""
     metal = F.Material(
         D_0=p.D_0_NI,
         E_D=p.E_D_NI,
@@ -135,7 +135,7 @@ def build_model(temperature=p.TEMPERATURE, p_up=p.P_UP, p_down=p.P_DOWN):
     # The residual is dominated by the penalty term, which is larger than the
     # diffusive terms by construction, so a tolerance chosen from the size of
     # the concentrations is far too loose: atol=1e15 lets Newton stop early and
-    # the final state misses the closed-form steady state by a few parts per
+    # the final state misses the analytical steady state by a few parts per
     # thousand, which looks like a discretisation error and is not one. These
     # are the values para_1d.py uses. Tightening further (atol=1e8) stops SNES
     # converging. This is a concrete instance of the interface-residual scaling
@@ -175,7 +175,7 @@ def run(**kwargs):
 
 
 def verify(times, flux_history, c_metal, c_salt):
-    """Compare the final state with the closed-form LTE steady state."""
+    """Compare the final state with the analytical LTE steady state."""
     c_0, c_gamma_ref, c_salt_ref, flux_ref = p.lte_steady_state()
 
     errors = {
@@ -186,11 +186,11 @@ def verify(times, flux_history, c_metal, c_salt):
 
     print(f"\nfinal time                 {times[-1]:.4e} s")
     print(f"c_metal|Gamma  computed    {c_metal[-1]:.6e} m^-3")
-    print(f"               closed form {c_gamma_ref:.6e} m^-3")
+    print(f"               analytical solution {c_gamma_ref:.6e} m^-3")
     print(f"c_salt|Gamma   computed    {c_salt[-1]:.6e} m^-3")
-    print(f"               closed form {c_salt_ref:.6e} m^-3")
+    print(f"               analytical solution {c_salt_ref:.6e} m^-3")
     print(f"flux           computed    {flux_history[-1]:.6e} m^-2 s^-1")
-    print(f"               closed form {flux_ref:.6e} m^-2 s^-1")
+    print(f"               analytical solution {flux_ref:.6e} m^-2 s^-1")
     print()
     for name, err in errors.items():
         print(f"relative error {name:<16s} {err:.3e}")
@@ -223,7 +223,7 @@ def plot(times, flux_history, model, filename):
     ax_transient.plot(times, flux_history, color="C0", linewidth=1.6)
     ax_transient.axhline(flux_ref, color=GUIDE, linestyle="--", linewidth=1)
     ax_transient.annotate(
-        "closed-form steady state",
+        "analytical steady state",
         xy=(times[-1], flux_ref),
         xytext=(-6, -14),
         textcoords="offset points",

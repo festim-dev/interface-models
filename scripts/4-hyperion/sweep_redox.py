@@ -104,7 +104,7 @@ def channel_constants(damkohler=DAMKOHLER, branching=1.0, temperature=p.TEMPERAT
 
 def model3_steady_state(damkohler=DAMKOHLER, branching=1.0, temperature=p.TEMPERATURE,
                         p_up=p.P_UP):
-    """Closed-form steady state of the two-channel interface.
+    """Analytical steady state of the two-channel interface.
 
     Both bulk profiles are linear at steady state and the downstream face is
     swept, so each carrier satisfies c|G = w L_s / D and each channel collapses

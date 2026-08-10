@@ -1,4 +1,4 @@
-"""Closed-form steady state of Model 2 on a metal/liquid two-slab problem.
+"""Analytical steady state of Model 2 on a metal/liquid two-slab problem.
 
 The metal occupies [0, L_m] with an atomic species H, the liquid occupies
 [L_m, L_m + L_s] with the molecular carrier H2, and the interface at x = L_m
@@ -21,7 +21,7 @@ interfacial resistance depends on the loading it is evaluated at.
 
 `solution` is the kinetic problem at finite k_plus; `lte_solution` is the
 k_plus -> infinity limit at fixed K = k_plus/k_minus, i.e. the Sieverts/Henry
-closure c_s|G = K c_m|G**2 (Eq. lte_sh). The sweep of the paper checks the
+condition c_s|G = K c_m|G**2 (Eq. lte_sh). The sweep of the paper checks the
 first against FESTIM and its convergence to the second.
 """
 
@@ -68,7 +68,7 @@ def solution(c_0, c_L, D_m, D_s, L_m, L_s, k_plus, k_minus):
 
 
 def lte_solution(c_0, c_L, D_m, D_s, L_m, L_s, K):
-    """Steady state of the Sieverts/Henry closure, c_s|G = K c_m|G**2.
+    """Steady state of the Sieverts/Henry condition, c_s|G = K c_m|G**2.
 
     This is the k_plus -> infinity limit of `solution` at fixed
     K = k_plus/k_minus, which detailed balance fixes at K_H/K_S**2
