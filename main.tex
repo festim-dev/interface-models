@@ -700,19 +700,17 @@ stoichiometry enters only through the coefficients $\nu_{ir}$ of
 Eq.~(\ref{eq:bc_metal}).
 
 Counting the carriers makes the multi-isotope case structurally different. Two mobile
-species on the metal side feed five carriers on the salt side,
+species on the metal side feed five carriers on the salt side, whereas LTE supplies one scalar constraint per transported species pair. 
 
-\begin{equation}
-    N_\mathrm{iso} \;\longrightarrow\;
-    \underbrace{\tfrac{1}{2}N_\mathrm{iso}(N_\mathrm{iso}+1)}_{\text{molecular}}
-    + \underbrace{N_\mathrm{iso}}_{\text{fluoride}},
-    \qquad
-    \mathrm{(H,T)}:\; 2 \rightarrow 3 + 2 = 5 ,
-    \label{eq:counting}
-\end{equation}
-
-whereas LTE supplies one scalar constraint per transported species pair. With
-two metal-side and five salt-side interfacial unknowns the per-species
+% \begin{equation}
+%     N_\mathrm{iso} \;\longrightarrow\;
+%     \underbrace{\tfrac{1}{2}N_\mathrm{iso}(N_\mathrm{iso}+1)}_{\text{molecular}}
+%     + \underbrace{N_\mathrm{iso}}_{\text{fluoride}},
+%     \qquad
+%     \mathrm{(H,T)}:\; 2 \rightarrow 3 + 2 = 5 ,
+%     \label{eq:counting}
+% \end{equation}
+With two metal-side and five salt-side interfacial unknowns the per-species
 Dirichlet closure is underdetermined. The more serious objection is that it is
 also wrong in form: by Eq.~(\ref{eq:iso_HT}) the HT concentration is set by
 the \emph{product} $\cm{\mathrm{H}}\cm{\mathrm{T}}$, so the
