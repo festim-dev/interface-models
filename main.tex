@@ -95,7 +95,6 @@
 
 \author[mit]{Remi Delaporte-Mathurin}
 \author[mit]{James Dark}
-% TODO(authors): add HYPERION experimental team + salt chemistry co-authors
 
 \address[mit]{Massachusetts Institute of Technology, Cambridge, MA, USA}
 
@@ -199,7 +198,7 @@ bound to $\mathrm{BeF_4^-}$ from transport as HT, or from a mixture of the two.
 Nearly two decades later the speciation at that interface is still an open
 question, and reported FLiBe transport properties for $\mathrm{H_2}$ and HF, and
 a fortiori for their isotopologues, still span orders of magnitude
-\cite{libra_2022}.
+\cite{ferry_libra_2022}.
 
 The ambiguity has already contaminated the data record, because \emph{a
 solubility constant has no law-independent units}. Sieverts-type dissolution gives \unit{\mole\per\cubic\metre\pascal\tothe{-1/2}} and Henry-type gives
@@ -241,7 +240,7 @@ Sieverts/Sieverts and Sieverts/Henry forms, so that what we propose is a strict
 generalisation of LTE, not a competing model. We then derive two dimensionless
 groups that delimit its validity, a Damk\"ohler number within a channel and a
 branching ratio between channels. Finally, we apply the framework to the
-\HYPERION{} Ni/FLiBe/gas experiment \cite{hyperion_facility}, in single-isotope.
+\HYPERION{} Ni/FLiBe/gas experiment \cite{saraswat_permeation_2026}, in single-isotope.
 
 Interfaces are treated throughout as reactive surfaces without their own stored
 inventory. Intermediate trapped states localised on the interface, and the
@@ -626,7 +625,7 @@ principle to treat the interface without any kinetic information, by imposing
 full local chemical equilibrium among all interfacial species, a Gibbs
 minimisation at $\Gamma$ at the prescribed fluorine potential. That description is, however, (i) not what any macroscopic
 hydrogen transport code implements; (ii) valid only if every interconversion is
-fast compared with transport, which is exactly what the available evidence puts
+fast compared with transport, which is exactly what the available evidence puts 
 in doubt \cite{hodille_molecular_2022,calderoni_measurement_2008}; and
 (iii) still silent on how a given net flux divides between carriers, since
 equilibrium fixes concentrations and not fluxes. The last point is the decisive
@@ -1240,7 +1239,7 @@ require.
 % ---------------------------------------------------------------
 
 \HYPERION{} (HYdrogen PERmeatION) at the MIT Plasma Science and Fusion Center
-\cite{hyperion_facility} drives hydrogen isotopes from a gas plenum, through a
+\cite{saraswat_permeation_2026} drives hydrogen isotopes from a gas plenum, through a
 Ni membrane, into a molten FLiBe pool held in a Ni container. The free surface of
 the salt is swept by a cover gas and the released flux is measured by measuring the H concentration in the gas with gas chromatography. The pumped
 fluoride salt loop of Ref.~\cite{fuerst_molten_2025} addresses the same
@@ -1267,7 +1266,7 @@ the membrane and the pool and drops the rest. What that discards can be sized: t
 \qty{1.26e-3}{\square\metre} of sidewall against \qty{4.78e-3}{\square\metre} of
 membrane, so the omitted nickel carries a permeation path in parallel with the
 modelled one worth \qty{26}{\percent} of the membrane area. The multidimensional
-treatment of that geometry is the subject of Ref.~\cite{hyperion_multidim}. We
+treatment of that geometry is the subject of Ref.~\cite{yang_quantifying_2026}. We
 use the one-dimensional reduction to demonstrate the interface models and not to
 infer properties from data, so the omitted path is a caveat and not an error bar.
 
@@ -1652,12 +1651,9 @@ rejected.}
 The consequence for fluoride melts is a reported disagreement that need not be
 one. Calderoni et al.\ \cite{calderoni_measurement_2008} find the flux
 permeating through Ni into FLiBe to go as the square root of pressure, Fukada et
-al.\ report a linear dependence for FLiNaK, and the review literature expects
+al.\ report a linear dependence for FLiNaK \cite{satoshi_fukada_hydrogen_2006}, and the review literature expects
 dissolved diatomic $\mathrm{H_2}$ in a molten salt to obey Henry's law
 \cite{forsberg_flibe_2019}.
-\VERIFY{both against the primary sources before writing; the contrast is
-currently taken from a secondary summary \cite{mit_thesis_flibe} and needs the
-Fukada reference proper.}
 
 A square-root dependence in an ionic melt is not a measurement artefact.
 It is the signature of \emph{dissociative} dissolution, that is, of exactly the
@@ -1670,7 +1666,7 @@ recombination-dominated one, $\Bra \ll 1$, gives $n \rightarrow 2$ and a linear
 response. The pressure exponent measured in a permeation experiment is a readout
 of the branching ratio, and not a fixed property of the salt. The FLiBe and
 FLiNaK datasets may therefore both be right and simply have been taken at
-different redox states. This is the falsifiable content of the paper:
+different redox states. This is the falsifiable content of this paper:
 \emph{a redox sweep at fixed temperature should move the measured exponent
 continuously between 1 and 2}, which Sec.~\ref{sec:exponent_verification} shows
 the model doing over the whole interval.

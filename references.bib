@@ -87,62 +87,6 @@ their author field so they fail loudly rather than silently.
 (BibTeX has no inline comment character -- text outside entry blocks,
 like this, is ignored by BibTeX and is the correct place for notes.)
 
-@article{calderoni_measurement_2008,
-    title = {Measurement of tritium permeation in flibe (2{LiF}--{BeF}2)},
-    volume = {83},
-    pages = {1331--1334},
-    issn = {0920-3796},
-    url = {https://www.sciencedirect.com/science/article/abs/pii/S0920379608000926},
-    journal = {Fusion Engineering and Design},
-    author = {Calderoni, P. and Sharpe, P. and Hara, M. and Oya, Y.},
-    year = {2008},
-    note = {UNVERIFIED author list, volume and pages. Two uses in this
-            paper. (1) T absorbed atomically in the Ni plate does not
-            simply recombine at the Ni/flibe interface; the authors
-            could not distinguish transport as T bound to BeF4- from
-            transport as HT, or a mixture of both. (2) The reported
-            solubility carries units inconsistent with the dissolution
-            law it is used with downstream, and a square-root pressure
-            dependence is reported where Henry behaviour is expected
-            for a molten salt. Flagged as a weakness in Sec. 6.2.
-            TODO: pin the exact table/equation before submission.},
-}
-
-@misc{hyperion_facility,
-    title = {The {HYPERION} ({HYdrogen} {PERmeatION}) facility at the {MIT} {PSFC}},
-    author = {TODO, Replace},
-    year = {2026},
-    note = {PLACEHOLDER. This is Ref. [4]/[13] of the HYPERION
-            multidimensional modelling preprint (arXiv:2605.12750).
-            Replace with the facility description paper.},
-}
-
-@misc{hyperion_multidim,
-    title = {Quantifying multidimensional transport effects on permeability
-             inference in {FLiBe} systems using a validation-informed
-             modeling framework},
-    author = {TODO, Replace},
-    year = {2026},
-    eprint = {2605.12750},
-    archiveprefix = {arXiv},
-    url = {https://arxiv.org/abs/2605.12750},
-    note = {UNVERIFIED author list. Cite for the 1D reduction and
-            sidewall correction discussion in Sec. 5.1.},
-}
-
-@article{libra_2022,
-    title = {The {LIBRA} experiment: investigating robust tritium
-             accountancy in molten {FLiBe} exposed to a {D-T} fusion
-             neutron spectrum},
-    doi = {10.1080/15361055.2022.2078136},
-    url = {https://www.tandfonline.com/doi/full/10.1080/15361055.2022.2078136},
-    journal = {Fusion Science and Technology},
-    author = {TODO, Replace},
-    year = {2022},
-    note = {UNVERIFIED author list. Cite for: literature values of
-            solubility and diffusivity for H2, D2, T2, HF, DF and TF in
-            FLiBe vary by several orders of magnitude.},
-}
 
 @article{forsberg_flibe_2019,
     title = {Fusion blankets and fluoride-salt-cooled high-temperature
@@ -162,19 +106,7 @@ like this, is ignored by BibTeX and is the correct place for notes.)
             flibe contradicts.},
 }
 
-@misc{mit_thesis_flibe,
-    title = {Tritium thermal desorption testing of nuclear graphites},
-    author = {TODO, Replace},
-    year = {2019},
-    url = {https://dspace.mit.edu/handle/1721.1/122905},
-    note = {PLACEHOLDER, and a SECONDARY source. Used only as the
-            pointer to the contrast between the linear pressure
-            dependence reported by Fukada et al. for flinak and the
-            square-root dependence reported by Calderoni et al. for
-            flibe. REPLACE with the primary Fukada reference before
-            submission; do not cite a thesis for a factual contrast
-            that has primary sources.},
-}
+
 @book{baratta_dolfinx_2023,
     title = {{DOLFINx}: {The} next generation {FEniCS} problem solving environment},
     shorttitle = {{DOLFINx}},
@@ -672,4 +604,81 @@ Die Analyse des Wasserstofftransports in Nickel hat gezeigt, daβ sowohl Trappin
     month = jun,
     year = {1975},
     pages = {745--749},
+}
+@article{satoshi_fukada_hydrogen_2006,
+    title = {Hydrogen permeability through a mixed molten salt of {LiF}, {NaF} and {KF} ({Flinak}) as a heat-transfer fluid},
+    volume = {358},
+    doi = {10.1016/j.jnucmat.2006.07.011},
+    abstract = {Abstract   Permeability, diffusivity and solubility of hydrogen in Flinak, a mixed molten salt of LiF (46.5\%), NaF (11.5\%) and KF (42\%), were determined using a vessel supported by a Ni plate. Diffusion-limiting permeation was confirmed by experimental data where hydrogen permeation rates were in reverse proportion to the thickness of Flinak. Diffusivities determined in the range of 500–750°C were correlated to an Arrhenius equation with the activation energy of 50kJ/mol. Since the dependence of hydrogen solubility in Flinak on pressure was almost linear, hydrogen was dissolved as H 2  in Flinak. The H 2  solubility in Flinak was correlated to a Henry law, and its solubility constant was discussed in terms of macroscopic surface tension and unspecified interaction energy between the molten salt and dissolved gaseous molecules.},
+    number = {2},
+    journal = {Journal of Nuclear Materials},
+    author = {{Satoshi Fukada} and Fukada, Satoshi and {Akio Morisaki} and Morisaki, Akio},
+    month = nov,
+    year = {2006},
+    doi = {10.1016/j.jnucmat.2006.07.011},
+    note = {MAG ID: 1976320744},
+    pages = {235--242},
+}
+@misc{yang_quantifying_2026,
+    title = {Quantifying {Multidimensional} {Transport} {Effects} on {Permeability} {Inference} in {FLiBe} {Systems} {Using} a {Validation}-{Informed} {Modeling} {Framework}},
+    url = {http://arxiv.org/abs/2605.12750},
+    doi = {10.48550/arXiv.2605.12750},
+    abstract = {Permeability of hydrogen isotopes in molten salts is commonly inferred from permeation experiments using simplified one-dimensional interpretations, which may not capture the coupled transport pathways present in realistic systems. In this work, a multi-dimensional, multi-material hydrogen isotope transport modeling framework implemented in FESTIM is benchmarked against permeation measurements from the HYPERION experiment conducted at the MIT Plasma Science and Fusion Center.The model explicitly resolves transport across molten salt and nickel structures, as well as external boundary conditions, enabling system-level interpretation of the measured permeation fluxes over the temperature range 773-973K. Rather than relying on idealized one-dimensional formulations for permeability estimation, this study employs a validation-informed inverse framework to assess how multidomain transport and external boundary assumptions influence the permeability inferred from experimental fluxes.Two limiting external boundary conditions, representing ideal coating and uncoated vessel behavior, are used to define a physically motivated envelope for hydrogen isotope exchange with the environment.The model captures the observed magnitude and temperature dependence of permeation fluxes under both conditions, while revealing significant lateral transport and sidewall leakage pathways that are not represented in one-dimensional interpretations.The inferred FLiBe permeability exhibits consistent Arrhenius behavior but spans a range that depends strongly on the assumed boundary conditions, demonstrating that using one-dimensional formulations to describe a permeation experiment may not be adequate to extract accurate permeability.These results provide a physically grounded framework for interpreting permeation measurements in coupled liquid-metal systems and highlight the importance of multidomain transport modeli},
+    urldate = {2026-05-20},
+    publisher = {arXiv},
+    author = {Yang, Huihua and Saraswat, Abhishek and Zhou, Weiyue and Woller, Kevin and Dark, James and Khurana, Chirag and Dunnell, Kaelyn and Peterson, Ethan and Delaporte-Mathurin, Remi},
+    month = may,
+    year = {2026},
+    note = {arXiv:2605.12750 [physics.comp-ph]},
+    keywords = {Physics - Computational Physics, Physics - Plasma Physics},
+}
+@article{ferry_libra_2022,
+    title = {The {LIBRA} {Experiment}: {Investigating} {Robust} {Tritium} {Accountancy} in {Molten} {FLiBe} {Exposed} to a {D}-{T} {Fusion} {Neutron} {Spectrum}},
+    volume = {0},
+    issn = {1536-1055},
+    shorttitle = {The {LIBRA} {Experiment}},
+    url = {https://doi.org/10.1080/15361055.2022.2078136},
+    doi = {10.1080/15361055.2022.2078136},
+    abstract = {The Liquid Immersion Blanket: Robust Accountancy (LIBRA) experiment will be a first-of-a-kind experiment to explore and develop the liquid immersion blanket (LIB) concept. The LIB is a radically simple molten–LiF-BeF2 (FLiBe)–salt tritium breeding blanket for deuterium-tritium (D-T)–fueled fusion power plants (FPPs) achieving a high tritium breeding ratio (TBR) in neutronics models. However, tritium breeding in FLiBe is inherently difficult to study experimentally. As a result, the coupled issues of FLiBe radiochemistry and tritium (T) transport are poorly understood. LIBRA approaches this challenge by simulating an FPP blanket environment using a D-T neutron generator and ≈1000 kg of FLiBe. LIBRA will investigate T breeding, containment, and extraction, coupled with FLiBe redox control and radiochemistry. The primary goal of LIBRA is to demonstrate robust T accountancy in blanket prototypical conditions. Here, T accountancy encompasses accurate predictions of T breeding in the FLiBe; detection and measurement of all T bred in LIBRA; and speciation of the T extracted from the FLiBe. Initial neutronics simulations of LIBRA indicate that a global TBR of ∼1 is possible, where the TBR is defined as the number of tritons bred and extracted from FLiBe relative to the number of neutrons produced by D-T fusion reactions in the neutron generator. In this paper, we present the LIBRA concept and its scientific goals in the context of T breeding experiments. We also consider the potential impact of the LIB on the future fusion power industry, motivating further development of FLiBe-based T breeding research activities such as LIBRA.},
+    number = {0},
+    urldate = {2022-07-05},
+    journal = {Fusion Science and Technology},
+    publisher = {Taylor \& Francis},
+    author = {Ferry, Sara E. and Woller, Kevin B. and Peterson, Ethan E. and Sorensen, Caroline and Whyte, Dennis G.},
+    month = jun,
+    year = {2022},
+    note = {\_eprint: https://doi.org/10.1080/15361055.2022.2078136},
+    keywords = {FLiBe, fusion power, liquid immersion blanket, tritium accountancy, tritium breeding},
+    pages = {1--23},
+}
+@article{calderoni_measurement_2008,
+    title = {Measurement of tritium permeation in flibe ({2LiF}–{BeF2})},
+    volume = {83},
+    doi = {10.1016/j.fusengdes.2008.05.016},
+    abstract = {Abstract   This paper reports on the experimental investigation of tritium permeation in flibe (2LiF–BeF2) at the Safety and Tritium Applied Research facility of the Idaho National Laboratory. A stainless steel cell formed by two independent volumes separated by a 2-mm thick nickel membrane is maintained at temperatures between 500 and 700°C. A controlled amount of T2 gas is flown in excess of argon in the source volume in contact with the bottom side of the nickel membrane, while a layer of molten salt is in contact with the top side. The tritium permeating above the liquid surface is carried by an argon flow to a diagnostic system comprised of a quadrupole mass spectrometer, a gas chromatographer and a proportional counter. Tritium permeability in flibe as a function of temperature is determined by the measured permeation flow rates reached in steady-state conditions, while the diffusivity is determined by fitting the transient process with the analytical solution for the diffusion process. As a result, the solubility of tritium in flibe as a function of temperature is also determined.},
+    number = {7},
+    journal = {Fusion Engineering and Design},
+    author = {{P. Calderoni} and Calderoni, Pattrick and {Phil Sharpe} and Sharpe, P. and {Masanori Hara} and Hara, Masanori and {Yasuhisa Oya} and Oya, Yasuhisa},
+    month = dec,
+    year = {2008},
+    doi = {10.1016/j.fusengdes.2008.05.016},
+    note = {MAG ID: 2010928666},
+    pages = {1331--1334},
+}
+
+@article{saraswat_permeation_2026,
+    title = {Permeation behaviour of hydrogen isotopes in molten {FLiBe} ({2LiF}–{BeF2}): {Identifying} sources of uncertainty and associated measurement challenges},
+    volume = {253},
+    issn = {0360-3199},
+    shorttitle = {Permeation behaviour of hydrogen isotopes in molten {FLiBe} ({2LiF}–{BeF2})},
+    url = {https://www.sciencedirect.com/science/article/pii/S0360319926026546},
+    doi = {10.1016/j.ijhydene.2026.156016},
+    abstract = {This paper presents results from systematic investigations conducted in the HYPERION facility to quantify permeabilities of hydrogen isotopes in FLiBe over a temperature range of 773K – 973K. To address the knowledge gap resulting from widely scattered transport parameters reported in the earlier studies, HYPERION experiments incorporate specific provisions to probe unsubstantiated assumptions, including a one-dimensional permeation, membrane surface coverage by the salt, and ideal wettability of the salt-metal interface. Suppression of the isotopic transport behaviour for metal-side charging highlights the permeation barrier characteristics of a bubble-laden Ni–FLiBe interface, impacting permeability by up to 77\%. This work attempts to resolve this issue via salt-side charging and informs constraints on the permeant charging methodology for future studies. The initial insights from HYPERION experiments call into question the design choices and estimated transport properties in earlier works. This study provides a plausible explanation for the observed scatter in H/D/T transport in FLiBe.},
+    urldate = {2026-08-11},
+    journal = {International Journal of Hydrogen Energy},
+    author = {Saraswat, Abhishek and Zhou, Weiyue and Kim, Nayoung and Cota, Jaron F. and Zheng, Guiqiu and Khechfe, Alexander A. and Barthel, Caroline S. and Short, Michael P. and Delaporte-Mathurin, Rémi and Woller, Kevin B.},
+    month = jul,
+    year = {2026},
+    keywords = {Bubbles, FLiBe, Fusion blanket, Hydrogen, Molten salt, Permeability},
+    pages = {156016},
 }
