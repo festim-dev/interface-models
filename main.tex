@@ -1641,23 +1641,47 @@ A tabulated solubility is therefore not a material property. It is a property of
 the material together with the carrier assumed for it, and assumption (H3) is
 what allows the second half of that pair to go unreported.
 
-\TODO{pin the exact location: which table or equation of
-\cite{calderoni_measurement_2008} carries the mismatched units, and whether the
-inconsistency is between the stated units and the fitted pressure exponent, or
-between the units and the permeability $\Phi = DK$ derived from them. Write this
-paragraph so a referee can check it in one minute; a vague accusation will be
-rejected.}
+The most-cited fluoride-melt dataset carries the ambiguity in its own equations.
+Calderoni et al.\ \cite{calderoni_measurement_2008} reduce their steady-state
+permeation measurements with $j_{\mathrm{T}} = (D_{\mathrm{FLiBe}}
+K_{\mathrm{FLiBe}} / L_{\mathrm{FLiBe}}) \sqrt{p_{\mathrm{T_2}}}$, their
+Eq.~(2), and confirm the square-root dependence explicitly by plotting the
+measured flux against lines of slope one half. Dimensional consistency then
+requires $[K_{\mathrm{FLiBe}}] =
+\unit{\mole\per\cubic\metre\pascal\tothe{-1/2}}$, a Sieverts constant. Their
+Eq.~(7) reports the fitted result as $K_{\mathrm{FLiBe},\mathrm{T}} =
+\num{7.9e2}\exp(-\qty{35}{\kilo\joule\per\mole}/R_g T)$ and gives its units as
+\unit{\mole\per\cubic\metre\per\pascal}, a Henry constant, and their Fig.~4
+plots it on those axes beside deuterium in FLiBe and hydrogen in FLiNaK, both
+reduced as Henry constants. The exponent used to extract the number and the
+exponent implied by the units reported for it differ by one half.
+
+None of this is a criticism of the measurement. The flux data are what they are
+and the square-root reduction is stated plainly in the text. The problem is with
+the tabulated constant. A reader who takes the units at face value recovers a flux
+linear in pressure, a reader who takes Eq.~(2) recovers one going as its square
+root, and the two agree at a single pressure. Assumption (H3) has left no trace
+in the reported number.
 
 The consequence for fluoride melts is a reported disagreement that need not be
-one. Calderoni et al.\ \cite{calderoni_measurement_2008} find the flux
-permeating through Ni into FLiBe to go as the square root of pressure, Fukada et
-al.\ report a linear dependence for FLiNaK \cite{satoshi_fukada_hydrogen_2006}, and the review literature expects
-dissolved diatomic $\mathrm{H_2}$ in a molten salt to obey Henry's law
-\cite{forsberg_flibe_2019}.
+one. Against the square root Calderoni et al.\ report for FLiBe, Fukada and
+Morisaki \cite{satoshi_fukada_hydrogen_2006} measure an almost linear dependence
+for FLiNaK, and the review literature expects dissolved diatomic
+$\mathrm{H_2}$ in a molten salt to obey Henry's law
+\cite{forsberg_flibe_2019}. The second of these reports its own speciation
+inference. Fukada and Morisaki conclude that hydrogen dissolves and permeates as
+$\mathrm{H_2}$ because both the permeability and the solubility they measure are
+close to linear in pressure. The reasoning is sound under (H2), and it is the
+step our framework removes: the exponent they measured belongs to the interface
+at their redox state, and not to FLiNaK.
 
 A square-root dependence in an ionic melt is not a measurement artefact.
 It is the signature of \emph{dissociative} dissolution, that is, of exactly the
-fluoride-bound carrier that the same authors could not rule out. Since the
+fluoride-bound carrier the same authors identify. They conclude that tritium
+does not recombine at the Ni/FLiBe interface at all, and that it moves through
+the salt in atomic form, bound to $\mathrm{BeF_4^{2-}}$ or as HT, and they note
+that only ionic dissolution accounts for a measured solubility close to HF
+reference values and far above $\mathrm{H_2}$. Since the
 metal-side loading follows Sieverts' law, $\cm{\mathrm{H}} \propto \sqrt{P}$,
 the apparent exponent of Eq.~(\ref{eq:n_of_B}) maps onto the measured pressure
 dependence: a fluorination-dominated interface, $\Bra \gg 1$, gives
@@ -1671,7 +1695,34 @@ different redox states. This is the falsifiable content of this paper:
 continuously between 1 and 2}, which Sec.~\ref{sec:exponent_verification} shows
 the model doing over the whole interval.
 
-The same argument constrains us. The most-cited Ni/FLiBe permeation dataset
+A hint of the same effect may already be present within a single dataset. We
+digitised Fig.~3 of Ref.~\cite{satoshi_fukada_hydrogen_2006}, the steady
+permeation flux through FLiNaK at \qty{500}{\celsius}, \qty{600}{\celsius} and
+\qty{700}{\celsius} over three decades of upstream pressure, and measured the
+logarithmic slope between adjacent points. Taken over the full range the slope
+is \num{1.02}, consistent with the linear reading of the original paper. The
+lowest decade sits below that value at every temperature. Between
+\qty{1}{\kilo\pascal} and \qty{10}{\kilo\pascal} the slopes are \num{0.23},
+\num{0.54} and \num{0.91} at \qty{500}{\celsius}, \qty{600}{\celsius} and
+\qty{700}{\celsius} respectively, and the ordering is the one
+Eq.~(\ref{eq:n_of_B}) would produce. The recombination channel is quadratic in
+$\cm{\mathrm{H}}$ and the fluorination channel is linear, so $\Bra$ grows as the
+loading falls, and the apparent exponent drifts from the linear limit towards
+the square-root one.
+
+We offer this as suggestive and no more. Each isotherm carries four points, the
+figure reports no uncertainties, and every slope quoted above is the difference
+of two digitised readings, so one displaced marker would change it. The same
+figure gives slopes between \num{1.4} and \num{1.7} above
+\qty{100}{\kilo\pascal}, which no sum of a linear and a square-root channel can
+produce and which we cannot account for. Deciding whether the exponent genuinely
+drifts at low loading needs a measurement built for the question: more pressures
+per isotherm, reported uncertainties on each flux, and a controlled and reported
+redox state. That is the same experiment as the redox sweep proposed above, and
+it would constrain $\Bra$ directly instead of leaving it to be inferred from
+four points.
+
+The same argument constrains us. That Ni/FLiBe permeation dataset
 cannot be ingested into a transport code without first assuming the speciation
 we argue is unknown, so we use Ref.~\cite{calderoni_measurement_2008} as
 qualitative evidence that the interface is not a simple recombination boundary,
