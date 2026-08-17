@@ -242,7 +242,7 @@ def plot(results, filename):
         color="C2",
         weight="bold",
     )
-    ax_check.set_ylabel(r"$\phi\,/\,(k^{+}c_A|_\Gamma)$")
+    ax_check.set_ylabel(r"$J\,/\,(k^{+}c_A|_\Gamma)$")
 
     # (b) what LTE actually gets wrong. The flux error is 1/(1+Da*) in both
     # configurations, and in the balanced one the interfacial concentration

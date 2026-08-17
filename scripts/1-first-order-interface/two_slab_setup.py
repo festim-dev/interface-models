@@ -103,14 +103,15 @@ def panel_profiles(ax):
         "",
         xy=(L_A + 0.035, u_slow[1]),
         xytext=(L_A + 0.035, u_slow[2]),
-        arrowprops=dict(arrowstyle="<|-|>", color=ORANGE, linewidth=1.1, shrinkA=0,
-                        shrinkB=0),
+        arrowprops=dict(
+            arrowstyle="<|-|>", color=ORANGE, linewidth=1.1, shrinkA=0, shrinkB=0
+        ),
         zorder=5,
     )
     ax.text(
         L_A + 0.075,
         0.5 * (u_slow[1] + u_slow[2]),
-        r"$\Delta = \phi/k^{+}$",
+        r"$\Delta = J/k^{+}$",
         color=ORANGE,
         fontsize=8.5,
         va="center",
@@ -135,8 +136,9 @@ def panel_profiles(ax):
         fontsize=7.5,
         bbox=dict(boxstyle="round,pad=0.12", facecolor="white", edgecolor="none"),
     )
-    ax.set_title("(a) steady profiles on a common scale", fontsize=9.5, loc="left",
-                 color=TEAL)
+    ax.set_title(
+        "(a) steady profiles on a common scale", fontsize=9.5, loc="left", color=TEAL
+    )
 
 
 def resistor(ax, x, y, label, expression, colour, width=1.7, height=0.5):
@@ -153,9 +155,7 @@ def resistor(ax, x, y, label, expression, colour, width=1.7, height=0.5):
         )
     )
     ax.text(x, y, label, color=colour, fontsize=9, ha="center", va="center", zorder=5)
-    ax.text(
-        x, y - 0.55, expression, color=colour, fontsize=8, ha="center", va="center"
-    )
+    ax.text(x, y - 0.55, expression, color=colour, fontsize=8, ha="center", va="center")
 
 
 def panel_network(ax):
@@ -181,7 +181,7 @@ def panel_network(ax):
         xytext=(0.75, y - 0.95),
         arrowprops=dict(arrowstyle="-|>", color=TEAL, linewidth=1.2),
     )
-    ax.text(1.75, y - 0.95, r"$\phi$", color=TEAL, fontsize=9, va="center")
+    ax.text(1.75, y - 0.95, r"$J$", color=TEAL, fontsize=9, va="center")
 
     # LTE short-circuits the interfacial resistance
     bypass = y + 1.0
@@ -205,15 +205,19 @@ def panel_network(ax):
     ax.text(
         5.0,
         1.15,
-        r"$\phi = \dfrac{c_0 - c_L/K}{R_A + R_\Gamma + R_B/K}$,"
+        r"$J = \dfrac{c_0 - c_L/K}{R_A + R_\Gamma + R_B/K}$,"
         r"$\quad \mathrm{Da}^{\star} = (R_A + R_B/K)\,/\,R_\Gamma$",
         color=TEAL,
         fontsize=8.5,
         ha="center",
         va="center",
     )
-    ax.set_title("(b) the same solution as resistances in series", fontsize=9.5,
-                 loc="left", color=TEAL)
+    ax.set_title(
+        "(b) the same solution as resistances in series",
+        fontsize=9.5,
+        loc="left",
+        color=TEAL,
+    )
 
 
 def plot(filename):
