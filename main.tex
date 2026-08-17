@@ -441,7 +441,7 @@ The framework extends to $N_\mathrm{iso}$ mobile atomic species in the metal wit
 Recombination now populates every isotopologue and fluorination every fluoride. 
 The gas/solid case has already met this structure: co-permeation of hydrogen isotopes through a metal forms the mixed molecule at the surface through a bilinear rate~\cite{zhu_modeling_2024}.
 For $\{\mathrm{H,T}\}$ the recombination channels are\footnote{The rate laws carry no combinatorial prefactor, so the statistical degeneracy of the mixed pair sits in the value of the constant: $k_{\mathrm{HT}}^{+} = 2\,k_{\mathrm{HH}}^{+} = 2\,k_{\mathrm{TT}}^{+}$ in the mass-independent limit, with equal reverse constants, which returns the classical $K_\mathrm{exch} = (\cs{\mathrm{HT}})^{2} / (\cs{\mathrm{H_2}}\,\cs{\mathrm{T_2}}) = 4$, random pairing of equal H and T populations. 
-Departures from that value are genuine isotope effects and belong in the constants themselves (\ref{app:balance})}
+
 \begin{align}
     w_{\mathrm{HH}} &= k_{\mathrm{HH}}^{+}\left(\cm{\mathrm{H}}\right)^{2}
                      - k_{\mathrm{HH}}^{-}\,\cs{\mathrm{H_2}}
@@ -500,7 +500,7 @@ The first is \emph{isotope swamping}: the tritium flux depends on the protium in
 A diagonal condition predicts no such coupling. The second is \emph{interfacial fractionation}: because the recombination and fluorination channels carry different isotope dependences ($k_\mathrm{HH}$ against $k_\mathrm{HT}$ against $k_\mathrm{TT}$; $k_\mathrm{f,H}$ against $k_\mathrm{f,T}$), the isotopic composition of the permeating flux differs from that of the metal, and differs between the molecular and the fluoride carrier. We report it as the model output $\alpha = (\mathrm{T/H})_\mathrm{flux} / (\mathrm{T/H})_\mathrm{metal}$.
 
 Detailed balance applies channel by channel as in Eq.~(\ref{eq:detailed_balance_general}), the ratios $k^{+}/k^{-}$ being constrained by the isotopologue equilibrium constants. 
-These are close to, but not exactly, the classical statistical values, the departure arising from zero-point energy; they are collected in \ref{app:balance}.
+These are close to, but not exactly, the classical statistical values.
 
 % ---------------------------------------------------------------
 \subsection{Dimensionless criteria for LTE validity}
@@ -1850,32 +1850,32 @@ with the reverse terms fully active. The downstream resistance rescales each
 channel without moving the exponent it contributes.
 
 % ---------------------------------------------------------------
-\section{Conservation and consistency checks}
-\label{app:conservation}
-% ---------------------------------------------------------------
+% \section{Conservation and consistency checks}
+% \label{app:conservation}
+% % ---------------------------------------------------------------
 
-The zero-flux test asks the kinetic interface to relax to the equilibrium state
-when nothing drives it. This is the sharpest available check that the
-detailed-balance constants are implemented consistently. We run it on the
-isotopologue set of Sec.~\ref{sec:isotopes}, since that is the case where the
-statistical bookkeeping is easiest to get wrong. Two mobile species H and T are
-held at equal fixed concentrations on the metal side, the liquid has no outlet,
-and the three recombination channels
-Eqs.~(\ref{eq:iso_HH})--(\ref{eq:iso_TT}) are allowed to equilibrate. With
-$k^{+}_\mathrm{HT} = 2k^{+}_\mathrm{HH}$ the steady state is
-$\mathrm{H_2 : HT : T_2} = 1 : 2 : 1$, and with all three forward constants
-equal it is $1 : 1 : 1$; both reproduce their analytical values to six
-significant figures. Declaring the mixed channel twice, once as $\mathrm{H+T}$
-and once as $\mathrm{T+H}$, also returns the equal split, confirming the point
-made in Sec.~\ref{sec:weak} that the duplication trick rescales the channel
-without introducing the degeneracy.
+% The zero-flux test asks the kinetic interface to relax to the equilibrium state
+% when nothing drives it. This is the sharpest available check that the
+% detailed-balance constants are implemented consistently. We run it on the
+% isotopologue set of Sec.~\ref{sec:isotopes}, since that is the case where the
+% statistical bookkeeping is easiest to get wrong. Two mobile species H and T are
+% held at equal fixed concentrations on the metal side, the liquid has no outlet,
+% and the three recombination channels
+% Eqs.~(\ref{eq:iso_HH})--(\ref{eq:iso_TT}) are allowed to equilibrate. With
+% $k^{+}_\mathrm{HT} = 2k^{+}_\mathrm{HH}$ the steady state is
+% $\mathrm{H_2 : HT : T_2} = 1 : 2 : 1$, and with all three forward constants
+% equal it is $1 : 1 : 1$; both reproduce their analytical values to six
+% significant figures. Declaring the mixed channel twice, once as $\mathrm{H+T}$
+% and once as $\mathrm{T+H}$, also returns the equal split, confirming the point
+% made in Sec.~\ref{sec:weak} that the duplication trick rescales the channel
+% without introducing the degeneracy.
 
-\TODO{global atom balance: check that the total number of H atoms in the metal,
-in the salt and released is conserved to machine precision over a transient.
-Not yet run.}
+% \TODO{global atom balance: check that the total number of H atoms in the metal,
+% in the salt and released is conserved to machine precision over a transient.
+% Not yet run.}
 
-\TODO{MMS on the coupled two-domain problem with a manufactured interfacial
-source, verifying the spatial and temporal orders. Not yet run.}
+% \TODO{MMS on the coupled two-domain problem with a manufactured interfacial
+% source, verifying the spatial and temporal orders. Not yet run.}
 
 % ===============================================================
 \bibliographystyle{elsarticle-num}
