@@ -211,13 +211,19 @@ def panel_model1(ax):
         ax, (3.3, y), (6.7, y), TEAL, rad=-0.35, label=r"$k^{+}$", label_pos=(5.0, 4.35)
     )
     arrow(
-        ax, (6.7, y), (3.3, y), AMBER, rad=-0.35, label=r"$k^{-}$", label_pos=(5.0, 2.20)
+        ax,
+        (6.7, y),
+        (3.3, y),
+        AMBER,
+        rad=-0.35,
+        label=r"$k^{-}$",
+        label_pos=(5.0, 2.20),
     )
 
     caption(
         ax,
         [
-            r"$\phi = k^{+}c_A|_\Gamma - k^{-}c_B|_\Gamma$",
+            r"$J = k^{+}c_A|_\Gamma - k^{-}c_B|_\Gamma$",
             r"$k^{+}/k^{-} = K_{S,B}/K_{S,A}$,  LTE as $k^{\pm}\to\infty$",
         ],
     )
@@ -235,8 +241,26 @@ def panel_model2(ax):
     arrow(ax, (2.9, 3.1), (6.7, 3.7), TEAL, rad=0.10)
     arrow(ax, (7.1, 3.4), (2.9, 3.1), AMBER, rad=0.30)
 
-    ax.text(4.6, 4.95, r"$k_\mathrm{r}^{+}$", color=TEAL, fontsize=8.5, ha="center", zorder=7, bbox=LABEL_BOX)
-    ax.text(5.0, 2.70, r"$k_\mathrm{r}^{-}$", color=AMBER, fontsize=8.5, ha="center", zorder=7, bbox=LABEL_BOX)
+    ax.text(
+        4.6,
+        4.95,
+        r"$k_\mathrm{r}^{+}$",
+        color=TEAL,
+        fontsize=8.5,
+        ha="center",
+        zorder=7,
+        bbox=LABEL_BOX,
+    )
+    ax.text(
+        5.0,
+        2.70,
+        r"$k_\mathrm{r}^{-}$",
+        color=AMBER,
+        fontsize=8.5,
+        ha="center",
+        zorder=7,
+        bbox=LABEL_BOX,
+    )
 
     caption(
         ax,
@@ -263,12 +287,32 @@ def panel_model3(ax):
     diatomic(ax, 7.2, 4.8, "H", "H")
     arrow(ax, (2.8, 5.0), (6.8, 4.9), TEAL, rad=-0.10)
     arrow(ax, (2.8, 3.4), (6.8, 4.5), TEAL, rad=-0.16)
-    ax.text(4.4, 4.85, r"R", color=TEAL, fontsize=9, ha="center", weight="bold", zorder=7, bbox=LABEL_BOX)
+    ax.text(
+        4.4,
+        4.85,
+        r"R",
+        color=TEAL,
+        fontsize=9,
+        ha="center",
+        weight="bold",
+        zorder=7,
+        bbox=LABEL_BOX,
+    )
 
     # channel F, lower: first order, and carries the salt redox state through a_F
     diatomic(ax, 7.2, 2.2, "H", "F", colors=(ORANGE, GREEN))
     arrow(ax, (2.8, 3.4), (6.8, 2.3), ORANGE, rad=0.14)
-    ax.text(3.9, 2.50, r"F", color=ORANGE, fontsize=9, ha="center", weight="bold", zorder=7, bbox=LABEL_BOX)
+    ax.text(
+        3.9,
+        2.50,
+        r"F",
+        color=ORANGE,
+        fontsize=9,
+        ha="center",
+        weight="bold",
+        zorder=7,
+        bbox=LABEL_BOX,
+    )
 
     caption(
         ax,
