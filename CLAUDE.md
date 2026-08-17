@@ -34,11 +34,11 @@ Macroscopic H-transport codes close material interfaces with local thermodynamic
 equilibrium (LTE), continuity of chemical potential, imposed as an algebraic
 per-species constraint. Three assumptions hide in that condition:
 
-- (H1) interfacial equilibration is fast vs bulk transport;
-- (H2) a **single** exchange pathway connects the two sides;
-- (H3) the carrier species on each side is known a priori.
+- (A1) interfacial equilibration is fast vs bulk transport;
+- (A2) a **single** exchange pathway connects the two sides;
+- (A3) the carrier species on each side is known a priori.
 
-The literature scrutinises (H1). **The paper's claim is that (H2) and (H3) are
+The literature scrutinises (A1). **The paper's claim is that (A2) and (A3) are
 the more consequential failures**, and that both are unavoidable at a
 metal/molten-salt interface. Replace the algebraic constraint with reversible
 mass-action reaction channels on the interface; detailed balance fixes
