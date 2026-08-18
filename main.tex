@@ -90,8 +90,8 @@
 %  (B) When chemical potential continuity fails: kinetic interface models
 %      for hydrogen isotope transport
 %  (C) as below
-\title{Kinetic interface models for hydrogen isotope transport:\\
-       local thermodynamic equilibrium as a limiting case}
+\title{When chemical potential continuity fails:\\
+       kinetic interface models for hydrogen isotope transport}
 
 \author[mit]{Remi Delaporte-Mathurin}
 \author[mit]{James Dark}
@@ -113,12 +113,8 @@ With two isotopes, two metal-side species feed five salt-side carriers, and a pe
 \begin{keyword}
     hydrogen isotope transport \sep
     material interfaces \sep
-    local thermodynamic equilibrium \sep
-    \FESTIM \sep
     molten salt \sep
-    FLiBe \sep
-    nickel \sep
-    isotope exchange \sep
+    \FESTIM{} \sep
     kinetic model
 \end{keyword}
 
@@ -141,7 +137,7 @@ Three assumptions are hidden in this constraint, and they are rarely stated toge
 (A2) is that a \emph{single} exchange pathway connects the two sides.
 (A3) is that the carrier species on each side is known a priori and is fixed, so that one solubility law applies throughout.
 
-Of the three, (A1) is the one usually scrutinised.
+Of the three, (A1) has been scrutinised.
 Molecular dynamics at the Be/BeO interface shows that LTE is not reached even at \qty{1500}{\kelvin}~\cite{hodille_molecular_2022}, and a combined density-functional and rate-equation treatment of W/Cu shows that the steady state reached at such an interface is not the thermodynamic equilibrium state whenever a net flux is carried at that interface~\cite{silva-solis_hydrogen_2026}.
 
 Assumptions (A2) and (A3) have received almost no attention, and we argue that they are the more consequential failures.
@@ -324,7 +320,7 @@ The derivation is given in \ref{app:limits}.
 The correction at finite rate constants is $\mathcal{O}(J/k^{+}c)$ and is quantified in Sec.~\ref{sec:damkohler}.
 
 An interfacial rate constant in series with a bulk diffusive resistance is familiar in the solid state; it underlies the linear term of the linear-parabolic oxidation law~\cite{deal_general_1965}, the critical thickness separating reaction-controlled from diffusion-controlled growth in binary diffusion couples~\cite{gosele_growth_1982,cui_interface-reaction_2013} and the Kapitza resistance for heat (also known as \textit{interfacial thermal resistance)}~\cite{swartz_thermal_1989}. 
-Interstitial diffusion is itself a first-order exchange between adjacent planes of sites, so Fick's law is the special case $k^{+} = D/\lambda$ with $\lambda$ the jump distance
+Interstitial diffusion is itself a first-order exchange between adjacent planes of sites, so Fick's law is the special case $k^{+} = D/\lambda$ with $\lambda$ the jump distance.
 
 % ---------------------------------------------------------------
 \subsection{Model 2: recombination into a molecular carrier}
@@ -332,7 +328,7 @@ Interstitial diffusion is itself a first-order exchange between adjacent planes 
 % ---------------------------------------------------------------
 
 The second case retains a single channel but changes the chemical identity of the transported species, $2\,X_A \rightleftharpoons Y_{A_2}$: atomic hydrogen dissolved in the metal recombines into a molecule that dissolves physically in the liquid (see Fig.~\ref{fig:interface_models}c).
-It is the metal/molten-salt analogue of surface recombination, and its net rate is
+It is the metal/molten-salt (denoted as m and s, respectively) analogue of surface recombination, and its net rate is
 \begin{equation}
     w_{\mathrm{rec}} = k_{\mathrm{r}}^{+}\left(\cm{\mathrm{H}}\big|_\Gamma\right)^{2}
                      - k_{\mathrm{r}}^{-}\,\cs{\mathrm{H_2}}\big|_\Gamma ,
@@ -393,10 +389,10 @@ Their competition is measured by the branching ratio
 whose consequences form the core of this paper's argument.
 
 First, $\Bra$ depends \emph{inversely} on the interfacial loading.
-At low loading, the fluorination channel dominates and the atomic flux crossing the interface scales linearly with $\cm{\mathrm{H}}$; at high loading, recombination takes over, and the scaling becomes quadratic. 
+At low loading, the fluorination channel dominates and the atomic flux crossing the interface scales linearly with $\cm{\mathrm{H}}\big|_\Gamma$; at high loading, recombination takes over, and the scaling becomes quadratic. 
 Defining the apparent interfacial exponent on that flux, the right-hand side of Eq.~(\ref{eq:bc_metal}) for $i = \mathrm{H}$,
 \begin{equation}
-    n \equiv \frac{\partial \ln J}{\partial \ln \cm{\mathrm{H}}} ,
+    n \equiv \frac{\partial \ln J}{\partial \ln \cm{\mathrm{H}}\big|_\Gamma} ,
     \quad J \equiv \sum_r \nu_{\mathrm{H}r}\, w_r ,
     \quad 1 \le n \le 2 ,
     \label{eq:apparent_exponent}
@@ -427,7 +423,7 @@ The last point is the decisive one for the quantity measured in a permeation exp
 The framework extends to $N_\mathrm{iso}$ mobile atomic species in the metal without modification, but the structure that emerges is qualitatively new.
 Recombination now populates every isotopologue and fluorination every fluoride. 
 The gas/solid case has already met this structure: co-permeation of hydrogen isotopes through a metal forms the mixed molecule at a rate set by the product of the two surface concentrations~\cite{zhu_modeling_2024}.
-For $\{\mathrm{H,T}\}$ the recombination channels are\footnote{The rate laws carry no combinatorial prefactor, so the statistical degeneracy of the mixed pair sits in the value of the constant: $k_{\mathrm{HT}}^{+} = 2\,k_{\mathrm{HH}}^{+} = 2\,k_{\mathrm{TT}}^{+}$ in the mass-independent limit, with equal reverse constants, which returns the classical $K_\mathrm{exch} = (\cs{\mathrm{HT}})^{2} / (\cs{\mathrm{H_2}}\,\cs{\mathrm{T_2}}) = 4$, random pairing of equal H and T populations.}
+Dropping $\big|_\Gamma$ for readability, for $\{\mathrm{H,T}\}$ the recombination channels are\footnote{The rate laws carry no combinatorial prefactor, so the statistical degeneracy of the mixed pair sits in the value of the constant: $k_{\mathrm{HT}}^{+} = 2\,k_{\mathrm{HH}}^{+} = 2\,k_{\mathrm{TT}}^{+}$ in the mass-independent limit, with equal reverse constants, which returns the classical $K_\mathrm{exch} = (\cs{\mathrm{HT}})^{2} / (\cs{\mathrm{H_2}}\,\cs{\mathrm{T_2}}) = 4$, random pairing of equal H and T populations.}
 \begin{align}
     w_{\mathrm{HH}} &= k_{\mathrm{HH}}^{+}\left(\cm{\mathrm{H}}\right)^{2}
                      - k_{\mathrm{HH}}^{-}\,\cs{\mathrm{H_2}}
@@ -495,12 +491,12 @@ These are close to, but not exactly, the classical statistical values.
 % ---------------------------------------------------------------
 
 The framework of Sec.~\ref{sec:general} contains LTE as a limit, so it can also say when that limit is legitimate. 
-Three questions decide this, and we consider them in increasing order of structural severity: whether a channel equilibrates fast enough, whether a single channel dominates, and whether each isotope reaches the salt on its own.
+Three questions decide this, and we consider them in increasing order of importance: whether a channel equilibrates fast enough, whether a single channel dominates, and whether each isotope reaches the salt on its own.
 
 \paragraph{Within a channel} 
 The relevant comparison is between interfacial equilibration and bulk transport, and a dimensionless group based on that ratio is the standard test of the local equilibrium assumption~\cite{knapp_spatial_1989}.
 In gas-driven permeation through metals, this is known as the surface-limited regime~\cite{pisarev_gas-driven_2003, denisov_surface-limited_2018}.
-Because channels may be of different order, the comparison uses the exchange velocity obtained by linearising the channel about the interfacial state, $k_r^\mathrm{eff} \equiv \partial w_r / \partial \cm{}\big|_\Gamma$, which reduces to $k^{+}$ for the first-order Model 1 and to $2 k_\mathrm{r}^{+} \cm{\mathrm{H}}|_\Gamma$ for the recombination channel of Model 2.
+Because channels may be of different order, the comparison uses the exchange velocity obtained by linearising the channel about the interfacial concentration, $k_r^\mathrm{eff} \equiv \partial w_r / \partial \cm{}\big|_\Gamma$, which reduces to $k^{+}$ for Model 1 and to $2 k_\mathrm{r}^{+} \cm{\mathrm{H}}|_\Gamma$ for Model 2.
 The Damk\"ohler number of channel $r$ is then
 \begin{equation}
     \Da_r = \frac{k_r^\mathrm{eff}\,L}{D} .
@@ -510,25 +506,29 @@ When $\Da_r \gg 1$, the channel is locally equilibrated, and its algebraic LTE f
 For asymmetric systems, one Damk\"ohler number should be evaluated per side, using $D_A, L_A$ and $D_B, L_B$ respectively, and the smaller of the two governs.
 
 For a channel of order one, as in Model 1, $k^\mathrm{eff}$ is a constant and $\Da$ is an input to the problem.
-For the recombination channel of Model 2 it is neither: the metal side sees an exchange velocity $2k_\mathrm{r}^{+}\cm{\mathrm{H}}|_\Gamma$, which falls as the interface is depleted, so the same interface may be effectively equilibrated at high loading while being kinetically limited early in a permeation transient, before the upstream side has charged.
-A sweep in Da therefore needs a reference loading.
-We use the upstream Sieverts value $c^{\star} = K_S\sqrt{P_\mathrm{up}}$, giving the control parameter $2k_\mathrm{r}^{+}c^{\star}L/D$, and report the value attained at the interface as a diagnostic.
-That reference is known from the boundary condition before anything is solved, and every dimensionless group quoted in this paper is built at it, the branching ratio included, so both axes of the map below refer to one loading.
-Which loading a Damk\"ohler number is built at is part of its definition and should be quoted with it.
+For Model 2, neither is true: the metal side sees an exchange velocity $2k_\mathrm{r}^{+}\cm{\mathrm{H}}|_\Gamma$, which falls as the interface is depleted.
+This means that, for instance, in a permeation transient, the same interface may be kinetically limited initially (i.e., when the interfacial concentration is low) and then effectively equilibrates at high interfacial concentration.
+A sweep in Da therefore needs a reference concentration.
+We use the upstream Sieverts value $c^{\star} = K_S\sqrt{P_\mathrm{up}}$, giving the control parameter $\Da^{\star} = 2k_\mathrm{r}^{+}c^{\star}L/D$, and report the value attained at the interface as a diagnostic.
+That reference is known from the boundary condition before anything is solved, and every dimensionless group quoted in this paper is built at it, the branching ratio included, so both axes of the map below refer to one concentration.
+Which concentration a Damk\"ohler number is built with is part of its definition and should be quoted with it.
 
 The caveat carried over from Ref.~\cite{silva-solis_hydrogen_2026} applies throughout: $\Da \gg 1$ is \emph{necessary but not sufficient}, since under a net flux the steady state departs from equilibrium by a term proportional to $J/k^{+}$, which LTE sets to zero by construction.
 
-A second and independent separation of timescales is implied whenever the interface is treated as having no state of its own. 
-Eq~(\ref{eq:damkohler}) compares an interfacial rate with bulk transport and says nothing about how long an interfacial population, where there is one, takes to relax.
-Writing the interface condition algebraically in the trace values requires that relaxation be fast compared with $L^{2}/D$, as set out in \ref{app:limits}.
-For W/Cu the separation is wide, three to six orders of magnitude~\cite{silva-solis_hydrogen_2026}.
-Where no such comparison is available, the algebraic form is an assumption in its own right and should be reported as one.
+% A second and independent separation of timescales is implied whenever the interface is treated as having no state of its own. 
+% Eq~(\ref{eq:damkohler}) compares an interfacial rate with bulk transport and says nothing about how long an interfacial population, where there is one, takes to relax.
+% Writing the interface condition algebraically in the trace values requires that relaxation be fast compared with $L^{2}/D$, as set out in \ref{app:limits}.
+% For W/Cu the separation is wide, three to six orders of magnitude~\cite{silva-solis_hydrogen_2026}.
+% Where no such comparison is available, the algebraic form is an assumption in its own right and should be reported as one.
 
-\paragraph{Between channels} The relevant group is the branching ratio $\Bra$ of Eq.~(\ref{eq:branching}).
-In the limits $\Bra \rightarrow 0$ and $\Bra \rightarrow \infty$, one channel dominates, and an LTE form exists, Sieverts/Henry and linear, respectively. 
-When $\Bra = \mathcal{O}(1)$, no single algebraic law applies at all, however large the Damk\"ohler numbers are.
+\paragraph{Between channels}
+The relevant quantity is the branching ratio $\Bra$ of Eq.~(\ref{eq:branching}).
+As $\Bra \rightarrow 0$ recombination dominates, and the interface obeys the Sieverts/Henry condition of Eq.~(\ref{eq:lte_sh}).
+At $\Bra \rightarrow \infty$ fluorination dominates, and the interface law is linear with the metal-side concentration.
+Either limit has an LTE form.
+In between, both channels carry a substantial share, and no single algebraic law applies at all, no matter how large the Damk\"ohler numbers are.
 
-The two groups are independent, and are placed on the two axes of a single map (see Fig.~\ref{fig:regime_map}).
+$\Da$ and $\Bra$ are independent of one another, and are placed on the two axes of a single map (see Fig.~\ref{fig:regime_map}).
 The field plotted is the larger of two quantities,
 \begin{equation}
     \mathcal{E} = \max\left(
@@ -538,7 +538,7 @@ The field plotted is the larger of two quantities,
     \label{eq:lte_indicator}
 \end{equation}
 the first is the relative error made on the flux by treating a channel as equilibrated, exact for Model 1 by Eq.~(\ref{eq:model1_convergence}), and the second is the fraction of the atomic flux carried by the minority channel, the part of the flux that no single-channel model represents at all.
-Taking the larger of the two is a convention: $\mathcal{E}$ is an indicator of how badly the best available LTE condition does, not a bound on the error of any particular simulation.
+Taking the larger of the two is a convention: $\mathcal{E}$ indicates how badly the best available LTE condition performs.
 The map is nevertheless entirely analytical, and the right-hand axis carries the apparent exponent $n = (2+\Bra)/(1+\Bra)$ of Eq.~(\ref{eq:n_of_B}), the quantity a permeation experiment would report.
 
 \begin{figure}[htbp]
@@ -560,8 +560,8 @@ The map is nevertheless entirely analytical, and the right-hand axis carries the
     \label{fig:regime_map}
 \end{figure}
 
-Read as a decision aid, the map says that an LTE interface needs $\Da^{\star} \gtrsim 10$ \emph{and} a branching ratio at least an order of magnitude away from unity.
-Neither condition alone suffices, and the second is the one that the literature does not check.
+Read as a decision aid, the map says that an LTE interface needs $\Da^{\star} \gtrsim 100$ \emph{and} a branching ratio at least two orders of magnitude away from unity.
+Neither condition alone is sufficient.
 
 \paragraph{Across isotopes} 
 LTE further requires each isotope to reach the salt on its own, without pairing with another.
