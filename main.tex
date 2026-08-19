@@ -21,6 +21,7 @@
 \usepackage[dvipsnames]{xcolor}
 \usepackage{enumitem}
 \usepackage[colorlinks = true, linkcolor = blue, urlcolor  = blue, citecolor = blue]{hyperref}
+\usepackage{pythonhighlight}
 
 % Compact nested lists for the outline
 \setlist[itemize]{noitemsep, topsep=3pt, parsep=2pt, leftmargin=1.4em}
@@ -564,7 +565,7 @@ Read as a decision aid, the map says that an LTE interface needs $\Da^{\star} \g
 Neither condition alone is sufficient.
 
 \paragraph{Across isotopes} 
-LTE further requires each isotope to reach the salt on its own, without pairing with another.
+LTE further requires that no salt species be fed by two metal-side isotopes at once.
 The departure is quantified by the fraction of the tritium flux carried by the mixed isotopologue,
 \begin{equation}
     \chi_\mathrm{HT} = \frac{w_\mathrm{HT}}{w_\mathrm{HT} + 2 w_\mathrm{TT}}.
@@ -579,19 +580,23 @@ In the tritium-lean, protium-rich conditions typical of a breeding blanket, $\ch
 \label{sec:implementation}
 % ===============================================================
 
+\FESTIM{}~v2.0 divides a computational domain into volume subdomains, each carrying its own material properties and discretised on its own submesh of a common parent mesh~\cite{dark_festim_2026}.
+Physics is then declared only where it acts: trapping in a solid, advection in a fluid, and each species hosted only by the subdomains in which it exists.
+The elements can be continuous within a subdomain, while the facets shared with a neighbouring subdomain carry discontinuous elements, so the two sides of an interface can hold different values and a concentration jump can be enforced directly.
+Those facets are interior to the parent mesh, and the mixed-domain assembly of DOLFINx~\cite{baratta_dolfinx_2023} maps each of them to the cell it belongs to on either subdomain's side, so a single variational form can use the values of both subdomains' fields on the same facet.
+The interface conditions of Sec.~\ref{sec:models} enter that form as surface terms, in the same way a flux condition enters on an external boundary, and they prescribe the flux crossing $\Gamma$ rather than the concentrations on either side of it.
+
 % ---------------------------------------------------------------
 \subsection{Weak formulation}
 \label{sec:weak}
 % ---------------------------------------------------------------
 
-Each subdomain is discretised on its own submesh of a common parent mesh and carries its own function space for every species it hosts, so that the concentration fields are free to jump across the interface $\Gamma$.
-This is the multi-species discontinuous architecture of \FESTIM{}~v2, built on submeshes and entity maps in DOLFINx~\cite{baratta_dolfinx_2023}.
-Multiplying the transport equation of species $i$ on $\Omega_A$ by a test function $v \in H^1(\Omega_A)$ and integrating the diffusive term by parts gives the usual bulk residual, and the interface enters only through the part of the boundary integral carried by $\Gamma$.
+Multiplying the transport equation of species $i$ on $\Omega_A$ by a test function $v \in H^1(\Omega_A)$ and integrating the diffusive term by parts gives the usual bulk residual.
+The interface enters only through the part of the boundary integral carried by $\Gamma$.
 Substituting Eqs.~(\ref{eq:bc_metal}) and~(\ref{eq:bc_salt}) leaves the surface contributions
-
 \begin{align}
     F^{\mathrm{m}}_i &\supset
-    \phantom{-}\int_\Gamma \Big(\sum_r \nu_{ir}\, w_r\Big)\,
+    +\int_\Gamma \Big(\sum_r \nu_{ir}\, w_r\Big)\,
         v^{\mathrm{m}}_i \,\mathrm{d}S
     \label{eq:weak_metal}\\
     F^{\mathrm{s}}_\alpha &\supset
@@ -599,63 +604,91 @@ Substituting Eqs.~(\ref{eq:bc_metal}) and~(\ref{eq:bc_salt}) leaves the surface 
         v^{\mathrm{s}}_\alpha \,\mathrm{d}S ,
     \label{eq:weak_salt}
 \end{align}
-
-with $w_r$ given by Eq.~(\ref{eq:mass_action}) and evaluated on the traces of the solution from either side.
+with $w_r$ given by Eq.~(\ref{eq:mass_action}), evaluated on $\Gamma$ using the values of the solution from either side.
 The opposite signs are those of the two outward normals: a channel proceeding forwards removes atoms from $\Omega_A$ and delivers carriers to $\Omega_B$.
-Because $\Gamma$ is an interior facet of the parent mesh, the two integrals are assembled with an interior-facet measure whose integration data map each facet to the cell it belongs to on each side, one restriction per subdomain.
+The two integrals are assembled with an interior-facet measure, $\mathrm{d}S$, whose integration data map each facet to the cell it belongs to on each side, one restriction per subdomain.
 
 No interfacial degrees of freedom are introduced.
-Every channel is algebraic in the trace values, so no function space on $\Gamma$ and no additional unknowns are required, and the size of the linear system is unchanged relative to an LTE interface on the same mesh.
+Every channel rate is calculated from concentrations the solver already has, so the interface adds no unknowns of its own and the system is the same size as it would be with an LTE interface on the same mesh.
 This is the simplification relative to the companion codimension-1 work, where an interfacial inventory is transported along $\Gamma$ and does carry its own degrees of freedom.
 
-The stoichiometric coefficients enter as multiplicities: the rate $w_r$ is added
-once to the residual of each occurrence of a species in the channel, so
-declaring the recombination channel of Eq.~(\ref{eq:model2_rate}) with two H
-reactants produces both the square in the rate law and the factor two in
-Eq.~(\ref{eq:bc_metal}).
+The stoichiometric coefficients enter as multiplicities. 
+The rate $w_r$ is added once to the residual of each occurrence of a species in the channel, so declaring the recombination channel of Eq.~(\ref{eq:model2_rate}) with two H reactants produces both the square in the rate law and the factor two in Eq.~(\ref{eq:bc_metal}).
 
-The assembled system is blocked, with one residual block per subdomain, and the
-surface integrals of Eqs.~(\ref{eq:weak_metal}) and~(\ref{eq:weak_salt}) are the
-only terms coupling one block to another. Each block is differentiated
-symbolically with respect to every unknown of the coupled system. The isotopologue channels populate a block that no per-species condition
-possesses: since $\partial w_\mathrm{HT}/\partial \cm{\mathrm{H}} =
-k^{+}_\mathrm{HT}\cm{\mathrm{T}}$, the residual of H acquires a block against the
-trial function of T, so two species on the \emph{same} side of the interface are
-coupled to each other through the interface. Several channels sharing one
-interface are declared as separate objects whose contributions add, and this is
-how we assemble Model 3 and the five-channel isotopologue set of
-Sec.~\ref{sec:isotopes}.
+The assembled system is blocked, with one residual block per subdomain, and the surface integrals of Eqs.~(\ref{eq:weak_metal}) and~(\ref{eq:weak_salt}) are the only terms coupling one block to another.
+Each block is differentiated symbolically with respect to each unknown in the coupled system. 
+The isotopologue channels produce a coupling that no per-species has.
+Since $\partial w_\mathrm{HT}/\partial \cm{\mathrm{H}} = k^{+}_\mathrm{HT}\cm{\mathrm{T}}$, the residual of H depends on the T concentration, so two species on the \emph{same} side of the interface are coupled through it.
+Several channels sharing a single interface are treated as separate objects whose contributions sum, and this is how we assemble Model 3 and the five-channel isotopologue set in Sec.~\ref{sec:isotopes}.
+
+\subsection{\FESTIM{} user API}
+\label{sec:user_api}
+
+An interface condition is added to a model as an object carrying the two rate constants and the species involved, and the assembly of Sec.~\ref{sec:weak} is handled internally.
+A first-order channel, Model 1, uses \pyth{InterfaceFlux} and needs only the two constants:
+
+\begin{python}
+import festim as F
+
+# X(A) <=> X(B), first order each way
+model_1_eg = F.InterfaceFlux(
+    id=1,
+    subdomains=[A, B],
+    k_plus=k_plus,
+    k_minus=k_minus,
+)
+\end{python}
+
+A channel that changes the carrier uses \pyth{InterfaceReaction}, which takes explicit lists of reactants and products.
+Stoichiometry is set by repetition in those lists, so the two H reactants of the recombination channel produce both the square in the rate and the factor two in the atomic flux.
+Model~3 is two such channels sharing one interface \pyth{id}, their contributions adding on $\Gamma$:
+
+\begin{python}
+# metal hosts atomic H; salt hosts the carriers
+H  = F.Species("H",  subdomains=[metal])
+H2 = F.Species("H2", subdomains=[salt])
+HF = F.Species("HF", subdomains=[salt])
+
+# R: 2 H(m) <=> H2(s)
+recomb_channel = F.InterfaceReaction(
+    id=1,
+    subdomains=[metal, salt],
+    reactants=[H, H],
+    products=[H2],
+    k_plus=kr_plus,
+    k_minus=kr_minus,
+)
+
+# F: H(m) <=> HF(s), a_F folded into k_plus
+fluorine_channel = F.InterfaceReaction(
+    id=1,
+    subdomains=[metal, salt],
+    reactants=[H],
+    products=[HF],
+    k_plus=kf_plus * a_F,
+    k_minus=kf_minus,
+)
+
+\end{python}
+
+The species restricted to \pyth{[metal]} or \pyth{[salt]} are the discontinuous architecture of Sec.~\ref{sec:weak} in use: \pyth{H2} and \pyth{HF} exist only in the salt, and never acquire degrees of freedom in the metal.
+The five-channel isotopologue set of Sec.~\ref{sec:isotopes} is assembled the same way, with the mixed-isotopologue degeneracy carried in its rate constant rather than by declaring the channel twice.
 
 % ---------------------------------------------------------------
 \subsection{Parameterisation and numerical behaviour}
 \label{sec:params}
 % ---------------------------------------------------------------
 
-Each channel needs two numbers, and they are of different kinds. Detailed
-balance, Eq.~(\ref{eq:detailed_balance_general}), fixes the \emph{ratio}
-$k_r^{+}/k_r^{-}$ from the same thermodynamic data that parameterise the LTE
-conditions of Sec.~\ref{sec:lte}, so no new information is needed there. The
-\emph{magnitude} is the additional input the framework requires, and it can come
-from atomistic modelling, from fitting to permeation breakthrough transients, or, as a
-first estimate for the recombination channel, from the gas/metal recombination
-coefficients measured for the same metal. Silva-Sol\'is et al.\
-\cite{silva-solis_hydrogen_2026} follow this methodology for W/Cu, fixing
-the ratios from the solution energies of the interfacial and bulk sites
-\cite{silva-solis_solution_2024} and fitting only the magnitude to the
-relaxation time of a site network computed from density functional theory. The
-sensitivity of a prediction to that magnitude is exactly what the Damk\"ohler
-number of Eq.~(\ref{eq:damkohler}) measures: where $\Da \gg 1$ an order of
-magnitude in $k^{+}$ is immaterial, and where it is not, the interface is
-rate-limiting and the number has to be justified.
+Every channel needs forwards and backwards rate constants, and the two come from different sources.
+Detailed balance, Eq.~(\ref{eq:detailed_balance_general}), fixes the \emph{ratio} $k_r^{+}/k_r^{-}$ from the same thermodynamic data that parameterise the LTE conditions of Sec.~\ref{sec:lte}, so no new information is needed there.
+The \emph{magnitude} is the additional input the framework requires.
+It can come from atomistic modelling, from fitting to permeation breakthrough transients, or, as a first estimate for the recombination channel, from the gas/metal recombination coefficients measured for the same metal.
+Silva-Sol\'is et al.\ \cite{silva-solis_hydrogen_2026} follow this methodology for W/Cu, fixing the ratios from the solution energies of the interfacial and bulk sites \cite{silva-solis_solution_2024} and fitting only the magnitude to the relaxation time of a site network computed from density functional theory. 
+The sensitivity of a prediction to that magnitude is exactly what the Damk\"ohler number of Eq.~(\ref{eq:damkohler}) measures: where $\Da \gg 1$ an order of magnitude in $k^{+}$ is immaterial, and where it is not, the interface is rate-limiting and the number has to be justified.
 
-Two properties of the present implementation are limitations of the code and not
-of the framework. The rate constants are prescribed as plain numbers, with no
-Arrhenius form, so a temperature dependence has to be imposed by the user and
-the activity $a_\mathrm{F}$ of Eq.~(\ref{eq:model3_rate}) is folded into
-$k_\mathrm{f}^{+}$ by hand. More importantly, the ratio $k_r^{+}/k_r^{-}$ is not
-checked against Eq.~(\ref{eq:detailed_balance_general}) by the solver:
-thermodynamic consistency is a property of how the model is parameterised, and
-it remains the responsibility of whoever writes the input.
+Two properties of the present implementation are limitations of the code and not of the framework.
+The rate constants are prescribed as plain numbers, with no Arrhenius form, so a temperature dependence has to be imposed by the user and the activity $a_\mathrm{F}$ of Eq.~(\ref{eq:model3_rate}) is folded into $k_\mathrm{f}^{+}$ by hand.
+More importantly, the ratio $k_r^{+}/k_r^{-}$ is not checked against Eq.~(\ref{eq:detailed_balance_general}) by the solver: thermodynamic consistency is a property of how the model is parameterised, and it remains the responsibility of whoever writes the input.
 
 % ===============================================================
 \section{Verification}
@@ -667,27 +700,14 @@ it remains the responsibility of whoever writes the input.
 \label{sec:lte_limit}
 % ---------------------------------------------------------------
 
-We check that each model recovers its LTE condition at large rate constants, and
-that it does so at the rate predicted in \ref{app:limits}. Both tests are
-run against the analytical steady states of \ref{app:analytical}, which
-are finite algebraic expressions with no series truncation, so the residual
-differences quoted below are those of the numerical solution alone.
+We check that each model recovers its LTE condition at large rate constants, and that it does so at the rate predicted in \ref{app:limits}.
+Both tests are run against the analytical steady states of \ref{app:analytical}, which are finite algebraic expressions with no series truncation, so the residual differences quoted below are those of the numerical solution alone.
 
-The first test is Model 1 on a one-dimensional two-slab problem, with
-$D_A = 0.5$ and $D_B = 1$ in arbitrary units, slabs of equal thickness $0.5$,
-concentrations $c_0 = 2$ and $c_L = 1$ imposed at the outer faces, and
-$k^{-}/k^{+} = 0.5$. The steady problem is solved for seventeen values of the
-Damk\"ohler number spanning eight orders of magnitude, $\Da = k^{+}L_A/D_A$ from $10^{-2}$
-to $10^{6}$. Plotting the two slabs on a common scale, $c_A$ on one side and
-$c_B/K$ on the other, turns Eq.~(\ref{eq:lte_ss}) into continuity, so what is
-left at $\Gamma$ is the defect $\Delta = J/k^{+}$ of
-Eq.~(\ref{eq:defect_1_explicit}) (see Fig.~\ref{fig:two_slab}). We read every
-steady solution below this way. The defect decreases as $\Da$
-grows and is nonzero at any finite rate constant, because the interface is
-carrying a flux. The transient behaviour over the same sweep
-(see Fig.~\ref{fig:lte_transient}) makes the first of the three consequences listed
-in Sec.~\ref{sec:lte} concrete: at moderate $\Da$ the interfacial ratio is far
-from its equilibrium value for most of the transient.
+The first test is Model 1 on a one-dimensional two-slab problem, with $D_A = 0.5$ and $D_B = 1$ in arbitrary units, slabs of equal thickness $0.5$, concentrations $c_0 = 2$ and $c_L = 1$ imposed at the outer faces, and $k^{-}/k^{+} = 0.5$.
+The steady problem is solved for seventeen values of the Damk\"ohler number spanning eight orders of magnitude, $\Da = k^{+}L_A/D_A$ from $10^{-2}$ to $10^{6}$.
+Plotting the two slabs on a common scale, $c_A$ on one side and $c_B/K$ on the other, turns Eq.~(\ref{eq:lte_ss}) into continuity, so what is left at $\Gamma$ is the defect $\Delta = J/k^{+}$ of Eq.~(\ref{eq:defect_1_explicit}) (see Fig.~\ref{fig:two_slab}).
+We read every steady solution below this way. The defect decreases as $\Da$ grows and is nonzero at any finite rate constant, because the interface is carrying a flux.
+The transient behaviour over the same sweep (see Fig.~\ref{fig:lte_transient}) makes the first of the three consequences listed in Sec.~\ref{sec:lte} concrete: at moderate $\Da$ the interfacial ratio is far from its equilibrium value for most of the transient.
 
 \begin{figure*}[htbp]
     \centering
@@ -714,17 +734,10 @@ from its equilibrium value for most of the transient.
     \label{fig:lte_transient}
 \end{figure}
 
-The second test replaces the channel with the recombination channel of
-Eq.~(\ref{eq:model2_rate}) on a metal/liquid pair, the case this paper is about.
-Geometry, diffusivities and outer concentrations are those of the Model 1 test,
-so that only the interface changes: the slab $[0, 0.5]$ is the metal and carries
-the atomic species $\mathrm{H}$, the slab $[0.5, 1]$ is the liquid and carries
-the molecular carrier $\mathrm{H_2}$, and the two are now distinct species and
-not one species restricted to two subdomains. Detailed balance is applied through Eq.~(\ref{eq:detailed_balance_2}) with
-$K_H/K_S^{2} = 0.5$. Since the channel is second order, $\Da$ is not an input to
-the problem: we follow Sec.~\ref{sec:damkohler} and sweep the control parameter
-$2k_\mathrm{r}^{+}c_0L_\mathrm{m}/D_\mathrm{m}$ over the same eight orders of magnitude,
-reporting the value attained at the interface as a diagnostic.
+The second test replaces the channel with the recombination channel of Eq.~(\ref{eq:model2_rate}) on a metal/liquid pair, the case this paper is about.
+Geometry, diffusivities and outer concentrations are those of the Model 1 test, so that only the interface changes: the slab $[0, 0.5]$ is the metal and carries the atomic species $\mathrm{H}$, the slab $[0.5, 1]$ is the liquid and carries the molecular carrier $\mathrm{H_2}$, and the two are now distinct species and not one species restricted to two subdomains.
+Detailed balance is applied through Eq.~(\ref{eq:detailed_balance_2}) with $K_H/K_S^{2} = 0.5$. 
+Since the channel is second order, $\Da$ is not an input to the problem: we follow Sec.~\ref{sec:damkohler} and sweep the control parameter $2k_\mathrm{r}^{+}c_0L_\mathrm{m}/D_\mathrm{m}$ over the same eight orders of magnitude, reporting the value attained at the interface as a diagnostic.
 
 \begin{table}[htbp]
     \centering
@@ -766,17 +779,9 @@ reporting the value attained at the interface as a diagnostic.
     \label{fig:lte_limit}
 \end{figure}
 
-Agreement with the analytical solutions sits at the level of round-off throughout both
-sweeps (Table~\ref{tab:convergence}, the Model 1 sweep also in
-Fig.~\ref{fig:lte_limit}), and for Model 1 the piecewise linear steady profile is
-represented exactly by the P1 elements, so this is a check of the interface term
-itself and not of the bulk discretisation. The departure from LTE is monotone
-and first order in $1/\Da$ for both channels, and approaches the asymptote
-predicted by Eqs.~(\ref{eq:defect_1_explicit}) and~(\ref{eq:defect_2}). For
-Model 2 that departure is measured on the quantity the channel equilibrates and
-not on a concentration ratio. The rate of Eq.~(\ref{eq:model1_convergence}) is
-therefore confirmed, and with it the claim that LTE is recovered continuously
-and never imposed.
+Agreement with the analytical solutions sits at the level of round-off throughout both sweeps (Table~\ref{tab:convergence}, the Model 1 sweep also in Fig.~\ref{fig:lte_limit}), and for Model 1 the piecewise linear steady profile is represented exactly by the P1 elements, so this is a check of the interface term itself and not of the bulk discretisation.
+The departure from LTE is monotone and first order in $1/\Da$ for both channels, and approaches the asymptote predicted by Eqs.~(\ref{eq:defect_1_explicit}) and~(\ref{eq:defect_2}).
+For Model 2 that departure is measured on the quantity the channel equilibrates and not on a concentration ratio. The rate of Eq.~(\ref{eq:model1_convergence}) is therefore confirmed, and with it the claim that LTE is recovered continuously and never imposed.
 
 % Two features of the sweep are specific to the higher-order channel. The
 % Damk\"ohler number attained at the interface settles at $3/4$ of the control
@@ -799,31 +804,16 @@ and never imposed.
 \label{sec:exponent_verification}
 % ---------------------------------------------------------------
 
-The two tests above each equilibrate a single channel. The third exercises the
-configuration for which no algebraic interface law exists at all, two channels
-competing on the same interface, and checks the exponent they produce against
-Eq.~(\ref{eq:n_of_B}). Geometry and metal-side transport are again those of
-Sec.~\ref{sec:lte_limit}. The liquid now carries two species, $\mathrm{H_2}$ fed
-by the recombination channel of Eq.~(\ref{eq:model2_rate}) and HF fed by the
-fluorination channel of Eq.~(\ref{eq:model3_rate}), declared as two interface
-objects sharing one interface identifier so that their residual contributions
-add as described in Sec.~\ref{sec:weak}. Both carriers are held at zero on the
-outer liquid face, the swept-salt regime in which Eq.~(\ref{eq:n_of_B}) was
-derived, and they are given deliberately different diffusivities,
-$D_\mathrm{HF} = D_\mathrm{H_2}/4$, for a reason that appears below. The
-upstream loading is swept over five orders of magnitude at three values of $a_\mathrm{F}$,
-183 steady solves in all, which carries the branching ratio of
-Eq.~(\ref{eq:branching}) from \num{2.1e-3} to \num{6.0e3}.
+The two tests above each equilibrate a single channel.
+The third exercises the configuration for which no algebraic interface law exists at all, two channels competing on the same interface, and checks the exponent they produce against Eq.~(\ref{eq:n_of_B}).
+Geometry and metal-side transport are again those of Sec.~\ref{sec:lte_limit}.
+The liquid now carries two species, $\mathrm{H_2}$ fed by the recombination channel of Eq.~(\ref{eq:model2_rate}) and HF fed by the fluorination channel of Eq.~(\ref{eq:model3_rate}), declared as two interface objects sharing one interface identifier so that their residual contributions add as described in Sec.~\ref{sec:weak}.
+Both carriers are held at zero on the outer liquid face, the swept-salt regime in which Eq.~(\ref{eq:n_of_B}) was derived, and they are given deliberately different diffusivities, $D_\mathrm{HF} = D_\mathrm{H_2}/4$, for a reason that appears below.
+The upstream loading is swept over five orders of magnitude at three values of $a_\mathrm{F}$, 183 steady solves in all, which carries the branching ratio of Eq.~(\ref{eq:branching}) from \num{2.1e-3} to \num{6.0e3}.
 
-Nothing about the exponent is imposed on the solver, and this is what makes the
-test meaningful. We measure it afterwards, as the logarithmic slope of the total
-atomic flux against the interfacial loading taken by centred differences along
-the sweep, the same operation a permeation experiment performs on its own data.
-The computed interfacial concentrations agree with the analytical solution of
-\ref{app:analytical} to a median relative error of \num{2.2e-16} over the
-whole set, and at worst \num{1.8e-8} at the two smallest loadings of the most
-oxidising sweep, where the interfacial concentration is itself \num{4e-4} and
-the solver tolerance sets the floor.
+Nothing about the exponent is imposed on the solver, and this is what makes the test meaningful. 
+We measure it afterwards, as the logarithmic slope of the total atomic flux against the interfacial loading taken by centred differences along the sweep, the same operation a permeation experiment performs on its own data.
+The computed interfacial concentrations agree with the analytical solution of \ref{app:analytical} to a median relative error of \num{2.2e-16} over the whole set, and at worst \num{1.8e-8} at the two smallest loadings of the most oxidising sweep, where the interfacial concentration is itself \num{4e-4} and the solver tolerance sets the floor.
 
 \begin{figure}[htbp]
     \centering
@@ -852,37 +842,16 @@ the solver tolerance sets the floor.
     \label{fig:model3_exponent}
 \end{figure}
 
-The measured exponent tracks Eq.~(\ref{eq:n_of_B}) to within \num{5.8e-4}
-everywhere, the truncation error of the centred difference at the sweep spacing
-used, and it spans $1.0002$ to $1.9978$ as the branching ratio crosses the unit
-interval. At the point of the sweep nearest $\Bra = 1$ we obtain $n = 1.5000$,
-the midpoint of Eq.~(\ref{eq:n_of_B}) at which the two channels carry equal
-atomic fluxes. Read together with Fig.~\ref{fig:model3_exponent}a,b, this is the
-falsifiable content of Sec.~\ref{sec:units} in verified form: the exponent is a
-continuous function of the branching ratio over its whole range, so a redox
-sweep moves it and no fixed choice of $1$ or $2$ describes the interface across
-such a sweep. The reverse terms of both channels are active throughout and leave
-the exponent untouched, because eliminating the salt-side traces renormalises
-each forward constant by a factor independent of the loading
-(\ref{app:analytical}), so Eq.~(\ref{eq:n_of_B}) holds beyond the
-irreversible regime in which it was derived.
+The measured exponent tracks Eq.~(\ref{eq:n_of_B}) to within \num{5.8e-4} everywhere, the truncation error of the centred difference at the sweep spacing used, and it spans $1.0002$ to $1.9978$ as the branching ratio crosses the unit interval.
+At the point of the sweep nearest $\Bra = 1$ we obtain $n = 1.5000$, the midpoint of Eq.~(\ref{eq:n_of_B}) at which the two channels carry equal atomic fluxes.
+Read together with Fig.~\ref{fig:model3_exponent}a,b, this is the falsifiable content of Sec.~\ref{sec:units} in verified form: the exponent is a continuous function of the branching ratio over its whole range, so a redox sweep moves it and no fixed choice of $1$ or $2$ describes the interface across such a sweep.
+The reverse terms of both channels are active throughout and leave the exponent untouched, because eliminating the salt-side traces renormalises each forward constant by a factor independent of the loading (\ref{app:analytical}), so Eq.~(\ref{eq:n_of_B}) holds beyond the irreversible regime in which it was derived.
 
-The inventory variant of Eq.~(\ref{eq:apparent_exponent}) is a different number,
-and this is why we gave the two carriers different diffusivities. The
-interfacial inventory $2\cs{\mathrm{H_2}} + \cs{\mathrm{HF}}$ weights each
-channel by the downstream resistance its carrier meets, so its logarithmic slope
-follows Eq.~(\ref{eq:n_of_B}) with $\Bra$ replaced by
-$\Bra\,R_\mathrm{HF}/R_\mathrm{H_2}$, and the sweep reproduces this to
-\num{5.7e-4}. Plotted against the same branching ratio, the two readouts are
-curves of identical shape separated by the resistance ratio
-(Fig.~\ref{fig:model3_exponent}c): the
-flux exponent passes through $3/2$ at $\Bra = 1$ and the
-inventory exponent does so at $\Bra = 1/4$. At a branching ratio of $0.31$, for
-instance, the flux reports $n = 1.77$ and the inventory $n = 1.45$ on the same
-interface at the same instant. An exponent fitted to a sampled salt inventory
-and one fitted to a measured permeation flux therefore imply different branching
-ratios unless the two carriers are transported alike, and reading the first as
-though it were the second misplaces $\Bra$ by the resistance ratio.
+The inventory variant of Eq.~(\ref{eq:apparent_exponent}) is a different number, and this is why we gave the two carriers different diffusivities.
+The interfacial inventory $2\cs{\mathrm{H_2}} + \cs{\mathrm{HF}}$ weights each channel by the downstream resistance its carrier meets, so its logarithmic slope follows Eq.~(\ref{eq:n_of_B}) with $\Bra$ replaced by $\Bra\,R_\mathrm{HF}/R_\mathrm{H_2}$, and the sweep reproduces this to \num{5.7e-4}.
+Plotted against the same branching ratio, the two readouts are curves of identical shape separated by the resistance ratio (Fig.~\ref{fig:model3_exponent}c): the flux exponent passes through $3/2$ at $\Bra = 1$ and the inventory exponent does so at $\Bra = 1/4$.
+At a branching ratio of $0.31$, for instance, the flux reports $n = 1.77$ and the inventory $n = 1.45$ on the same interface at the same instant.
+An exponent fitted to a sampled salt inventory and one fitted to a measured permeation flux therefore imply different branching ratios unless the two carriers are transported alike, and reading the first as though it were the second misplaces $\Bra$ by the resistance ratio.
 
 % ===============================================================
 \section{Application to a representative Ni/FLiBe system}
@@ -1236,7 +1205,7 @@ The criteria of Sec.~\ref{sec:damkohler} reduce to three questions, to be asked 
     \item Is the metal~$\rightarrow$~liquid species map diagonal, that is, is
           there a single isotope? If not, LTE is ill-posed.
     \item If both answers are yes, check $\Da \gg 1$, and check
-          $\phi/(k^{+}c) \ll 1$.
+          $J/(k^{+}c) \ll 1$.
 \end{enumerate}
 
 At a metal/metal interface, LTE could very well be safe.
@@ -1288,10 +1257,10 @@ and not a fixed property of the salt.
 This offers a physical reconciliation of the conflicting square-root and linear pressure dependences reported for fluoride melts, and yields a falsifiable prediction: a redox sweep at fixed temperature should move the measured exponent continuously between 1 and 2.
 
 % ===============================================================
-\section*{Acknowledgements}
+% \section*{Acknowledgements}
 % ===============================================================
 
-\TODO{acknowledgements.}
+% \TODO{acknowledgements.}
 
 % ===============================================================
 \appendix
@@ -1333,7 +1302,7 @@ Eq.~(\ref{eq:model1_flux}) can be rearranged as
 
 \begin{equation}
     \Delta \equiv c_A\big|_\Gamma - \frac{c_B\big|_\Gamma}{K}
-    = \frac{\phi}{k^{+}} ,
+    = \frac{J}{k^{+}} ,
     \label{eq:defect_1}
 \end{equation}
 
@@ -1345,7 +1314,7 @@ proportional to the flux the interface carries, so an interface that is
 transmitting is never at equilibrium however fast its kinetics. That is the
 steady-state/equilibrium distinction of Sec.~\ref{sec:lte} in one line.
 Substituting the steady
-two-slab solution of \ref{app:analytical} for $\phi$ gives the size of the
+two-slab solution of \ref{app:analytical} for $J$ gives the size of the
 defect,
 
 \begin{equation}
@@ -1362,7 +1331,7 @@ Eq.~(\ref{eq:damkohler}) evaluated over both slabs. The relative error on the
 flux is
 
 \begin{equation}
-    \frac{\phi}{\phi_\mathrm{LTE}}
+    \frac{J}{J_\mathrm{LTE}}
     = \frac{\Da^{\star}}{1 + \Da^{\star}}
     = 1 - \frac{1}{\Da^{\star}} + \mathcal{O}\!\left(\Da^{\star -2}\right) ,
     \label{eq:model1_convergence}
@@ -1380,7 +1349,7 @@ Eq.~(\ref{eq:detailed_balance_2}),
     \left(\cm{\mathrm{H}}\big|_\Gamma\right)^{2}
     - \frac{K_S^{2}}{K_H}\,\cs{\mathrm{H_2}}\big|_\Gamma
     = \frac{w_\mathrm{rec}}{k_\mathrm{r}^{+}}
-    = \frac{\phi}{2\,k_\mathrm{r}^{+}} ,
+    = \frac{J}{2\,k_\mathrm{r}^{+}} ,
     \label{eq:defect_2}
 \end{equation}
 
@@ -1440,21 +1409,21 @@ description, not an alternative to it.
 \paragraph{Model 1, two slabs in series} Take $\Omega_A = [0, L_A]$ and
 $\Omega_B = [L_A, L_A + L_B]$ with the interface at $x = L_A$, concentrations
 $c_0$ and $c_L$ imposed at the outer faces, and no source. At steady state the
-profile in each slab is linear and the same flux $\phi$ crosses both, so
+profile in each slab is linear and the same flux $J$ crosses both, so
 
 \begin{equation}
-    c_A\big|_\Gamma = c_0 - \phi R_A ,
+    c_A\big|_\Gamma = c_0 - J R_A ,
     \qquad
-    c_B\big|_\Gamma = c_L + \phi R_B ,
+    c_B\big|_\Gamma = c_L + J R_B ,
     \qquad
     R_A \equiv \frac{L_A}{D_A},\;\; R_B \equiv \frac{L_B}{D_B} .
     \label{eq:two_slab_traces}
 \end{equation}
 
-Substituting into Eq.~(\ref{eq:model1_flux}) and solving for $\phi$ gives
+Substituting into Eq.~(\ref{eq:model1_flux}) and solving for $J$ gives
 
 \begin{equation}
-    \phi = \frac{k^{+}c_0 - k^{-}c_L}{1 + k^{+}R_A + k^{-}R_B}
+    J = \frac{k^{+}c_0 - k^{-}c_L}{1 + k^{+}R_A + k^{-}R_B}
          = \frac{c_0 - c_L/K}
                 {R_A + R_B/K + 1/k^{+}} ,
     \label{eq:model1_analytical}
