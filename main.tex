@@ -1145,24 +1145,24 @@ They also note that only ionic dissolution accounts for a measured solubility cl
 The metal-side loading follows Sieverts' law, $\cm{\mathrm{H}} \propto \sqrt{P}$, so the apparent exponent of Eq.~(\ref{eq:n_of_B}) maps onto the measured pressure dependence.
 A fluorination-dominated interface, $\Bra \gg 1$, gives $n \rightarrow 1$ and a square-root response of the permeating flux.
 A recombination-dominated one, $\Bra \ll 1$, gives $n \rightarrow 2$ and a flux linear in pressure.
-The pressure exponent a in a permeation experiment is set by the branching ratio, not by any fixed property of the salt.
+The pressure exponent in a permeation experiment is set by the branching ratio, not by any fixed property of the salt.
 The FLiBe and FLiNaK datasets may therefore both be correct and represent different redox states.
 This is testable: \emph{a redox sweep at fixed temperature should move the measured pressure exponent continuously between 0.5 and 1} (see Sec.~\ref{sec:exponent_verification}).
 
 A hint of the same effect may already be present within a single dataset.
-We digitised Fig.~3 of Ref.~\cite{satoshi_fukada_hydrogen_2006}, the steady permeation flux through FLiNaK at \qty{500}{\celsius}, \qty{600}{\celsius} and \qty{700}{\celsius} over three orders of magnitude of upstream pressure.
+Analysing Fig.~3 of Ref.~\cite{satoshi_fukada_hydrogen_2006}, the steady permeation flux through FLiNaK at \qty{500}{\celsius}, \qty{600}{\celsius} and \qty{700}{\celsius} over three orders of magnitude of upstream pressure.
 Taken over the full range, the logarithmic slope is \num{1.02}, consistent with the linear reading of the original paper.
 Between \qty{1}{\kilo\pascal} and \qty{10}{\kilo\pascal} it falls to \num{0.23}, \num{0.54} and \num{0.91}, in that order of temperature.
 Recombination is quadratic in $\cm{\mathrm{H}}$ and fluorination is linear, so $\Bra$ grows as the loading falls, and the slope drifts from $1$ towards $0.5$.
 Loading increases with both pressure and temperature, so Eq.~(\ref{eq:n_of_B}) predicts the observed ordering.
 
 We propose this only as a possible explanation.
-Each isotherm has only four points and the figure reports no uncertainties.
+Each temperature has only four points and the figure reports no uncertainties.
 Two also fall outside the interval [$0.5$, $1$] that the two channels can produce.
 The \num{0.23} at \qty{500}{\celsius} lies below it, and the \num{1.4} and \num{1.7} above \qty{100}{\kilo\pascal}, and account for neither.
 Settling this requires the redox sweep proposed above, with more pressures at each temperature and uncertainties reported for each flux.
 
-Similarily, that Ni/FLiBe permeation dataset cannot be ingested into a transport code without first assuming the speciation we argue is unknown.
+Similarly, the Ni/FLiBe permeation dataset cannot be ingested into a transport code without first assuming speciation, which we argue is unknown.
 We therefore use Ref.~\cite{calderoni_measurement_2008} as qualitative evidence that the interface is not a simple recombination boundary, and not as an independent parameterisation of its kinetics.
 Our own rate constants are reported as the dimensionless groups $\Da$ and $\Bra$ for the same reason.
 For the community, the recommendation is to report the fitted pressure exponent and the salt redox state alongside any tabulated solubility.
