@@ -68,7 +68,8 @@ are included by bare filename and stay next to the script that writes them.
 | `verification_lte_limit.pdf` | §4.1, Model 1 steady + convergence | `verification_lte_limit.py` |
 | `defect_ratio_vs_damkohler.pdf` | §6.2, why `Da` alone is not the check | `defect_ratio_vs_damkohler.py` |
 | `verification_model2_lte_limit.pdf` | §4.1, Model 2 on metal/liquid | `verification_model2_lte_limit.py` |
-| `verification_model3_exponent.pdf` | §4.2, the flux vs loading, then the apparent exponent vs loading and vs `B` | `verification_model3_exponent.py` |
+| `verification_model3_exponent.pdf` | §4.2, the flux vs loading, then the apparent exponent vs loading | `verification_model3_exponent.py` |
+| `verification_model3_branching.pdf` | §4.2, both apparent-exponent readouts vs `B` | `verification_model3_exponent.py` |
 | `isotopologue_equilibrium.pdf` | App. E, the zero-flux test | `isotopologue_equilibrium.py` |
 | `geometry_sketch.pdf` | §5.1, the vessel and the 1D reduction | `geometry_sketch.py` |
 | `lte_baseline.pdf` | §5.2, the LTE reference transient | `lte_baseline.py` |

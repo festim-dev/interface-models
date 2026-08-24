@@ -12,6 +12,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{graphicx}
+\usepackage{subcaption}
 % figures live next to the script that produces them, in scripts/
 \graphicspath{{scripts/0-schematics/}{scripts/1-first-order-interface/}{scripts/2-higher-order-reactions/}{scripts/3-competing-channels/}{scripts/4-hyperion/}}
 \usepackage{xcolor}
@@ -834,41 +835,48 @@ The worst case is \num{1.8e-8} at the two smallest concentrations of the most ox
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1\linewidth]{verification_model3_exponent.pdf}
-    \caption{Two channels on one interface, and the exponent they produce.
-    (a) The total atomic flux $J$ leaving the metal against the interfacial
-    loading, for three values of the effective fluoride activity
-    $a_\mathrm{F}$: lines are the analytical solution of \ref{app:analytical},
-    circles the computed fluxes. Each sweep runs along the linear branch of its
-    fluorination channel at low loading and joins the quadratic branch of the
-    recombination channel at high loading, the same branch for all three because
-    $a_\mathrm{F}$ does not enter that channel. The apparent exponent is the
-    local slope of these curves.
-    (b) That slope, the apparent exponent $n$ of
-    Eq.~(\ref{eq:apparent_exponent}), on the same loading axis and in the same
-    colours: lines are Eq.~(\ref{eq:n_of_B}), circles the slopes measured from
-    the computed fluxes. Every sweep leaves the linear branch at low
-    loading and approaches Sieverts/Henry at high loading, and the redox state
-    sets where the crossover falls, not whether it happens.
-    (c) The two ways of reading the exponent, against the branching ratio
-    itself. Both follow Eq.~(\ref{eq:n_of_B}), the flux in $\Bra$ and the
-    salt-side inventory in $\Bra\,R_\mathrm{HF}/R_\mathrm{H_2}$, so the curves
-    have the same shape a constant factor apart: they agree on the law and not
-    on the number. The arrow marks the separation of their $n = 3/2$ crossings,
-    the resistance ratio, here $4$.}
-    \label{fig:model3_exponent}
+    \begin{subfigure}{\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{verification_model3_exponent.pdf}
+        \caption{The total atomic flux $J$ leaving the metal against the
+        interfacial loading (upper), and the local slope of those curves, the
+        apparent exponent $n$ of Eq.~(\ref{eq:apparent_exponent}), on the same
+        loading axis and in the same colours (lower), for three values of the
+        effective fluoride activity $a_\mathrm{F}$. Lines are the analytical
+        solution of \ref{app:analytical} and Eq.~(\ref{eq:n_of_B}), circles the
+        values computed by \FESTIM. Each sweep runs along the linear branch of
+        its fluorination channel at low loading and joins the quadratic branch
+        of the recombination channel at high loading, the same branch for all
+        three because $a_\mathrm{F}$ does not enter that channel. The redox
+        state sets where the crossover falls, not whether it happens.}
+        \label{fig:model3_exponent}
+    \end{subfigure}
+
+    \begin{subfigure}{\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{verification_model3_branching.pdf}
+        \caption{The two ways of reading the exponent, against the branching
+        ratio itself. Both follow Eq.~(\ref{eq:n_of_B}), the flux in $\Bra$ and
+        the salt-side inventory in $\Bra\,R_\mathrm{HF}/R_\mathrm{H_2}$, so the
+        curves have the same shape a constant factor apart: they agree on the
+        law and not on the number. The arrow marks the separation of their
+        $n = 3/2$ crossings, the resistance ratio, here $4$.}
+        \label{fig:model3_branching}
+    \end{subfigure}
+    \caption{Two channels on one interface, and the exponent they produce.}
+    \label{fig:model3}
 \end{figure}
 
 The measured exponent tracks the predicted value (see Eq.~(\ref{eq:n_of_B})) to within \num{5.8e-4} over the swept range of branching ratios.
 The exponent itself spans from 1 to 2, covering the full range the prediction allows.
 At $\Bra = 1$ the measured exponent is $n = 1.5$, the midpoint at which the two channels carry equal atomic fluxes.
-The exponent is a continuous function of the branching ratio over its whole range, so a redox sweep moves it, and no fixed choice of $1$ or $2$ describes the interface across such a sweep (see Fig.~\ref{fig:model3_exponent}a and b).
+The exponent is a continuous function of the branching ratio over its whole range, so a redox sweep moves it, and no fixed choice of $1$ or $2$ describes the interface across such a sweep (see Fig.~\ref{fig:model3_exponent}).
 The reverse terms of both channels are active throughout and leave the exponent untouched, because eliminating the salt-side concentrations renormalises each forward constant by a factor independent of the interfacial concentration (\ref{app:analytical}), so the prediction holds beyond the irreversible regime in which it was derived.
 
 An exponent fitted to a sampled salt inventory is not the same number as one measured from the flux.
 The interfacial inventory $2\cs{\mathrm{H_2}} + \cs{\mathrm{HF}}$ weights each channel by the downstream resistance its carrier meets, so its logarithmic slope follows the same expression with $\Bra$ replaced by $\Bra\,R_\mathrm{HF}/R_\mathrm{H_2}$, and the sweep reproduces this to \num{5.7e-4}.
 Plotted against the same branching ratio, the two curves have identical shape and are separated by the resistance ratio.
-The flux exponent passes through $3/2$ at $\Bra = 1$, and the inventory exponent does so at $\Bra = 1/4$ (see Fig.~\ref{fig:model3_exponent}c).
+The flux exponent passes through $3/2$ at $\Bra = 1$, and the inventory exponent does so at $\Bra = 1/4$ (see Fig.~\ref{fig:model3_branching}).
 At a branching ratio of $0.31$, for instance, the flux reports $n = 1.77$ and the inventory $n = 1.45$ on the same interface at the same instant.
 The two therefore imply different branching ratios unless the carriers are transported alike, and reading one as though it were the other misplaces $\Bra$ by the resistance ratio.
 

@@ -15,8 +15,9 @@ two InterfaceReaction objects sharing an interface id, their residual
 contributions add, and n is measured afterwards from the computed fluxes the way
 a permeation experiment would measure it. Produces:
 
-  - verification_model3_exponent.csv : the raw table
-  - verification_model3_exponent.pdf : the figure
+  - verification_model3_exponent.csv   : the raw table
+  - verification_model3_exponent.pdf   : flux and exponent against the loading
+  - verification_model3_branching.pdf  : both exponent readouts against B
 
 Three quantities are measured at each loading:
 
@@ -249,17 +250,12 @@ def sweep(all_c_0, a_F):
     )
 
 
-def plot(rows, filename):
-    """Three panels. (a) the total atomic flux against the interfacial loading,
-    which is what the exponent below is the slope of: each sweep starts on its
-    own linear branch and ends on the quadratic branch the three share.
-    (b) the exponent against the interfacial loading, one sweep per redox state,
-    which is the shape a pressure sweep would report: lines are Eq. (n_of_B),
-    markers the slopes measured from the FESTIM fluxes. It shares its x axis with
-    (a), so the bend in a flux curve sits above the rise of its exponent.
-    (c) the two readouts against the branching ratio itself. Both follow
-    Eq. (n_of_B), the flux one in B and the inventory one in B R_HF/R_H2, so the
-    curves are the same shape a constant factor apart on the log axis."""
+GUIDE = "0.45"  # neutral grey; C3/C4 of the palette are pale accents and
+# disappear against the background when used for a line
+TICKS = [1.0, 1.25, 1.5, 1.75, 2.0]
+
+
+def set_style():
     mt.set_theme("urban")
     plt.rcParams["axes.prop_cycle"] = plt.cycler(
         color=["#1a4848", "#f7b000", "#f46036", "#c9f2c7", "#aceca1"]
@@ -267,17 +263,28 @@ def plot(rows, filename):
     plt.rcParams["axes.spines.top"] = False
     plt.rcParams["axes.spines.right"] = False
 
-    guide = "0.45"  # neutral grey; C3/C4 of the palette are pale accents and
-    # disappear against the background when used for a line
-    ticks = [1.0, 1.25, 1.5, 1.75, 2.0]
 
-    # (a) and (b) share the loading axis and are stacked tight against each
-    # other; (c) is read against a different abscissa, so it goes in its own
-    # subfigure with a gap wide enough that the two axes are not taken for one
-    fig = plt.figure(figsize=(6, 10.2), layout="constrained")
-    sub_load, sub_branching = fig.subfigures(2, 1, height_ratios=[2.15, 1], hspace=0.15)
-    ax_flux, ax_load = sub_load.subplots(2, 1, sharex=True, height_ratios=[1.15, 1])
-    ax_branching = sub_branching.subplots()
+def plot_loading(rows, filename):
+    """The two panels read against the interfacial loading.
+
+    (a) the total atomic flux against the interfacial loading, which is what the
+    exponent below is the slope of: each sweep starts on its own linear branch
+    and ends on the quadratic branch the three share. (b) the exponent against
+    the same loading, one sweep per redox state, which is the shape a pressure
+    sweep would report: lines are Eq. (n_of_B), markers the slopes measured from
+    the FESTIM fluxes. The two share their x axis, so the bend in a flux curve
+    sits above the rise of its exponent.
+    """
+    set_style()
+
+    fig, (ax_flux, ax_load) = plt.subplots(
+        2,
+        1,
+        sharex=True,
+        height_ratios=[1.15, 1],
+        figsize=(6, 7),
+        layout="constrained",
+    )
 
     # (a) the flux itself. The exponent of the panel below is the local slope of
     # these curves, so the two horizontal guides there are the two straight lines
@@ -295,7 +302,7 @@ def plot(rows, filename):
     ax_flux.loglog(
         c_quad,
         2 * A_REC * c_quad**2,
-        color=guide,
+        color=GUIDE,
         linestyle="--",
         linewidth=1,
         label="recombination alone, $n = 2$",
@@ -326,7 +333,7 @@ def plot(rows, filename):
         ax_flux.loglog(
             c_lin,
             b_fluo(a_F) * c_lin,
-            color=guide,
+            color=GUIDE,
             linestyle=":",
             linewidth=1,
             label="fluorination alone, $n = 1$" if i == 0 else None,
@@ -344,14 +351,14 @@ def plot(rows, filename):
         (2.0, "Sieverts/Henry, $n = 2$", rows[:, 2].min(), "left"),
         (1.0, "linear, $n = 1$", rows[:, 2].max(), "right"),
     ):
-        ax_load.axhline(y=level, color=guide, linestyle="--", linewidth=1)
+        ax_load.axhline(y=level, color=GUIDE, linestyle="--", linewidth=1)
         ax_load.annotate(
             label,
             xy=(x, level),
             xytext=(8 if ha == "left" else -8, 6),
             textcoords="offset points",
             ha=ha,
-            color=guide,
+            color=GUIDE,
             weight="bold",
         )
 
@@ -383,14 +390,28 @@ def plot(rows, filename):
         )
 
     ax_load.set_ylim(0.92, 2.08)
-    ax_load.set_yticks(ticks)
+    ax_load.set_yticks(TICKS)
     ax_load.set_xlabel(r"interfacial loading $c^m_H|_\Gamma$")
     ax_load.set_ylabel("apparent exponent $n$")
 
-    # (b) both readouts against the branching ratio itself. Plotting the
-    # inventory readout against B R_HF/R_H2 instead would collapse the two onto
-    # one curve, which is prettier and reads as though the two measurements
-    # agree; they agree on the law and not on the number, so they are kept apart
+    fig.savefig(filename)
+    print(f"wrote {filename}")
+
+
+def plot_branching(rows, filename):
+    """The two readouts against the branching ratio itself.
+
+    Both follow Eq. (n_of_B), the flux one in B and the inventory one in
+    B R_HF/R_H2, so the curves are the same shape a constant factor apart on the
+    log axis. Plotting the inventory readout against B R_HF/R_H2 instead would
+    collapse the two onto one curve, which is prettier and reads as though the
+    two measurements agree; they agree on the law and not on the number, so they
+    are kept apart.
+    """
+    set_style()
+
+    fig, ax_branching = plt.subplots(figsize=(6, 3.3), layout="constrained")
+
     b_grid = np.logspace(
         np.log10(rows[:, 8].min()) - 0.3, np.log10(rows[:, 8].max()) + 0.3, 400
     )
@@ -430,7 +451,7 @@ def plot(rows, filename):
         "",
         xy=(1.0, 1.5),
         xytext=(1.0 / R_RATIO, 1.5),
-        arrowprops=dict(arrowstyle="<->", color=guide, linewidth=1.2),
+        arrowprops=dict(arrowstyle="<->", color=GUIDE, linewidth=1.2),
     )
     ax_branching.annotate(
         rf"$R_{{HF}}/R_{{H_2}} = {R_RATIO:g}$",
@@ -438,12 +459,12 @@ def plot(rows, filename):
         xytext=(12, 5),
         textcoords="offset points",
         ha="left",
-        color=guide,
+        color=GUIDE,
         weight="bold",
     )
 
     ax_branching.set_ylim(0.92, 2.08)
-    ax_branching.set_yticks(ticks)
+    ax_branching.set_yticks(TICKS)
     ax_branching.set_xlabel(r"branching ratio $\mathcal{B}$")
     ax_branching.set_ylabel("apparent exponent $n$")
     ax_branching.legend(
@@ -451,6 +472,7 @@ def plot(rows, filename):
     )
 
     fig.savefig(filename)
+    print(f"wrote {filename}")
 
 
 if __name__ == "__main__":
@@ -491,4 +513,5 @@ if __name__ == "__main__":
         header=COLUMNS,
         comments="",
     )
-    plot(rows, "verification_model3_exponent.pdf")
+    plot_loading(rows, "verification_model3_exponent.pdf")
+    plot_branching(rows, "verification_model3_branching.pdf")
