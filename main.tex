@@ -1099,7 +1099,7 @@ This section draws out what follows, for the solubility data already in the lite
 \subsection{A solubility constant has no law-independent units}
 \label{sec:units}
 
-The dimensions of a reported solubility encode the dissolution law assumed during the analysis.
+The dimensions of a reported solubility follow from the dissolution law assumed in fitting it.
 Henry's law, $c = K_H P$, gives $[K_H] = \unit{\mole\per\cubic\metre\per\pascal}$, while Sieverts' law, $c = K_S\sqrt{P}$, gives $[K_S] = \unit{\mole\per\cubic\metre\pascal\tothe{-1/2}}$.
 No factor converts one into the other: $K_H = K_S^{2}/c$ holds only at a single pressure.
 Any conversion silently fixes a reference pressure and is wrong at every other one.
@@ -1149,8 +1149,7 @@ Recombination is quadratic in $\cm{\mathrm{H}}$ and fluorination is linear, so $
 Loading increases with both pressure and temperature, so Eq.~(\ref{eq:n_of_B}) predicts the observed ordering.
 
 We propose this only as a possible explanation.
-Each isotherm has only four points and the figure reports no uncertainties. 
-Each slope above is the difference between two digitised readings, so a displaced marker would change it.
+Each isotherm has only four points and the figure reports no uncertainties.
 Two also fall outside the interval [$0.5$, $1$] that the two channels can produce.
 The \num{0.23} at \qty{500}{\celsius} lies below it, and the \num{1.4} and \num{1.7} above \qty{100}{\kilo\pascal}, and account for neither.
 Settling this requires the redox sweep proposed above, with more pressures at each temperature and uncertainties reported for each flux.
