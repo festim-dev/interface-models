@@ -62,8 +62,7 @@ def draw_vessel(ax):
     y_total = VESSEL_LAYERS[-1][2]
     ax.add_patch(
         Rectangle(
-            (R_INNER * MM,
-             0),
+            (R_INNER * MM, 0),
             (R_OUTER - R_INNER) * MM,
             y_total * MM,
             facecolor=NICKEL,
@@ -95,23 +94,33 @@ def draw_vessel(ax):
             ha="left",
             fontsize=8,
             color=colour,
-            arrowprops=dict(arrowstyle="-", color="0.55", linewidth=0.8,
-                            shrinkA=2, shrinkB=3),
+            arrowprops=dict(
+                arrowstyle="-", color="0.55", linewidth=0.8, shrinkA=2, shrinkB=3
+            ),
         )
 
     # bracket over the two layers the 1D model keeps, which is what panel (b) is.
     # It goes on the axis side so it does not compete with the layer labels.
     bracket_x = -7.0
     ax.plot(
-        [bracket_x, bracket_x], [22.0, 29.14],
-        color="#f46036", linewidth=2.5, solid_capstyle="butt",
+        [bracket_x, bracket_x],
+        [22.0, 29.14],
+        color="#f46036",
+        linewidth=2.5,
+        solid_capstyle="butt",
     )
     for y in (22.0, 29.14):
         ax.plot([bracket_x, bracket_x + 2.5], [y, y], color="#f46036", linewidth=1.5)
     ax.text(
-        bracket_x - 2.5, 25.6, "kept in (b)",
-        rotation=90, ha="right", va="center",
-        fontsize=8, weight="bold", color="#f46036",
+        bracket_x - 2.5,
+        25.6,
+        "kept in (b)",
+        rotation=90,
+        ha="right",
+        va="center",
+        fontsize=8,
+        weight="bold",
+        color="#f46036",
     )
 
     ax.set_xlim(-16, 74)
@@ -127,20 +136,28 @@ def draw_reduction(ax):
     """The 1D two-slab model, drawn to the thicknesses the solver uses."""
     total = (L_NI + L_SALT) * MM
 
-    ax.add_patch(
-        Rectangle((0, 0), L_NI * MM, 1, facecolor=NICKEL, edgecolor="none")
-    )
+    ax.add_patch(Rectangle((0, 0), L_NI * MM, 1, facecolor=NICKEL, edgecolor="none"))
     ax.add_patch(
         Rectangle((L_NI * MM, 0), L_SALT * MM, 1, facecolor=SALT, edgecolor="none")
     )
 
     ax.text(
-        L_NI * MM / 2, 0.5, "Ni", ha="center", va="center",
-        color="white", weight="bold",
+        L_NI * MM / 2,
+        0.5,
+        "Ni",
+        ha="center",
+        va="center",
+        color="white",
+        weight="bold",
     )
     ax.text(
-        L_NI * MM + L_SALT * MM / 2, 0.5, "FLiBe", ha="center", va="center",
-        color="#4a3200", weight="bold",
+        L_NI * MM + L_SALT * MM / 2,
+        0.5,
+        "FLiBe",
+        ha="center",
+        va="center",
+        color="#4a3200",
+        weight="bold",
     )
 
     ax.axvline(L_NI * MM, color="#f46036", linewidth=2.5, ymin=0.28, ymax=0.72)
@@ -173,7 +190,9 @@ def draw_reduction(ax):
         (L_NI * MM, total, f"{L_SALT * MM:.3f} mm"),
     ):
         ax.annotate(
-            "", xy=(x0, 1.18), xytext=(x1, 1.18),
+            "",
+            xy=(x0, 1.18),
+            xytext=(x1, 1.18),
             arrowprops=dict(arrowstyle="<->", color=GUIDE, linewidth=1),
         )
         ax.text((x0 + x1) / 2, 1.26, text, ha="center", fontsize=8, color=GUIDE)
@@ -186,15 +205,15 @@ def draw_reduction(ax):
     ax.grid(False)
     ax.set_title("(b) 1D reduction", loc="left", fontsize=10)
 
-    ax.text(
-        total / 2,
-        -0.62,
-        f"sidewall dropped: {SIDEWALL_AREA:.2e} m$^2$ wetted, against "
-        f"{MEMBRANE_AREA:.2e} m$^2$ of membrane",
-        ha="center",
-        fontsize=7.5,
-        color=GUIDE,
-    )
+    # ax.text(
+    #     total / 2,
+    #     -0.62,
+    #     f"sidewall dropped: {SIDEWALL_AREA:.2e} m$^2$ wetted, against "
+    #     f"{MEMBRANE_AREA:.2e} m$^2$ of membrane",
+    #     ha="center",
+    #     fontsize=7.5,
+    #     color=GUIDE,
+    # )
 
 
 def plot(filename):
