@@ -969,7 +969,7 @@ The two bulk diffusion times are $L^{2}/D = \qty{2.75e3}{\second}$ in the metal 
 Every transient reported below runs for \qty{e5}{\second}, about five salt diffusion times.
 
 Unlike the recombination channel, the fluorination channel cannot be parameterised solely from material properties.
-Even though a Henry constant for HF in FLiBe exists: Field and Shaffer sparged HF into $\qty{66}{\percent}$~LiF--$\qty{34}{\percent}$~$\mathrm{BeF_2}$ and measured the dissolved concentration, finding Henry's law behaviour from \qty{500}{\degreeCelsius} to \qty{700}{\degreeCelsius}~\cite{field_solubilities_1967} (The carrier is unambiguous there, since HF is what was introduced), this measurement cannot supply the other half of the channel's equilibrium constant, the fluorine potential of the salt, which is not a property of FLiBe but a state an operator sets and can move.
+Even though a Henry constant for HF in FLiBe exists: Field and Shaffer sparged HF into $\qty{66}{\percent}$~LiF--$\qty{34}{\percent}$~$\mathrm{BeF_2}$ and measured the dissolved concentration, finding Henry's law behaviour from \qty{500}{\degreeCelsius} to \qty{700}{\degreeCelsius}~\cite{field_solubilities_1967} (the carrier is unambiguous there, since HF is what was introduced), this measurement cannot supply the other half of the channel's equilibrium constant, the fluorine potential of the salt, which is not a property of FLiBe but a state an operator sets and can move.
 The channel is therefore defined by the pair $(k_\mathrm{f}^{+}a_\mathrm{F},\, k_\mathrm{f}^{-})$, and only their ratio is constrained.
 We give it no solubility and instead parameterise it in terms of $\Da$ and $\Bra$.
 
@@ -1093,56 +1093,73 @@ The transient is what discriminates, and the valley is the sharpest instance of 
 \label{sec:discussion}
 % ===============================================================
 
-% ---------------------------------------------------------------
+Sections~\ref{sec:models} to~\ref{sec:hyperion} set out the kinetic framework and apply it to a Ni/FLiBe system.
+This section draws out what follows, for the solubility data already in the literature and for deciding when LTE is still valid.
+
 \subsection{A solubility constant has no law-independent units}
 \label{sec:units}
-% ---------------------------------------------------------------
 
-The dimensions of a reported solubility encode the dissolution law assumed when the measurement was analysed.
+The dimensions of a reported solubility encode the dissolution law assumed during the analysis.
 Henry's law, $c = K_H P$, gives $[K_H] = \unit{\mole\per\cubic\metre\per\pascal}$, while Sieverts' law, $c = K_S\sqrt{P}$, gives $[K_S] = \unit{\mole\per\cubic\metre\pascal\tothe{-1/2}}$.
-No factor converts one into the other: $K_H = K_S^{2}/c$ holds along a single isobar only, so any conversion silently fixes a reference pressure and is wrong at every other one.
-A tabulated solubility is therefore not a material property. It is a property of the material together with the carrier assumed for it, and assumption (A3) is what allows the second half of that pair to go unreported.
+No factor converts one into the other: $K_H = K_S^{2}/c$ holds only at a single pressure.
+Any conversion silently fixes a reference pressure and is wrong at every other one.
+A tabulated solubility is therefore not a material property. 
+It is a property of the material and of the carrier assumed for it, and (A3) is what lets the carrier go unreported.
 
 The most-cited fluoride-melt dataset carries the ambiguity in its own equations.
-Calderoni et al.~\cite{calderoni_measurement_2008} reduce their steady-state permeation measurements with $j_{\mathrm{T}} = (D_{\mathrm{FLiBe}} K_{\mathrm{FLiBe}} / L_{\mathrm{FLiBe}}) \sqrt{p_{\mathrm{T_2}}}$, their Eq.~(2), and confirm the square-root dependence explicitly by plotting the measured flux against lines of slope one half. Dimensional consistency then requires $[K_{\mathrm{FLiBe}}] = \unit{\mole\per\cubic\metre\pascal\tothe{-1/2}}$, a Sieverts constant.
-Their Eq.~(7) reports the fitted result as $K_{\mathrm{FLiBe},\mathrm{T}} = \num{7.9e2}\exp(-\qty{35}{\kilo\joule\per\mole}/R_g T)$ and gives its units as \unit{\mole\per\cubic\metre\per\pascal}, a Henry constant, and their Fig.~4 plots it on those axes beside deuterium in FLiBe and hydrogen in FLiNaK, both reduced as Henry constants.
+Calderoni et al.~\cite{calderoni_measurement_2008} reduce their steady-state permeation measurements with their Eq.~(2), $J_{\mathrm{T}} = (D_{\mathrm{FLiBe}} K_{\mathrm{FLiBe}} / L_{\mathrm{FLiBe}}) \sqrt{p_{\mathrm{T_2}}}$, and plot the measured flux against lines of slope one half. 
+Dimensional consistency then requires $[K_{\mathrm{FLiBe}}] = \unit{\mole\per\cubic\metre\pascal\tothe{-1/2}}$, a Sieverts constant.
+Their Eq.~(7) reports the fitted result as $K_{\mathrm{FLiBe},\mathrm{T}} = \num{7.9e-2}\exp(-\qty{35}{\kilo\joule\per\mole}/R_g T)$ with units of \unit{\mole\per\cubic\metre\per\pascal}, a Henry constant.
+Their Fig.~4 plots it on those axes beside deuterium in FLiBe and hydrogen in FLiNaK, both reduced as Henry constants.
 The exponent used to extract the number and the exponent implied by the units reported for it differ by one half.
 
 None of this is a criticism of the measurement.
-The flux data are what they are and the square-root reduction is stated plainly in the text.
-The problem is with the tabulated constant: a reader considering only the units recovers a flux linear in pressure, a reader who takes Eq.~(2) recovers one going as its square root, and the two agree at a single pressure.
-Assumption (A3) has left no trace in the reported number.
+The measured fluxes are not in question, and the square-root reduction is stated plainly in the text.
+The problem is with the tabulated constant.
+A reader considering only the units recovers a flux linear in pressure.
+A reader who takes Eq.~(2) recovers one going as its square root, and the two agree at a single pressure.
+Here (A3) has not simply gone unrecorded, since the same paper implies one carrier in its equations and another in its units.
 
 The consequence for fluoride melts is a reported disagreement.
-Against the square root Calderoni et al.\ report for FLiBe, Fukada and Morisaki~\cite{satoshi_fukada_hydrogen_2006} measure an almost linear dependence for FLiNaK, and the review literature expects dissolved diatomic $\mathrm{H_2}$ in a molten salt to obey Henry's law \cite{forsberg_fusion_2020}.
-Fukada and Morisaki conclude that hydrogen dissolves and permeates as $\mathrm{H_2}$ because both the permeability and the solubility they measure are close to linear in pressure.
-The reasoning is sound under (A2), and it is the step our framework removes: the exponent they measured belongs to the interface at their redox state, and not to FLiNaK.
+Against the square root Calderoni et al.\ report for FLiBe, Fukada and Morisaki~\cite{satoshi_fukada_hydrogen_2006} measure an almost linear dependence for FLiNaK.
+They conclude that hydrogen dissolves and permeates as $\mathrm{H_2}$ because the permeability and the solubility they measure are both almost linear in pressure.
+The review literature expects the same, since dissolved diatomic $\mathrm{H_2}$ in a molten salt should obey Henry's law \cite{forsberg_fusion_2020}.
+The reasoning is sound under (A2), and it is the assumption our framework removes.
+The exponent they measured belongs to the interface at their redox state, and not to FLiNaK.
+
+\subsection{The pressure exponent measures the branching ratio}
+\label{sec:exponent_meaning}
 
 A square-root dependence in an ionic melt is not a measurement artefact.
-It is the signature of \emph{dissociative} dissolution, that is, of exactly the fluoride-bound carrier the same authors identify.
-They conclude that tritium does not recombine at the Ni/FLiBe interface at all, and that it moves through the salt in atomic form, bound to $\mathrm{BeF_4^{2-}}$ or as HT, and they note that only ionic dissolution accounts for a measured solubility close to HF reference values and far above $\mathrm{H_2}$.
-Since the metal-side loading follows Sieverts' law, $\cm{\mathrm{H}} \propto \sqrt{P}$, the apparent exponent of Eq.~(\ref{eq:n_of_B}) maps onto the measured pressure dependence: a fluorination-dominated interface, $\Bra \gg 1$, gives $n \rightarrow 1$ and a square-root response of the permeating flux, while a recombination-dominated one, $\Bra \ll 1$, gives $n \rightarrow 2$ and a linear response.
-The pressure exponent measured in a permeation experiment is a readout of the branching ratio, and not a fixed property of the salt.
-The FLiBe and FLiNaK datasets may therefore both be right and simply have been taken at different redox states.
-This is the falsifiable content of this paper: \emph{a redox sweep at fixed temperature should move the measured exponent continuously between 1 and 2}, which Sec.~\ref{sec:exponent_verification} shows the model doing over the whole interval.
+It is the signature of \emph{dissociative} dissolution, that is, of the fluoride-bound carrier Calderoni et al.\ identify~\cite{calderoni_measurement_2008}.
+They conclude that tritium does not recombine at the Ni/FLiBe interface at all, and that it moves through the salt in atomic form, bound to $\mathrm{BeF_4^{2-}}$ or as HT. 
+They also note that only ionic dissolution accounts for a measured solubility close to HF reference values and far above $\mathrm{H_2}$.
+The metal-side loading follows Sieverts' law, $\cm{\mathrm{H}} \propto \sqrt{P}$, so the apparent exponent of Eq.~(\ref{eq:n_of_B}) maps onto the measured pressure dependence.
+A fluorination-dominated interface, $\Bra \gg 1$, gives $n \rightarrow 1$ and a square-root response of the permeating flux.
+A recombination-dominated one, $\Bra \ll 1$, gives $n \rightarrow 2$ and a flux linear in pressure.
+The pressure exponent a in a permeation experiment is set by the branching ratio, not by any fixed property of the salt.
+The FLiBe and FLiNaK datasets may therefore both be correct and represent different redox states.
+This is testable: \emph{a redox sweep at fixed temperature should move the measured pressure exponent continuously between 0.5 and 1} (see Sec.~\ref{sec:exponent_verification}).
 
 A hint of the same effect may already be present within a single dataset.
-We digitised Fig.~3 of Ref.~\cite{satoshi_fukada_hydrogen_2006}, the steady permeation flux through FLiNaK at \qty{500}{\celsius}, \qty{600}{\celsius} and \qty{700}{\celsius} over three orders of magnitude of upstream pressure, and measured the logarithmic slope between adjacent points.
-Taken over the full range the slope is \num{1.02}, consistent with the linear reading of the original paper.
-The lowest pressure sits below that value at every temperature.
-Between \qty{1}{\kilo\pascal} and \qty{10}{\kilo\pascal} the slopes are \num{0.23}, \num{0.54} and \num{0.91} at \qty{500}{\celsius}, \qty{600}{\celsius} and \qty{700}{\celsius} respectively, and the ordering is the one Eq.~(\ref{eq:n_of_B}) would produce.
-The recombination channel is quadratic in $\cm{\mathrm{H}}$ and the fluorination channel is linear, so $\Bra$ grows as the loading falls, and the apparent exponent drifts from the linear limit towards the square-root one.
+We digitised Fig.~3 of Ref.~\cite{satoshi_fukada_hydrogen_2006}, the steady permeation flux through FLiNaK at \qty{500}{\celsius}, \qty{600}{\celsius} and \qty{700}{\celsius} over three orders of magnitude of upstream pressure.
+Taken over the full range, the logarithmic slope is \num{1.02}, consistent with the linear reading of the original paper.
+Between \qty{1}{\kilo\pascal} and \qty{10}{\kilo\pascal} it falls to \num{0.23}, \num{0.54} and \num{0.91}, in that order of temperature.
+Recombination is quadratic in $\cm{\mathrm{H}}$ and fluorination is linear, so $\Bra$ grows as the loading falls, and the slope drifts from $1$ towards $0.5$.
+Loading increases with both pressure and temperature, so Eq.~(\ref{eq:n_of_B}) predicts the observed ordering.
 
 We propose this only as a possible explanation.
-Each isotherm has only four points, the figure reports no uncertainties, and every slope quoted above is the difference of two digitised readings, so one displaced marker would change it.
-The same figure gives slopes between \num{1.4} and \num{1.7} above \qty{100}{\kilo\pascal}, which no sum of a linear and a square-root channel can produce and which we cannot account for.
-Deciding whether the exponent genuinely drifts at low loading needs a measurement built for the question: more pressures per isotherm, reported uncertainties on each flux, and a controlled and reported redox state.
-That is the same experiment as the redox sweep proposed above, and it would constrain $\Bra$ directly instead of leaving it to be inferred from four points.
+Each isotherm has only four points and the figure reports no uncertainties. 
+Each slope above is the difference between two digitised readings, so a displaced marker would change it.
+Two also fall outside the interval [$0.5$, $1$] that the two channels can produce.
+The \num{0.23} at \qty{500}{\celsius} lies below it, and the \num{1.4} and \num{1.7} above \qty{100}{\kilo\pascal}, and account for neither.
+Settling this requires the redox sweep proposed above, with more pressures at each temperature and uncertainties reported for each flux.
 
-The same argument constrains us.
-That Ni/FLiBe permeation dataset cannot be ingested into a transport code without first assuming the speciation we argue is unknown, so we use Ref.~\cite{calderoni_measurement_2008} as qualitative evidence that the interface is not a simple recombination boundary, and not as an independent parameterisation of the salt-side transport.
+Similarily, that Ni/FLiBe permeation dataset cannot be ingested into a transport code without first assuming the speciation we argue is unknown.
+We therefore use Ref.~\cite{calderoni_measurement_2008} as qualitative evidence that the interface is not a simple recombination boundary, and not as an independent parameterisation of its kinetics.
 Our own rate constants are reported as the dimensionless groups $\Da$ and $\Bra$ for the same reason.
-For the community the recommendation is narrow: report the fitted pressure exponent and the salt redox state alongside any tabulated solubility, so that the number survives a change in the speciation interpretation.
+For the community, the recommendation is to report the fitted pressure exponent and the salt redox state alongside any tabulated solubility.
+The number then survives a change in the interpretation of speciation.
 
 % ---------------------------------------------------------------
 \subsection{When can LTE still be used?}
