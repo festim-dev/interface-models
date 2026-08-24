@@ -97,8 +97,7 @@ def compute(all_da=ALL_DA, all_b=ALL_B):
     """One transient solve per grid point. Writes the CSV as it goes."""
     times_lte, flux_lte, _, _, _ = lte_baseline.run()
     lag_lte, steady_lte = time_lag(times_lte, flux_lte)
-    print(f"LTE reference: J_ss = {steady_lte:.4e} m^-2 s^-1, "
-          f"t_lag = {lag_lte:.4e} s")
+    print(f"LTE reference: J_ss = {steady_lte:.4e} m^-2 s^-1, t_lag = {lag_lte:.4e} s")
     print(f"grid: {len(all_da)} x {len(all_b)} = {len(all_da) * len(all_b)} solves\n")
 
     rows = []
@@ -107,19 +106,29 @@ def compute(all_da=ALL_DA, all_b=ALL_B):
             out = sweep_redox.run(damkohler, branching)
             lag, steady = time_lag(out["times"], out["flux_atomic"])
 
-            rows.append([
-                damkohler, branching, out["branching_measured"][-1], steady,
-                steady / steady_lte, lag, lag / lag_lte,
-                out["hf_fraction"][-1], out["c_metal"][-1],
-            ])
+            rows.append(
+                [
+                    damkohler,
+                    branching,
+                    out["branching_measured"][-1],
+                    steady,
+                    steady / steady_lte,
+                    lag,
+                    lag / lag_lte,
+                    out["hf_fraction"][-1],
+                    out["c_metal"][-1],
+                ]
+            )
 
-            print(f"Da={damkohler:8.3e}  B={branching:8.3e}  "
-                  f"J/J_LTE={steady / steady_lte:8.4f}  "
-                  f"t_lag/t_LTE={lag / lag_lte:7.4f}  "
-                  f"HF={out['hf_fraction'][-1]:.4f}", flush=True)
+            print(
+                f"Da={damkohler:8.3e}  B={branching:8.3e}  "
+                f"J/J_LTE={steady / steady_lte:8.4f}  "
+                f"t_lag/t_LTE={lag / lag_lte:7.4f}  "
+                f"HF={out['hf_fraction'][-1]:.4f}",
+                flush=True,
+            )
 
-            np.savetxt(CSV, np.array(rows), delimiter=",", header=COLUMNS,
-                       comments="")
+            np.savetxt(CSV, np.array(rows), delimiter=",", header=COLUMNS, comments="")
 
     return np.array(rows)
 
@@ -157,6 +166,22 @@ def plot(rows, filename, all_da=ALL_DA, all_b=ALL_B):
 
     fig, axes = plt.subplots(1, 2, figsize=(9.8, 4.4), constrained_layout=True)
 
+    # The axes are set up *before* anything is drawn on them. clabel sizes the
+    # gap it cuts in the contour for the label in data coordinates, so on a
+    # still-linear axis it removes a chunk that, once the axis is switched to
+    # log, swallows most of a decade and leaves the line looking truncated.
+    for ax, title in (
+        (axes[0], "(a) steady flux, analytical solution"),
+        (axes[1], "(b) time lag, 81 transient solves"),
+    ):
+        ax.set_xscale("log")
+        ax.set_yscale("log")
+        ax.set_xlim(1e-2, 1e2)
+        ax.set_ylim(1e-2, 1e2)
+        ax.set_xlabel("Damköhler number Da")
+        ax.set_title(title, loc="left", fontsize=10)
+        ax.grid(False)
+
     # ---- (a) steady flux, signed, analytical on a fine grid -----------------
     da_fine, b_fine, steady = steady_error_field()
 
@@ -170,11 +195,14 @@ def plot(rows, filename, all_da=ALL_DA, all_b=ALL_B):
     # interface-limited side of the map
     low, high = steady.min(), steady.max()
     mesh_a = axes[0].contourf(
-        da_fine, b_fine, steady,
+        da_fine,
+        b_fine,
+        steady,
         levels=np.unique(
             np.concatenate([np.linspace(low, 0, 21), np.linspace(0, high, 21)])
         ),
-        cmap=diverging, norm=TwoSlopeNorm(vcenter=0.0, vmin=low, vmax=high),
+        cmap=diverging,
+        norm=TwoSlopeNorm(vcenter=0.0, vmin=low, vmax=high),
     )
 
     # the whole point of the panel: LTE is exact along this line, for the wrong
@@ -191,47 +219,61 @@ def plot(rows, filename, all_da=ALL_DA, all_b=ALL_B):
         (2.2, 22.0, "LTE reads low\n(missing channel)", "#4a1a08"),
     ):
         axes[0].annotate(
-            text, xy=(x, y), fontsize=8.5, weight="bold", color=colour,
-            ha="left", va="center",
+            text,
+            xy=(x, y),
+            fontsize=8.5,
+            weight="bold",
+            color=colour,
+            ha="left",
+            va="center",
         )
 
     fig.colorbar(
-        mesh_a, ax=axes[0], location="bottom", pad=0.02, fraction=0.06,
-        shrink=0.85, aspect=26, ticks=[-0.75, -0.5, -0.25, 0.0, 0.5, 1.0, 1.5],
+        mesh_a,
+        ax=axes[0],
+        location="bottom",
+        pad=0.02,
+        fraction=0.06,
+        shrink=0.85,
+        aspect=26,
+        ticks=[-0.75, -0.5, -0.25, 0.0, 0.5, 1.0, 1.5],
         label=r"$J_\mathrm{ss}/J_\mathrm{ss}^\mathrm{LTE} - 1$",
     )
 
     # ---- (b) time lag, from the 81 transient solves -------------------------
     mesh_b = axes[1].contourf(
-        da_grid, b_grid, lag_error,
-        levels=np.linspace(0.0, 0.5, 26), cmap="YlOrRd", extend="max",
+        da_grid,
+        b_grid,
+        lag_error,
+        levels=np.linspace(0.0, 0.5, 26),
+        cmap="YlOrRd",
+        extend="max",
     )
     lag_bands = axes[1].contour(
         da_grid, b_grid, lag_error, levels=[0.1], colors="#1a4848", linewidths=1.8
     )
     axes[1].clabel(lag_bands, fmt={0.1: "10 %"}, fontsize=8)
     axes[1].plot(
-        rows[:, 0], rows[:, 1], linestyle="none", marker=".", markersize=2.0,
-        color="0.35", alpha=0.55,
+        rows[:, 0],
+        rows[:, 1],
+        linestyle="none",
+        marker=".",
+        markersize=2.0,
+        color="0.35",
+        alpha=0.55,
     )
 
     fig.colorbar(
-        mesh_b, ax=axes[1], location="bottom", pad=0.02, fraction=0.06,
-        shrink=0.85, aspect=26, ticks=[0.0, 0.1, 0.2, 0.3, 0.4, 0.5],
+        mesh_b,
+        ax=axes[1],
+        location="bottom",
+        pad=0.02,
+        fraction=0.06,
+        shrink=0.85,
+        aspect=26,
+        ticks=[0.0, 0.1, 0.2, 0.3, 0.4, 0.5],
         label=r"$t_\mathrm{lag}/t_\mathrm{lag}^\mathrm{LTE} - 1$",
     )
-
-    for ax, title in (
-        (axes[0], "(a) steady flux, analytical solution"),
-        (axes[1], "(b) time lag, 81 transient solves"),
-    ):
-        ax.set_xscale("log")
-        ax.set_yscale("log")
-        ax.set_xlim(1e-2, 1e2)
-        ax.set_ylim(1e-2, 1e2)
-        ax.set_xlabel("Damköhler number Da")
-        ax.set_title(title, loc="left", fontsize=10)
-        ax.grid(False)
 
     axes[0].set_ylabel(r"branching ratio $\mathcal{B}$ (nominal)")
     axes[1].set_yticklabels([])
