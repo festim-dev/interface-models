@@ -97,9 +97,10 @@ Three assumptions hide in that condition: fast interfacial equilibration, a sing
 The literature scrutinises the first, but the other two are the more consequential failures, and neither survives at a metal/molten-salt interface. 
 We replace the constraint with reversible reaction channels at the interface that obey mass action, with detailed balance fixing each ratio of rate constants from the thermodynamic data that already parameterise LTE, and we implement the framework in \FESTIM{}.
 LTE is recovered as the fast-kinetics limit of a \emph{single} channel, in both its Sieverts/Sieverts and its Sieverts/Henry form, so the framework generalises LTE and does not compete with it.
-A Damk\"ohler number delimits validity within a channel, a branching ratio between channels. In a representative nickel/FLiBe system, hydrogen partitions kinetically between molecular and fluoride carriers.
+A Damk\"ohler number delimits validity within a channel, a branching ratio between channels.
+In a representative nickel/FLiBe system, hydrogen partitions kinetically between molecular and fluoride carriers.
 The apparent interfacial law then drifts between Sieverts and Henry with loading and salt redox state, and an LTE condition underestimates the steady permeating flux.
-The measured pressure exponent is a readout of the branching ratio, not a property of the salt; a redox sweep at fixed temperature should continuously shift it between 1 and 2. 
+The measured pressure exponent is set by the branching ratio, not by any fixed property of the salt; a redox sweep at fixed temperature should continuously shift it between 0.5 and 1.
 With two isotopes, two metal-side species feed five salt-side carriers, and a per-species LTE condition is ill-posed.
 \end{abstract}
 
@@ -163,12 +164,12 @@ However, no macroscopic hydrogen transport code models a condensed/condensed (eg
 We close this gap by formulating a general kinetic interface framework in which the algebraic (Dirichlet-type) constraint is replaced by reversible reaction channels obeying mass action law, with detailed balance fixing the ratio of each pair of rate constants from the same thermodynamic data that parameterise LTE, and we implement it in the open-source finite element code \FESTIM{}.
 We recover LTE analytically as the fast-kinetics limit of a single channel, in both its Sieverts/Sieverts and Sieverts/Henry forms, so that what we propose is a strict generalisation of LTE rather than a competing model.
 Two dimensionless groups delimit its validity: a Damk\"ohler number within a channel and a branching ratio between channels.
-Finally, we apply the framework to the
-\HYPERION{} Ni/FLiBe/gas experiment~\cite{saraswat_permeation_2026}, in single-isotope.
-
+Finally, we apply the framework to the \HYPERION{} Ni/FLiBe/gas experiment~\cite{saraswat_permeation_2026}, in a single-isotope configuration.
 
 Interfaces are treated in this paper as reactive surfaces without their own stored inventory.
 Intermediate trapping sites localised on the interface (as done in other studies~\cite{silva-solis_hydrogen_2026, hodille_molecular_2022}) and the codimension-1 formulation needed to carry an interfacial ODE/PDE alongside the bulk equations are the subject of a future paper.
+
+All simulation code, input files and the scripts that produce every figure in this paper are openly available~\cite{remi_delaporte_mathurin_2026_22112697}.
 
 % ===============================================================
 \section{Interface conditions for hydrogen transport}
@@ -538,19 +539,11 @@ The map is nevertheless entirely analytical, and the right-hand axis carries the
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=1\linewidth]{regime_map.pdf}
-    \caption{Where a local-equilibrium interface is defensible. The indicator
-    $\mathcal{E}$ of Eq.~(\ref{eq:lte_indicator}) over the $(\Da, \Bra)$ plane,
-    with contours at \qty{1}{\percent} and \qty{10}{\percent}. The Damk\"ohler
-    number plotted is the two-sided group
-    $\Da^{\star}$ of Eq.~(\ref{eq:defect_1_explicit}), the ratio of the total
-    bulk resistance to the interfacial resistance $1/k^{+}$, since that is the
-    combination the flux error depends on.
-    LTE requires both a fast channel and a
-    dominant one: the pale regions at bottom right and top right are the
-    Sieverts/Henry and linear limits, the left-hand strip is kinetically
-    limited whatever the branching, and the band around $\Bra = 1$ admits no
-    algebraic interface law however fast the kinetics. The right-hand axis gives
-    the apparent exponent $n$ corresponding to each branching ratio.}
+    \caption{Where a local-equilibrium interface is defensible. 
+    The indicator $\mathcal{E}$ of Eq.~(\ref{eq:lte_indicator}) over the $(\Da, \Bra)$ plane,     with contours at \qty{1}{\percent} and \qty{10}{\percent}. 
+    The Damk\"ohler number plotted is the two-sided group $\Da^{\star}$ of Eq.~(\ref{eq:defect_1_explicit}), the ratio of the total bulk resistance to the interfacial resistance $1/k^{+}$, since that is the combination the flux error depends on.
+    LTE requires both a fast channel and a dominant one: the pale regions at bottom right and top right are the Sieverts/Henry and linear limits, the left-hand strip is kinetically limited whatever the branching, and the band around $\Bra = 1$ admits no algebraic interface law however fast the kinetics.
+    The right-hand axis gives the apparent exponent $n$ corresponding to each branching ratio.}
     \label{fig:regime_map}
 \end{figure}
 
@@ -573,10 +566,9 @@ In the tritium-lean, protium-rich conditions typical of a breeding blanket, $\ch
 \label{sec:implementation}
 % ===============================================================
 
-\FESTIM{}~v2.0 divides a computational domain into volume subdomains, each carrying its own material properties and discretised on its own submesh of a common parent mesh~\cite{dark_festim_2026}.
-Physics is then declared only where it acts: trapping in a solid, advection in a fluid, and each species hosted only by the subdomains in which it exists.
-% The elements can be continuous within a subdomain, while the facets shared with a neighbouring subdomain carry discontinuous elements, so the two sides of an interface can hold different values and a concentration jump can be enforced directly.
-Those facets are interior to the parent mesh, and the mixed-domain assembly of DOLFINx~\cite{baratta_dolfinx_2023} maps each of them to the cell it belongs to on either subdomain's side, so a single variational form can use the values of both subdomains' fields on the same facet.
+\FESTIM{}~\cite{dark_festim_2026} is an open-source Python framework for hydrogen isotope transport in materials, built on the finite element library DOLFINx~\cite{baratta_dolfinx_2023}.
+Version 2.0 divides a computational domain into subdomains, each discretised on its own submesh, so a field is continuous within a subdomain but free to jump across a shared facet.
+The mixed-domain functionality of DOLFINx then combines each subdomain's formulation into a blocked formulation.
 The interface conditions of Sec.~\ref{sec:models} enter that form as surface terms, in the same way a flux condition enters on an external boundary, and they prescribe the flux crossing $\Gamma$ rather than the concentrations on either side of it.
 
 % ---------------------------------------------------------------
@@ -767,16 +759,11 @@ Both channels therefore converge to LTE at the rate Eq.~(\ref{eq:model1_converge
 
 \begin{table}[htbp]
     \centering
-    \caption{Convergence to LTE for the two single-channel models on the
-    two-slab problem, over a sweep of eight orders of magnitude in $\Da$. The departure is
-    measured on the quantity each channel equilibrates: the ratio
-    $c_A/c_B$ against Eq.~(\ref{eq:lte_ss}) for Model 1, and the Sieverts/Henry
-    readout $\cs{\mathrm{H_2}}|_\Gamma/(\cm{\mathrm{H}}|_\Gamma)^{2}$ against
-    Eq.~(\ref{eq:lte_sh}) for Model 2. Both converge first order in $1/\Da$, at
-    the asymptote \ref{app:limits} predicts for these parameters.}
+    \caption{Convergence to LTE for the two single-channel models on the two-slab problem, over a sweep of eight orders of magnitude in $\Da$.
+    The departure is measured on the quantity each channel equilibrates: the ratio $c_A/c_B$ against Eq.~(\ref{eq:lte_ss}) for Model 1, and the Sieverts/Henry combination $\cs{\mathrm{H_2}}|_\Gamma/(\cm{\mathrm{H}}|_\Gamma)^{2}$ against Eq.~(\ref{eq:lte_sh}) for Model 2.
+    Both converge first order in $1/\Da$, at the asymptote \ref{app:limits} predicts for these parameters.}
     \label{tab:convergence}
     \begin{tabular}{lll}
-        \\
          & Model 1 & Model 2 \\
         \hline
         Analytical solution & Eq.~(\ref{eq:model1_analytical})
@@ -1214,7 +1201,7 @@ Neither number helps when more than one isotope is present, since a per-species 
 At the Ni/FLiBe operating point of \HYPERION{}, hydrogen leaving the metal partitions kinetically between a molecular and a fluoride carrier.
 The apparent interfacial law is neither Sieverts nor Henry but drifts between them with loading and with salt redox state.
 No fixed LTE condition reproduces that behaviour across a redox sweep.
-Because the fluorination channel runs in parallel with the one that a single-carrier model includes, an LTE interface not only misestimates the steady flux but also underestimates it by an amount determined by the redox state.
+Because the fluorination channel runs in parallel with the one included in a single-carrier model, an LTE interface not only misestimates the steady flux but also underestimates it by an amount determined by the redox state.
 The two failure modes cancel along a line of constant $(\Da, \Bra)$, where the steady flux is right while the time lag is not.
 A steady permeation measurement, therefore, cannot validate an LTE condition; the transient is what discriminates.
 
@@ -1231,88 +1218,84 @@ A redox sweep at a fixed temperature should continuously move the measured press
 
 \section{Data availability}
 
-The manuscript source and all of the simulation code behind this work are
-openly available at \url{https://github.com/festim-dev/interface-models} and
-archived at \url{https://doi.org/10.5281/zenodo.22112697}.
-Every figure in this paper is produced by a script in that repository, and the
-parametric sweeps write the tabulated data they plot alongside their figures.
-The interface classes the paper describes are implemented in \FESTIM{}~\cite{dark_festim_2026}.
+The manuscript source and all of the simulation code behind this work are openly available at \url{https://github.com/festim-dev/interface-models} and archived on Zenodo~\cite{remi_delaporte_mathurin_2026_22112697}.
+Every figure in this paper is produced by a script in that repository, and the parametric sweeps write the tabulated data they plot alongside their figures.
 
 
 % ===============================================================
 \appendix
 % ===============================================================
 
-% ---------------------------------------------------------------
-\section{Detailed balance constraints}
-\label{app:balance}
-% ---------------------------------------------------------------
+% % ---------------------------------------------------------------
+% \section{Detailed balance constraints}
+% \label{app:balance}
+% % ---------------------------------------------------------------
 
-The constraints collected here are instances of the standard requirement that the forward and reverse constants of a surface reaction network cannot be chosen independently~\cite{mhadeshwar_thermodynamic_2003,gorban_extended_2011}.
-Baskes~\cite{baskes_calculation_1980} states the same relation for the single-channel gas/solid case.
+% The constraints collected here are instances of the standard requirement that the forward and reverse constants of a surface reaction network cannot be chosen independently~\cite{mhadeshwar_thermodynamic_2003,gorban_extended_2011}.
+% Baskes~\cite{baskes_calculation_1980} states the same relation for the single-channel gas/solid case.
 
-\paragraph{The recipe} Eq.~(\ref{eq:detailed_balance_general}) fixes $k_r^{+}/k_r^{-}$ at the equilibrium constant $K_r$ of the channel, and $K_r$ is obtained the same way for every channel in this paper.
-Put both subdomains in equilibrium with a common gas reservoir, express each participating concentration through the dissolution law that species obeys, and set the net rate of Eq.~(\ref{eq:mass_action}) to zero.
-The reservoir pressures then cancel wherever the two sides carry the same power of pressure, and survive as an activity wherever they do not.
-The three cases below differ only in which of those two things happens.
+% \paragraph{The recipe} Eq.~(\ref{eq:detailed_balance_general}) fixes $k_r^{+}/k_r^{-}$ at the equilibrium constant $K_r$ of the channel, and $K_r$ is obtained the same way for every channel in this paper.
+% Put both subdomains in equilibrium with a common gas reservoir, express each participating concentration through the dissolution law that species obeys, and set the net rate of Eq.~(\ref{eq:mass_action}) to zero.
+% The reservoir pressures then cancel wherever the two sides carry the same power of pressure, and survive as an activity wherever they do not.
+% The three cases below differ only in which of those two things happens.
 
-\paragraph{Model 1} Hydrogen dissolves dissociatively on both sides, so $c_A|_\Gamma = K_{S,A}\sqrt{p}$ and $c_B|_\Gamma = K_{S,B}\sqrt{p}$ against a reservoir at $p$.
-Setting $J = 0$ in Eq.~(\ref{eq:model1_flux}) gives $k^{+}/k^{-} = c_B|_\Gamma/c_A|_\Gamma$, and $\sqrt{p}$ cancels, leaving Eq.~(\ref{eq:detailed_balance_1}).
-The constant is a ratio of two Sieverts constants and carries no pressure dependence, which is why Model 1 needs no activity.
+% \paragraph{Model 1} Hydrogen dissolves dissociatively on both sides, so $c_A|_\Gamma = K_{S,A}\sqrt{p}$ and $c_B|_\Gamma = K_{S,B}\sqrt{p}$ against a reservoir at $p$.
+% Setting $J = 0$ in Eq.~(\ref{eq:model1_flux}) gives $k^{+}/k^{-} = c_B|_\Gamma/c_A|_\Gamma$, and $\sqrt{p}$ cancels, leaving Eq.~(\ref{eq:detailed_balance_1}).
+% The constant is a ratio of two Sieverts constants and carries no pressure dependence, which is why Model 1 needs no activity.
 
-\paragraph{Model 2} The metal obeys Sieverts' law and the salt Henry's law, so the two sides carry different powers of $p$.
-Setting $w_\mathrm{rec} = 0$ in Eq.~(\ref{eq:model2_rate}),
-\begin{equation}
-    \frac{k_\mathrm{r}^{+}}{k_\mathrm{r}^{-}}
-    = \frac{\cs{\mathrm{H_2}}\big|_\Gamma}{\left(\cm{\mathrm{H}}\big|_\Gamma\right)^{2}}
-    = \frac{K_H\,p}{K_S^{2}\,p}
-    = \frac{K_H}{K_S^{2}} ,
-    \label{eq:balance_2_derivation}
-\end{equation}
-which is Eq.~(\ref{eq:detailed_balance_2}).
-The cancellation here is not automatic but stoichiometric: two metal-side atoms make one molecule, so the square on the Sieverts side matches the linear Henry side, and $p$ drops out.
-Eq.~(\ref{eq:atom_balance}) is what guarantees it.
+% \paragraph{Model 2} The metal obeys Sieverts' law and the salt Henry's law, so the two sides carry different powers of $p$.
+% Setting $w_\mathrm{rec} = 0$ in Eq.~(\ref{eq:model2_rate}),
+% \begin{equation}
+%     \frac{k_\mathrm{r}^{+}}{k_\mathrm{r}^{-}}
+%     = \frac{\cs{\mathrm{H_2}}\big|_\Gamma}{\left(\cm{\mathrm{H}}\big|_\Gamma\right)^{2}}
+%     = \frac{K_H\,p}{K_S^{2}\,p}
+%     = \frac{K_H}{K_S^{2}} ,
+%     \label{eq:balance_2_derivation}
+% \end{equation}
+% which is Eq.~(\ref{eq:detailed_balance_2}).
+% The cancellation here is not automatic but stoichiometric: two metal-side atoms make one molecule, so the square on the Sieverts side matches the linear Henry side, and $p$ drops out.
+% Eq.~(\ref{eq:atom_balance}) is what guarantees it.
 
-\paragraph{Model 3, the fluorination channel} Channel F consumes one metal-side atom and produces one HF, so the powers of $p$ do not match and the reservoir does not cancel.
-Against a cover gas holding both $\mathrm{H_2}$ and HF, the metal obeys Sieverts' law and HF in the salt obeys Henry's law with the constant of Field and Shaffer~\cite{field_solubilities_1967}.
-Setting $w_\mathrm{F} = 0$ in Eq.~(\ref{eq:model3_rate}),
-\begin{equation}
-    \frac{k_\mathrm{f}^{+}\,a_\mathrm{F}}{k_\mathrm{f}^{-}}
-    = \frac{\cs{\mathrm{HF}}\big|_\Gamma}{\cm{\mathrm{H}}\big|_\Gamma}
-    = \frac{K_{H,\mathrm{HF}}}{K_{S,A}}
-      \cdot \frac{p_\mathrm{HF}}{\sqrt{p_{\mathrm{H_2}}}} .
-    \label{eq:balance_3_derivation}
-\end{equation}
-The surviving factor is the imposed HF/$\mathrm{H_2}$ ratio, which is the fluorine potential written as a pressure.
-Identifying it with the effective activity of Sec.~\ref{sec:model3},
-\begin{equation}
-    a_\mathrm{F} \equiv \frac{p_\mathrm{HF}}{\sqrt{p_{\mathrm{H_2}}}} ,
-    \qquad
-    \frac{k_\mathrm{f}^{+}}{k_\mathrm{f}^{-}} = \frac{K_{H,\mathrm{HF}}}{K_{S,A}} ,
-    \label{eq:detailed_balance_3}
-\end{equation}
-leaves the rate-constant ratio a quotient of two measured solubilities, with the whole redox dependence carried by $a_\mathrm{F}$.
-This is the sense in which the two are separable: the thermodynamics of the channel is a material property, and the buffer is an operating condition.
-It also makes $a_\mathrm{F}$ something an experimentalist sets rather than a fitting parameter, since the cover-gas ratio is imposed directly.
-A beryllium-metal buffer fixes the same quantity through the Be/$\mathrm{BeF_2}$ couple instead, and the correspondence between the two is not derived here.
+% \paragraph{Model 3, the fluorination channel} Channel F consumes one metal-side atom and produces one HF, so the powers of $p$ do not match and the reservoir does not cancel.
+% Against a cover gas holding both $\mathrm{H_2}$ and HF, the metal obeys Sieverts' law and HF in the salt obeys Henry's law with the constant of Field and Shaffer~\cite{field_solubilities_1967}.
+% Setting $w_\mathrm{F} = 0$ in Eq.~(\ref{eq:model3_rate}),
+% \begin{equation}
+%     \frac{k_\mathrm{f}^{+}\,a_\mathrm{F}}{k_\mathrm{f}^{-}}
+%     = \frac{\cs{\mathrm{HF}}\big|_\Gamma}{\cm{\mathrm{H}}\big|_\Gamma}
+%     = \frac{K_{H,\mathrm{HF}}}{K_{S,A}}
+%       \cdot \frac{p_\mathrm{HF}}{\sqrt{p_{\mathrm{H_2}}}} .
+%     \label{eq:balance_3_derivation}
+% \end{equation}
+% The surviving factor is the imposed HF/$\mathrm{H_2}$ ratio, which is the fluorine potential written as a pressure.
+% Identifying it with the effective activity of Sec.~\ref{sec:model3},
+% \begin{equation}
+%     a_\mathrm{F} \equiv \frac{p_\mathrm{HF}}{\sqrt{p_{\mathrm{H_2}}}} ,
+%     \qquad
+%     \frac{k_\mathrm{f}^{+}}{k_\mathrm{f}^{-}} = \frac{K_{H,\mathrm{HF}}}{K_{S,A}} ,
+%     \label{eq:detailed_balance_3}
+% \end{equation}
+% leaves the rate-constant ratio a quotient of two measured solubilities, with the whole redox dependence carried by $a_\mathrm{F}$.
+% This is the sense in which the two are separable: the thermodynamics of the channel is a material property, and the buffer is an operating condition.
+% It also makes $a_\mathrm{F}$ something an experimentalist sets rather than a fitting parameter, since the cover-gas ratio is imposed directly.
+% A beryllium-metal buffer fixes the same quantity through the Be/$\mathrm{BeF_2}$ couple instead, and the correspondence between the two is not derived here.
 
-\paragraph{Isotopologue channels} Detailed balance applies to each of Eqs.~(\ref{eq:iso_HH})--(\ref{eq:iso_TT}) separately, but the three constants are not independent.
-Eliminating the metal-side concentrations from the three equilibrated channels gives
-\begin{equation}
-    K_\mathrm{exch}
-    = \frac{\left(\cs{\mathrm{HT}}\right)^{2}}
-           {\cs{\mathrm{H_2}}\,\cs{\mathrm{T_2}}}
-    = \frac{\left(k_\mathrm{HT}^{+}/k_\mathrm{HT}^{-}\right)^{2}}
-           {\left(k_\mathrm{HH}^{+}/k_\mathrm{HH}^{-}\right)
-            \left(k_\mathrm{TT}^{+}/k_\mathrm{TT}^{-}\right)} ,
-    \label{eq:iso_constraint}
-\end{equation}
-so the exchange equilibrium is a consequence of the three channel constants and not a fourth input.
-Any parameterisation that does not satisfy Eq.~(\ref{eq:iso_constraint}) drives the interface towards an isotopic composition that no equilibrium supports.
-As with Eq.~(\ref{eq:detailed_balance_general}), the solver does not check this (Sec.~\ref{sec:params}).
+% \paragraph{Isotopologue channels} Detailed balance applies to each of Eqs.~(\ref{eq:iso_HH})--(\ref{eq:iso_TT}) separately, but the three constants are not independent.
+% Eliminating the metal-side concentrations from the three equilibrated channels gives
+% \begin{equation}
+%     K_\mathrm{exch}
+%     = \frac{\left(\cs{\mathrm{HT}}\right)^{2}}
+%            {\cs{\mathrm{H_2}}\,\cs{\mathrm{T_2}}}
+%     = \frac{\left(k_\mathrm{HT}^{+}/k_\mathrm{HT}^{-}\right)^{2}}
+%            {\left(k_\mathrm{HH}^{+}/k_\mathrm{HH}^{-}\right)
+%             \left(k_\mathrm{TT}^{+}/k_\mathrm{TT}^{-}\right)} ,
+%     \label{eq:iso_constraint}
+% \end{equation}
+% so the exchange equilibrium is a consequence of the three channel constants and not a fourth input.
+% Any parameterisation that does not satisfy Eq.~(\ref{eq:iso_constraint}) drives the interface towards an isotopic composition that no equilibrium supports.
+% As with Eq.~(\ref{eq:detailed_balance_general}), the solver does not check this (Sec.~\ref{sec:params}).
 
-The mass-independent choice of the footnote in Sec.~\ref{sec:isotopes}, $k_\mathrm{HT}^{+} = 2k_\mathrm{HH}^{+} = 2k_\mathrm{TT}^{+}$ with equal reverse constants, returns $K_\mathrm{exch} = 4$, the random-pairing value.
-We use that value throughout, to illustrate the structure rather than to predict a composition, and Eq.~(\ref{eq:iso_constraint}) is what any other choice must satisfy.
+% The mass-independent choice of the footnote in Sec.~\ref{sec:isotopes}, $k_\mathrm{HT}^{+} = 2k_\mathrm{HH}^{+} = 2k_\mathrm{TT}^{+}$ with equal reverse constants, returns $K_\mathrm{exch} = 4$, the random-pairing value.
+% We use that value throughout, to illustrate the structure rather than to predict a composition, and Eq.~(\ref{eq:iso_constraint}) is what any other choice must satisfy.
 
 % ---------------------------------------------------------------
 \section{The LTE limit}
