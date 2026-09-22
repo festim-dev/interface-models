@@ -166,9 +166,6 @@ We recover LTE analytically as the fast-kinetics limit of a single channel, in b
 Two dimensionless groups delimit its validity: a Damk\"ohler number within a channel and a branching ratio between channels.
 Finally, we apply the framework to the \HYPERION{} Ni/FLiBe/gas experiment~\cite{saraswat_permeation_2026}, in a single-isotope configuration.
 
-Interfaces are treated in this paper as reactive surfaces without their own stored inventory.
-Intermediate trapping sites localised on the interface (as done in other studies~\cite{silva-solis_hydrogen_2026, hodille_molecular_2022}) and the codimension-1 formulation needed to carry an interfacial ODE/PDE alongside the bulk equations are the subject of a future paper.
-
 All simulation code, input files and the scripts that produce every figure in this paper are openly available~\cite{remi_delaporte_mathurin_2026_22112697}.
 
 % ===============================================================
@@ -280,7 +277,7 @@ The framework is therefore a strict generalisation of LTE: the same thermodynami
 Eq~(\ref{eq:detailed_balance_general}) constrains whoever writes the model and cannot be enforced by the discretisation~\cite{mhadeshwar_thermodynamic_2003, mhadeshwar_thermodynamically_2005, gorban_extended_2011}; Sec.~\ref{sec:params} returns to how the ratios are obtained in practice.
 
 The framework is agnostic to the nature of the two sides: the gas/solid
-dissociation-recombination boundary condition already available in \FESTIM{}~\cite{ali-khan_rate_1978, pick_model_1985, hodille_kinetic_2020, kulagin_kinetic_2024} is the special case in which $A$ is a gas phase.
+dissociation-recombination boundary condition already available in \FESTIM{}~\cite{ali-khan_rate_1978, pick_model_1985, hodille_kinetic_2020, kulagin_kinetic_2024} is the special case in which $B$ is a gas phase.
 The models below differ from one another only in their stoichiometry and in the number of channels they carry, and Fig.~\ref{fig:interface_models} collects them on the same geometry, together with the LTE condition they generalise.
 
 \begin{figure*}[ht]
@@ -313,8 +310,7 @@ Writing $K \equiv k^{+}/k^{-}$ and factorising Eq.~(\ref{eq:model1_flux}) as $J 
 The derivation is given in \ref{app:limits}. 
 The correction at finite rate constants is $\mathcal{O}(J/k^{+}c)$ and is quantified in Sec.~\ref{sec:damkohler}.
 
-An interfacial rate constant in series with a bulk diffusive resistance is familiar in the solid state; it is for instance used to describe oxidation laws~\cite{deal_general_1965} and the Kapitza resistance for heat (also known as \textit{interfacial thermal resistance)}~\cite{swartz_thermal_1989}. 
-Interstitial diffusion is itself a first-order exchange between adjacent planes of sites, so Fick's law is the special case $k^{+} = D/\lambda$ with $\lambda$ the jump distance.
+An interfacial rate constant in series with a bulk diffusive resistance is familiar in the solid state; it is for instance used to describe oxidation laws~\cite{deal_general_1965} and the Kapitza resistance for heat (also known as \textit{interfacial thermal resistance)}~\cite{swartz_thermal_1989}.
 
 % ---------------------------------------------------------------
 \subsection{Model 2: recombination into a molecular carrier}
@@ -346,15 +342,16 @@ Which one applies is a question about chemistry, not about which option to set i
 % ---------------------------------------------------------------
 
 Nothing in Sec.~\ref{sec:general} restricts the interface to a single channel, and at a metal/fluoride-melt interface there is no reason to expect one. 
-Hydrogen leaving the metal may recombine and dissolve as a molecule, or the melt may oxidise it to HF, which is far more soluble, corrosive, and redox-dependent.
+Hydrogen leaving the metal may recombine and dissolve as a molecule, or the melt may oxidise it to HF, which is far more soluble and corrosive.
+Whether it forms is set by the fluorine potential of the melt, not by redox more broadly.
 We therefore let two channels operate on the same interface (see Fig.~\ref{fig:interface_models}d),
 \begin{align*}
     \text{R:}&\quad 2\,\mathrm{H(m)} \rightleftharpoons \mathrm{H_2(s)} \\
-    \text{F:}&\quad \mathrm{H(m)} + \mathrm{F^-(s)} + h^{+}
+    \text{F:}&\quad \mathrm{H(m)} + \tfrac{1}{2}\,\mathrm{F_2(s)}
                     \rightleftharpoons \mathrm{HF(s)} ,
 \end{align*}
-where $h^{+}$ denotes the oxidising half of the salt redox couple.
-In practice, the fluorine potential is set by a buffer, either beryllium metal or an imposed $\mathrm{HF/H_2}$ ratio in the cover gas, so we write channel F with a single effective activity, $a_\mathrm{F}$, lumping the fluoride activity and the redox potential,
+where $\mathrm{F_2(s)}$ is a formal reference species, not a transported field, whose activity is the fluorine potential of the melt, the standard variable used to describe redox in a molten fluoride.
+That potential is set in practice by whatever redox couple is present, an imposed $\mathrm{HF/H_2}$ ratio in the cover gas or a metal buffer such as beryllium, so we write channel F with a single effective activity, $a_\mathrm{F} \equiv a_{\mathrm{F_2}}^{1/2}$,
 \begin{equation}
     w_{\mathrm{F}} = k_{\mathrm{f}}^{+}\, a_{\mathrm{F}}\,
                      \cm{\mathrm{H}}\big|_\Gamma
@@ -398,7 +395,8 @@ No fixed algebraic interface law can reproduce this behaviour.
 The same slope can be read off the salt-side inventory instead of the flux, as a fitted solubility does, and the two are not the same number unless the carriers are transported alike (\ref{app:analytical}, Sec.~\ref{sec:exponent_verification}).
 We take the flux as the definition throughout, since it is what a permeation experiment measures directly.
 
-Second, $\Bra$ depends on the salt redox state through $a_\mathrm{F}$, which is itself dynamic: HF production, corrosion of the container and depletion of the buffer all move it. 
+Second, $\Bra$ depends on the salt redox state through $a_\mathrm{F}$, which is itself dynamic: HF production, corrosion of the container and depletion of the buffer all move it.
+Corrosion and buffer depletion consume HF as they proceed, so each is also a route that returns hydrogen to the system rather than only shifting $a_\mathrm{F}$.
 The behaviour of the interface is therefore coupled to the salt chemistry and is not a material property of the metal/salt pair that could be tabulated once and reused.
 
 Third, fast kinetics does not rescue LTE here.
@@ -1115,6 +1113,12 @@ A square-root dependence in an ionic melt is not a measurement artefact.
 It is the signature of \emph{dissociative} dissolution, that is, of the fluoride-bound carrier Calderoni et al.\ identify~\cite{calderoni_measurement_2008}.
 They conclude that tritium does not recombine at the Ni/FLiBe interface at all, and that it moves through the salt in atomic form, bound to $\mathrm{BeF_4^{2-}}$ or as HT. 
 They also note that only ionic dissolution accounts for a measured solubility close to HF reference values and far above $\mathrm{H_2}$.
+
+Isotope swamping (Sec.~\ref{sec:isotopes}) is one candidate explanation for why the carrier could not be pinned down.
+If protium from the downstream sweep gas reaches the Ni/FLiBe interface, it shifts tritium out of the $\mathrm{T_2}$ channel and into the statistically favoured HT channel by the same mechanism.
+A measurement read against a pure $\mathrm{T_2}$ recombination model would then infer a rate constant for that channel inflated by whatever share of the flux is actually carried as HT.
+We flag this as a possible confound in Ref.~\cite{calderoni_measurement_2008}, not as a correction to it: settling it needs the protium background of that experiment, which we do not have.
+
 The metal-side loading follows Sieverts' law, $\cm{\mathrm{H}} \propto \sqrt{P}$, so the apparent exponent of Eq.~(\ref{eq:n_of_B}) maps onto the measured pressure dependence.
 A fluorination-dominated interface, $\Bra \gg 1$, gives $n \rightarrow 1$ and a square-root response of the permeating flux.
 A recombination-dominated one, $\Bra \ll 1$, gives $n \rightarrow 2$ and a flux linear in pressure.
